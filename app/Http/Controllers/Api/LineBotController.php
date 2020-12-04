@@ -8,6 +8,7 @@ use App\Services\Line\Event\ReceiveTextService;
 use App\Services\Line\Event\FollowService;
 use App\Services\Line\Event\JoinService;
 use App\Services\Line\Event\BlockService;
+use App\Services\Line\Event\PostBackService;
 use LINE\LINEBot;
 
 class LineBotController extends Controller
@@ -24,6 +25,7 @@ class LineBotController extends Controller
 
         $events = $bot->parseEventRequest($request->getContent(), $signature);
         foreach($events as $event){
+
             $reply_token = $event->getReplyToken();
             $reply_message = 'その操作はサポートしていません。.[' . get_class($event) . '][' . $event->getType() . ']';
 
@@ -38,6 +40,7 @@ class LineBotController extends Controller
                 case $event instanceof LINEBot\Event\MessageEvent\TextMessage: //メッセージ
                     $service = new ReceiveTextService($bot);
                     $reply_message = $service->execute($event);
+                    $bot->replyMessage($reply_token, $reply_message);
                     break;
 
                 case $event instanceof LINEBot\Event\MessageEvent\LocationMessage: //位置情報
@@ -49,6 +52,8 @@ class LineBotController extends Controller
                     break;
 
                 case $event instanceof LINEBot\Event\PostbackEvent: //選択肢
+                    $service = new PostBackService($bot);
+                    $service->execute($event);
                     break;
                 
                 case $event instanceof LINEBot\Event\UnfollowEvent: //ブロック
@@ -61,7 +66,7 @@ class LineBotController extends Controller
                     logger()->warning('Unknown event. ['. get_class($event) . ']', compact('body'));
                 
             }
-            $bot->replyText($reply_token, $reply_message);
+            //$response = $bot->replyMessage($reply_token, $reply_message);
         }
     }
 }

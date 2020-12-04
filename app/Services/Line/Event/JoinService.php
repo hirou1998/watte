@@ -5,7 +5,6 @@ namespace App\Services\Line\Event;
 use App\Models\LineFriend;
 use LINE\LINEBot;
 use LINE\LINEBot\Event\JoinEvent;
-use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
 
 class JoinService{
 
