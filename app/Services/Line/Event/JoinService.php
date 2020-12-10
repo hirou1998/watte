@@ -2,7 +2,7 @@
 
 namespace App\Services\Line\Event;
 
-use App\Models\LineFriend;
+use App\Models\Group;
 use LINE\LINEBot;
 use LINE\LINEBot\Event\JoinEvent;
 
@@ -30,6 +30,23 @@ class JoinService{
     {
         $group_id = $event->getGroupId();
 
-        return config('LINEBotMessage.group_reply');
+        $is_already_registered = Group::alreadyRegistered($group_id);
+
+        if($is_already_registered){
+
+            return config('LINEBotMessage.group_reply');
+
+        }else{
+
+            $new_group = Group::create([
+                'group_id' => $group_id
+            ]);
+
+            if($new_group){
+                return config('LINEBotMessage.group_reply');
+            }else{
+                return '予期せぬエラーが発生しました。';
+            }
+        }
     }
 }

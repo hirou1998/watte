@@ -11,6 +11,11 @@ class LineFriend extends UuidModel
 
     protected $fillable = ['line_id', 'display_name', 'is_blocked'];
 
+    public function events()
+    {
+        return $this->belongsToMany(Event::class, 'line_id', 'line_friend_id');
+    }
+
     public static function isFollowed($line_id)
     {
         $friend = static::getFriend($line_id);
