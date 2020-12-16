@@ -5,11 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LineFriend extends UuidModel
+class LineFriend extends Model
 {
     use HasFactory;
 
     protected $fillable = ['line_id', 'display_name', 'is_blocked'];
+    protected $primaryKey = 'line_id';
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+    public function events()
+    {
+        return $this->belongsToMany(
+            Event::class, 
+            'event_line_friend',
+            'line_friend_id',
+            'event_id'
+        );
+    }
 
     public static function isFollowed($line_id)
     {

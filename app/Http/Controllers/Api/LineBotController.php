@@ -9,6 +9,7 @@ use App\Services\Line\Event\FollowService;
 use App\Services\Line\Event\JoinService;
 use App\Services\Line\Event\BlockService;
 use App\Services\Line\Event\PostBackService;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use LINE\LINEBot;
 
 class LineBotController extends Controller
@@ -26,6 +27,8 @@ class LineBotController extends Controller
         $events = $bot->parseEventRequest($request->getContent(), $signature);
         foreach($events as $event){
 
+            logger([$event]);
+
             $reply_token = $event->getReplyToken();
             $reply_message = 'その操作はサポートしていません。.[' . get_class($event) . '][' . $event->getType() . ']';
 
@@ -33,14 +36,16 @@ class LineBotController extends Controller
                 case $event instanceof LINEBot\Event\FollowEvent: //友達追加
                     $service = new FollowService($bot);
                     $reply_message = $service->execute($event)
-                        ? config('LINEBotMessage.register_message')
-                        : config('LINEBotMessage.register_failed_message');
+                        ? new TextMessageBuilder(config('LINEBotMessage.register_message'))
+                        : new TextMessageBuilder(config('LINEBotMessage.register_failed_message'));
                     break;
 
                 case $event instanceof LINEBot\Event\MessageEvent\TextMessage: //メッセージ
                     $service = new ReceiveTextService($bot);
                     $reply_message = $service->execute($event);
-                    $bot->replyMessage($reply_token, $reply_message);
+                    if($reply_message){
+                        $bot->replyMessage($reply_token, $reply_message);
+                    }
                     break;
 
                 case $event instanceof LINEBot\Event\MessageEvent\LocationMessage: //位置情報

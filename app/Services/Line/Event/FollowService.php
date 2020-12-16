@@ -55,7 +55,7 @@ class FollowService
                     'display_name' => $display_name
                 ]);
 
-                logger($display_name . '-' . $line_id);
+                //logger($display_name . '-' . $line_id);
             }
 
             return true;

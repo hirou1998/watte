@@ -31,11 +31,22 @@ class ReceiveTextService
     public function execute(TextMessage $event)
     {
         $message = $event->getText();
+
+        if(strpos($message, '@watte') !== 0){ //@watteから始まらない時は何もしない
+            return false;
+        }
+
+        // if(strpos($message, '@watte イベント作成: ')){
+        //     $event_name = 
+        // }
+
         $user_id = $event->getUserId();
         $is_sent_from_group = $event->isGroupEvent();
 
         if($is_sent_from_group){
-            $start = new StartService('okinawa', 'okinawawawa');
+            $group_id = $event->getGroupId();
+            logger($group_id);
+            $start = new StartService($group_id);
             $reply = $start->execute();
         }else{
             $reply = new TextMessageBuilder(config('LINEBotMessage.user_reply'));

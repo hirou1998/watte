@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLineFriendsTable extends Migration
+class CreateEventLineFriendTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateLineFriendsTable extends Migration
      */
     public function up()
     {
-        Schema::create('line_friends', function (Blueprint $table) {
-            $table->string('line_id', 64)->unique()->default(null);
-            $table->string('display_name', 64);
-            $table->boolean('is_blocked')->default(0);
+        Schema::create('event_line_friend', function (Blueprint $table) {
+            $table->id();
+            $table->string('line_friend_id');
+            $table->string('event_id');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateLineFriendsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('line_friends');
+        Schema::dropIfExists('event_line_friend');
     }
 }
