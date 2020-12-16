@@ -1924,9 +1924,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1959,6 +1956,14 @@ __webpack_require__.r(__webpack_exports__);
         join: this.join
       }).then(function (_ref) {
         var data = _ref.data;
+        window.liff.sendMessages([{
+          type: 'text',
+          text: data.message
+        }]).then(function () {
+          window.liff.closeWindow();
+        })["catch"](function (err) {
+          console.log(err);
+        });
       })["catch"](function (err) {
         if (err.response) {
           var _errText = 'エラーが発生しました。[' + err.response.message + ']';
@@ -37763,6 +37768,8 @@ var render = function() {
           ]
         : [
             _c("p", { staticClass: "normal-txt text-center" }, [
+              _vm._v(_vm._s(_vm.userInfo.displayName) + "さん"),
+              _c("br"),
               _vm._v(
                 "イベント: " +
                   _vm._s(_vm.event.event_name) +
@@ -37770,7 +37777,18 @@ var render = function() {
               ),
               _c("br"),
               _vm._v("よろしいですか？")
-            ])
+            ]),
+            _vm._v(" "),
+            _c("p", { staticClass: "small-txt text-center" }, [
+              _vm._v(
+                "参加する場合は一度ウィンドウを閉じて「参加する」ボタンを押してください。"
+              )
+            ]),
+            _vm._v(" "),
+            _c("form-button", {
+              attrs: { value: "確定", type: "deny" },
+              on: { send: _vm.send }
+            })
           ]
     ],
     2

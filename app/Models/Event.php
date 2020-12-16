@@ -13,11 +13,18 @@ class Event extends UuidModel
 
     public function line_friends()
     {
-        return $this->belongsToMany(LineFriend::class);
+        return $this->belongsToMany(
+            LineFriend::class,
+            'event_line_friend',
+            'event_id',
+            'line_friend_id'
+        );
     }
 
     public function group()
     {
-        return $this->belongsTo(Group::class, 'group_id', 'group_id');
+        return $this->belongsTo(
+            Group::class,
+        );
     }
 }

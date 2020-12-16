@@ -4,14 +4,11 @@
             <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>イベント: {{ event.event_name }} に参加します。<br>よろしいですか？</p>
             <p class="small-txt text-center">参加しない場合は一度ウィンドウを閉じて「参加しない」ボタンを押してください。</p>
             <form-button value="確定" type="accept" @send="send"></form-button>
-            <!-- <form action="" method="POST">
-                @csrf
-                <input type="hidden" value="event.id">
-                <button>確定</button>
-            </form> -->
         </template>
         <template v-else>
-            <p class="normal-txt text-center">イベント: {{ event.event_name }} に参加しません。<br>よろしいですか？</p>
+            <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>イベント: {{ event.event_name }} に参加しません。<br>よろしいですか？</p>
+            <p class="small-txt text-center">参加する場合は一度ウィンドウを閉じて「参加する」ボタンを押してください。</p>
+            <form-button value="確定" type="deny" @send="send"></form-button>
         </template>
     </div>
 </template>
@@ -48,7 +45,18 @@ export default {
                 join: this.join
             })
             .then(({data}) => {
-                
+                window.liff.sendMessages([
+                    {
+                        type: 'text',
+                        text: data.message
+                    }
+                ])
+                .then(() => {
+                    window.liff.closeWindow();
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
             })
             .catch(err => {
                 if(err.response){

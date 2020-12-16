@@ -50,11 +50,7 @@ class EventController extends Controller
         $join = $request->input('join');
         $item = $event->where('id', $id)->get()->first();
 
-        if($join === 'yes'){
-            return view('join', compact('item', 'join', 'liff'));
-        }else{
-            return view('nojoin', compact('item', 'join', 'liff'));
-        }
+        return view('confirm', compact('item', 'join', 'liff'));
     }
     /**
      * イベントの参加確認(POST)
@@ -76,17 +72,29 @@ class EventController extends Controller
         }
 
         $join = $request->join;
+        $join_object = $action_user->events->where('id', $event->id)->first();
+
         if($join === 'yes'){ //参加の場合
-            $action_user->events()->attach($event->id);
-            $returnObj = [
-                'status' => 'success',
-                'message' => $event->event_name . 'に参加しました。'
-            ];
+            if($join_object){
+                $returnObj = [
+                    'status' => 'fail',
+                    'message' => 'イベント: ' . $event->event_name . 'にすでに参加しています。'
+                ];
+            }else{
+                $action_user->events()->attach($event->id);
+                $returnObj = [
+                    'status' => 'success',
+                    'message' => 'イベント: ' . $event->event_name . 'に参加しました。'
+                ];
+            }
             return $returnObj;
         }else{ //参加しない場合
+            if($join_object){
+                $action_user->events()->detach($event->id);
+            }
             $returnObj = [
                 'status' => 'success',
-                'message' => $event->event_name . 'に参加しません。'
+                'message' => 'イベント: ' . $event->event_name . 'に参加しません。'
             ];
             return $returnObj;
         }

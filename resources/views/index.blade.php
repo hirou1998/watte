@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    新規イベント登録
+    Watte
 @endsection
 
 @section('content')

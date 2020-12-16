@@ -15,8 +15,8 @@ class CreateEventLineFriendTable extends Migration
     {
         Schema::create('event_line_friend', function (Blueprint $table) {
             $table->id();
-            $table->uuid('line_friend_id');
-            $table->uuid('event_id');
+            $table->string('line_friend_id');
+            $table->string('event_id');
             $table->timestamps();
         });
     }
