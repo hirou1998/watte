@@ -17,3 +17,4 @@ Route::get('/', 'EventController@index');
 Route::post('/create/new/', 'EventController@create');
 Route::get('/confirm', 'EventController@confirm');
 Route::post('/confirm/register/{event}', 'EventController@register_confirm');
+Route::get('/amounts/add/{event}', 'AmountController@index');
