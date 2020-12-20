@@ -52,7 +52,7 @@ class FollowService
 
                 LineFriend::create([
                     'line_id' => $line_id,
-                    'display_name' => $display_name
+                    'display_name' => $display_name,
                 ]);
 
                 //logger($display_name . '-' . $line_id);

@@ -5,5 +5,5 @@
 @endsection
 
 @section('content')
-    add
+    <add-amount :event="{{$event}}" liff="{{$liff}}" :participants="{{$participants}}"></add-amount>
 @endsection

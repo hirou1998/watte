@@ -1,5 +1,6 @@
 <template>
     <div class="start-form-container">
+        <loading v-if="isLoading"></loading>
         <template v-if="isStartView">
             <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>watteのご利用ありがとうございます！</p>
             <form @submit.prevent class="w-100">
@@ -13,17 +14,21 @@
             </form>
         </template>
         <template v-else>
-            <p class="normal-txt text-center">参加確認画面にリダイレクトします。</p>
+            <p class="normal-txt text-center" v-if="isConfirmView">参加確認画面にリダイレクトします。</p>
+            <p class="normal-txt text-center" v-if="isAmountAddView">割り勘追加画面にリダイレクトします。</p>
+            <p class="normal-txt text-center" v-if="isAmountListView">一覧画面にリダイレクトします。</p>
         </template>
     </div>
 </template>
 
 <script>
 import FormButton from './modules/FormButton';
+import Loading from './modules/Loading';
 
 export default {
     components: {
-        FormButton
+        FormButton,
+        Loading
     },
     props: ['liff'],
     data: function(){
@@ -32,7 +37,11 @@ export default {
             groupId: '',
             eventName: '',
             registerd: {},
-            isStartView: true
+            isLoading: true,
+            isStartView: false,
+            isConfirmView: false,
+            isAmountAddView: false,
+            isAmountListView: false
         }
     },
     methods: {
@@ -110,10 +119,31 @@ export default {
             liffId: this.liff
         })
         .then((data) => {
+            this.isLoading = false;
+
             let param = location.search;
+            //alert(param)
             if(param){
                 this.isStartView = false;
+                switch(true){
+                    case param.indexOf('confirm') !== -1:
+                        this.isConfirmView = true
+                        break
+                    case param.indexOf('add') !== -1:
+                        this.isAmountAddView = true
+                        break
+                    case param.indexOf('show') !== -1:
+                        this.isAmountListView = true
+                        break
+                    default:
+                        this.isStartView = true
+                        break
+                }
+
+            }else{
+                this.isStartView = true;
             }
+
             this.getUserProfile();
             this.getGroupId();
         })
