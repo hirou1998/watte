@@ -9,7 +9,7 @@ class LineFriend extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['line_id', 'display_name', 'is_blocked'];
+    protected $fillable = ['line_id', 'display_name', 'picture_url', 'is_blocked'];
     protected $primaryKey = 'line_id';
     protected $keyType = 'string';
     public $incrementing = false;
@@ -21,6 +21,13 @@ class LineFriend extends Model
             'event_line_friend',
             'line_friend_id',
             'event_id'
+        );
+    }
+
+    public function amounts()
+    {
+        return $this->hasMany(
+            Amount::class
         );
     }
 

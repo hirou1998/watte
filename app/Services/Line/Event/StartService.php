@@ -53,7 +53,8 @@ class StartService
         foreach($events as $event){
             $add_button = new UriTemplateActionBuilder('支払いを追加', 'https://liff.line.me/1655325455-B5Zjk37g/amounts/add/' . $event->id);
             //$add_button = new PostBackTemplateActionBuilder('支払いを追加', 'action=add&id=' . $event->id);
-            $check_button = new PostBackTemplateActionBuilder('割り勘状況を確認', 'action=check&id=' . $event->id);
+            $check_button = new UriTemplateActionBuilder('割り勘状況を確認', 'https://liff.line.me/1655325455-B5Zjk37g/amounts/show/' . $event->id);
+            //$check_button = new PostBackTemplateActionBuilder('割り勘状況を確認', 'action=check&id=' . $event->id);
             $column = $this->generateColumn($event->event_name, '支払いを追加/確認', $this->imageUrl, [$add_button, $check_button]);
             array_push($columns, $column);
         }

@@ -6,8 +6,19 @@ main{
     height: 100vh;
     padding: 1.5rem;
 }
-input.form-control, textarea.form-control{
+input.form-control, textarea.form-control, select.form-control{
     font-size: 1.6rem;
+}
+select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+ul{
+    padding: 0;
+}
+li{
+    list-style: none;
 }
 .normal-txt{
     font-size: 1.6rem;
@@ -17,4 +28,10 @@ input.form-control, textarea.form-control{
 }
 .big-txt{
     font-size: 2rem;
+}
+.txt-smaller{
+    font-size: .5em;
+}
+.txt-bigger{
+    font-size: 1.25em;
 }

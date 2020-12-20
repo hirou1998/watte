@@ -15,30 +15,17 @@
 
 <script>
 import FormButton from './modules/FormButton';
+import getUserInfoMixin from '../mixins/getUserInfoMixin';
 
 export default {
   components: { FormButton },
     props: ['event', 'join', 'liff'],
-    data: function(){
-        return{
-            userInfo: {}
-        }
-    },
     computed: {
         isJoining(){
             return this.join === 'yes' ? true : false;
         }
     },
     methods: {
-        getUserProfile(){
-            window.liff.getProfile()
-            .then(profile => {
-                this.userInfo = profile;
-            })
-            .catch(e => {
-                alert('ユーザー情報の取得に失敗しました');
-            })
-        },
         send(){
             window.axios.post(`/confirm/register/${this.event.id}`, {
                 userId: this.userInfo.userId,
@@ -75,6 +62,7 @@ export default {
         .then(() => {
             this.getUserProfile();
         })
-    }
+    },
+    mixins: [getUserInfoMixin]
 }
 </script>

@@ -10,7 +10,7 @@ use App\Services\Line\Event\AskJoinService;
 
 class EventController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $liff = config('app.liff');
 
