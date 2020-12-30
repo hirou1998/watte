@@ -7,7 +7,7 @@
                 :alt="amount.line_friend.display_name"
             >
             <p class="normal-txt amount-payer">{{amount.line_friend.display_name}}</p>
-            <p class="big-txt amount-number">{{amount.amount}}<span class="txt-smaller">円</span></p>
+            <p class="big-txt amount-number">{{number}} <span class="txt-smaller">円</span></p>
         </div>
         <div>
             <p class="normal-txt amount-memo">{{amount.note}}</p>
@@ -17,6 +17,11 @@
 
 <script>
 export default {
-    props: ['amount']
+    props: ['amount'],
+    computed: {
+        number(){
+            return String(this.amount.amount).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+        }
+    }
 }
 </script>

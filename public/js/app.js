@@ -2053,8 +2053,15 @@ __webpack_require__.r(__webpack_exports__);
       });
       return sumAmount;
     },
+    sumDivided: function sumDivided() {
+      return String(this.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    },
     eachTotal: function eachTotal() {
-      return this.sum / this.each.length;
+      var divided = Math.round(this.sum / this.each.length);
+      return divided;
+    },
+    eachTotalDivided: function eachTotalDivided() {
+      return String(this.eachTotal).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
     }
   },
   methods: {
@@ -2248,7 +2255,7 @@ __webpack_require__.r(__webpack_exports__);
         creator_id: this.userInfo.userId
       }).then(function (_ref) {
         var data = _ref.data;
-        var text = "イベント: " + data.event_name + "を作成しました。\n参加しますか？";
+        var text = "イベント: 「" + data.event_name + "」 を作成しました。\n参加しますか？";
         var eventId = data.id;
 
         _this2.askJoin(text, eventId);
@@ -2341,12 +2348,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['each', 'total'],
   computed: {
     gap: function gap() {
-      var calcGap = Number(this.total) - Number(this.each.amount_sum);
+      var calcGap = Number(this.each.amount_sum) - Number(this.total);
       return isNaN(calcGap) ? 0 : calcGap;
+    },
+    gapDivided: function gapDivided() {
+      return String(this.gap).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    },
+    sum: function sum() {
+      return String(this.each.amount_sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
     }
   }
 });
@@ -2380,7 +2396,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['amount']
+  props: ['amount'],
+  computed: {
+    number: function number() {
+      return String(this.amount.amount).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    }
+  }
 });
 
 /***/ }),
@@ -38283,11 +38304,11 @@ var render = function() {
             _c("p", { staticClass: "normal-txt" }, [
               _vm._v("一人当たり: "),
               _c("span", { staticClass: "txt-bigger" }, [
-                _vm._v(_vm._s(_vm.eachTotal))
+                _vm._v(_vm._s(_vm.eachTotalDivided))
               ]),
               _vm._v("円(合計金額: "),
               _c("span", { staticClass: "txt-bigger" }, [
-                _vm._v(_vm._s(_vm.sum))
+                _vm._v(_vm._s(_vm.sumDivided))
               ]),
               _vm._v("円)")
             ]),
@@ -38347,7 +38368,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("form-button", {
-              attrs: { value: "確定", type: "accept" },
+              attrs: { value: "参加確定", type: "accept" },
               on: { send: _vm.send }
             })
           ]
@@ -38371,7 +38392,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("form-button", {
-              attrs: { value: "確定", type: "deny" },
+              attrs: { value: "不参加確定", type: "deny" },
               on: { send: _vm.send }
             })
           ]
@@ -38428,7 +38449,7 @@ var render = function() {
               [
                 _c("div", { staticClass: "form-group mt-5" }, [
                   _c("p", { staticClass: "normal-txt" }, [
-                    _vm._v("新規イベント名を入力してください。")
+                    _vm._v("何を割り勘しますか？")
                   ]),
                   _vm._v(" "),
                   _c("input", {
@@ -38441,7 +38462,10 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: { type: "text" },
+                    attrs: {
+                      type: "text",
+                      placeholder: "例：〇〇旅行、〇〇飲み会"
+                    },
                     domProps: { value: _vm.eventName },
                     on: {
                       input: function($event) {
@@ -38534,16 +38558,19 @@ var render = function() {
           "td",
           { staticClass: "normal-txt amount-each-number amount-each-item" },
           [
-            _vm._v(_vm._s(_vm.each.amount_sum) + " "),
+            _vm._v(_vm._s(_vm.sum) + " "),
             _c("span", { staticClass: "smaller-txt" }, [_vm._v("円")])
           ]
         ),
         _vm._v(" "),
         _c(
           "td",
-          { staticClass: "normal-txt amount-each-number amount-each-item" },
+          {
+            staticClass: "normal-txt amount-each-number amount-each-item",
+            attrs: { "data-deficit": [_vm.gap < 0 ? "true" : "false"] }
+          },
           [
-            _vm._v(_vm._s(_vm.gap) + " "),
+            _vm._v(_vm._s(_vm.gapDivided) + " "),
             _c("span", { staticClass: "smaller-txt" }, [_vm._v("円")])
           ]
         )
@@ -38562,7 +38589,7 @@ var staticRenderFns = [
       ]),
       _vm._v(" "),
       _c("th", { staticClass: "small-txt amount-each-head amount-each-item" }, [
-        _vm._v("差額")
+        _vm._v("割り勘代")
       ])
     ])
   }
@@ -38603,7 +38630,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("p", { staticClass: "big-txt amount-number" }, [
-        _vm._v(_vm._s(_vm.amount.amount)),
+        _vm._v(_vm._s(_vm.number) + " "),
         _c("span", { staticClass: "txt-smaller" }, [_vm._v("円")])
       ])
     ]),
@@ -52002,8 +52029,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/watte/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/watte/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/hiromu/laravel/laratube/watte/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/hiromu/laravel/laratube/watte/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

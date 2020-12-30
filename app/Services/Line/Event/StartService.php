@@ -45,7 +45,7 @@ class StartService
         $detail_button = new PostBackTemplateActionBuilder('使い方', 'action=detail');
 
         //新規イベントスタート
-        $start_event_button = $this->generateColumn('新規割り勘スタート', '新しく割り勘を記録するイベントを開始する', $this->imageUrl, [$start_button, $detail_button]);
+        $start_event_button = $this->generateColumn('新規割り勘スタート', '割り勘を', $this->imageUrl, [$start_button, $detail_button]);
 
         $events = EventModel::where('group_id', $this->group_id)->get();
         //logger([$events]);

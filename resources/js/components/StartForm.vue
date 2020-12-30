@@ -5,8 +5,8 @@
             <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>watteのご利用ありがとうございます！</p>
             <form @submit.prevent class="w-100">
                 <div class="form-group mt-5">
-                    <p class="normal-txt">新規イベント名を入力してください。</p>
-                    <input type="text" class="form-control" v-model="eventName">
+                    <p class="normal-txt">何を割り勘しますか？</p>
+                    <input type="text" class="form-control" v-model="eventName" placeholder="例：〇〇旅行、〇〇飲み会">
                 </div>
                 <template v-if="eventName !== ''">
                     <form-button value="送信" type="accept" @send="send"></form-button>
@@ -95,7 +95,7 @@ export default {
                 creator_id: this.userInfo.userId
             })
             .then(({data}) => {
-                let text = "イベント: " + data.event_name + "を作成しました。\n参加しますか？";
+                let text = "イベント: 「" + data.event_name + "」 を作成しました。\n参加しますか？";
                 let eventId = data.id;
                 this.askJoin(text, eventId);
                 window.liff.closeWindow();

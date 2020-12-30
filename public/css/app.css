@@ -11424,3 +11424,11 @@ li {
   padding: 1vh 0;
 }
 
+.amount-each-number[data-deficit=true] {
+  color: red;
+}
+
+.amount-each-number[data-deficit=false] {
+  color: blue;
+}
+

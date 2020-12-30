@@ -53,7 +53,8 @@ class LineBotController extends Controller
                 
                 case $event instanceof LINEBot\Event\JoinEvent: //グループ参加
                     $service = new JoinService($bot);
-                    $reply_message = $service->execute($event);
+                    $reply_message = new TextMessageBuilder($service->execute($event));
+                    $bot->replyMessage($reply_token, $reply_message);
                     break;
 
                 case $event instanceof LINEBot\Event\PostbackEvent: //選択肢

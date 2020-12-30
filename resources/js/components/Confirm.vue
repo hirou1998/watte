@@ -3,12 +3,12 @@
         <template v-if="isJoining">
             <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>イベント: {{ event.event_name }} に参加します。<br>よろしいですか？</p>
             <p class="small-txt text-center">参加しない場合は一度ウィンドウを閉じて「参加しない」ボタンを押してください。</p>
-            <form-button value="確定" type="accept" @send="send"></form-button>
+            <form-button value="参加確定" type="accept" @send="send"></form-button>
         </template>
         <template v-else>
             <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>イベント: {{ event.event_name }} に参加しません。<br>よろしいですか？</p>
             <p class="small-txt text-center">参加する場合は一度ウィンドウを閉じて「参加する」ボタンを押してください。</p>
-            <form-button value="確定" type="deny" @send="send"></form-button>
+            <form-button value="不参加確定" type="deny" @send="send"></form-button>
         </template>
     </div>
 </template>

@@ -20,7 +20,7 @@
             </ul>
         </section>
         <section v-else class="amount-section">
-            <p class="normal-txt">一人当たり: <span class="txt-bigger">{{eachTotal}}</span>円(合計金額: <span class="txt-bigger">{{sum}}</span>円)</p>
+            <p class="normal-txt">一人当たり: <span class="txt-bigger">{{eachTotalDivided}}</span>円(合計金額: <span class="txt-bigger">{{sumDivided}}</span>円)</p>
             <amount-each-member
                 v-for="item in each"
                 :each="item"
@@ -66,8 +66,15 @@ export default {
             });
             return sumAmount;
         },
+        sumDivided(){
+            return String(this.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+        },
         eachTotal(){
-            return this.sum / this.each.length;
+            let divided = Math.round(this.sum / this.each.length);
+            return divided;
+        },
+        eachTotalDivided(){
+            return String(this.eachTotal).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
         }
     },
     methods: {
