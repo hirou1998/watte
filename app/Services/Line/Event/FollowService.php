@@ -49,10 +49,12 @@ class FollowService
 
                 $profile = $rsp->getJSONDecodedBody();
                 $display_name = $profile['displayName'];
+                $picture_url = $profile['pictureUrl'];
 
                 LineFriend::create([
                     'line_id' => $line_id,
                     'display_name' => $display_name,
+                    'picture_url' => $picture_url
                 ]);
 
                 //logger($display_name . '-' . $line_id);

@@ -1,0 +1,23 @@
+.setting-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.setting-menu{
+    width: 42vw;
+    height: 42vw;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 20px;
+    padding: 4vw 1vw;
+}
+.setting-menu-icon{
+    margin-bottom: 1vw;
+}
+.setting-menu-text{
+    margin-bottom: 0;
+    color: #000;
+}

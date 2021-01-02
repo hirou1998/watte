@@ -11283,6 +11283,15 @@ li {
   list-style: none;
 }
 
+a:focus,
+a:checked,
+a:visited,
+a:hover {
+  color: #000;
+  border: none;
+  text-decoration: none;
+}
+
 .normal-txt {
   font-size: 1.6rem;
 }
@@ -11335,16 +11344,6 @@ li {
   display: flex;
   align-items: center;
   margin-bottom: 1vh;
-}
-
-.amount-payer-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-.amount-payer {
-  margin: 0 0 0 3vw;
 }
 
 .amount-number {
@@ -11422,5 +11421,124 @@ li {
 .amount-each-head {
   background-color: #dbefeb;
   padding: 1vh 0;
+}
+
+.amount-each-number[data-deficit=true] {
+  color: red;
+}
+
+.amount-each-number[data-deficit=false] {
+  color: blue;
+}
+
+.amount-register-date {
+  text-align: right;
+  margin: 1vh 0 0;
+}
+
+.setting-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.setting-menu {
+  width: 42vw;
+  height: 42vw;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 20px;
+  padding: 4vw 1vw;
+}
+
+.setting-menu-icon {
+  margin-bottom: 1vw;
+}
+
+.setting-menu-text {
+  margin-bottom: 0;
+  color: #000;
+}
+
+.profile-block {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1vh;
+}
+
+.profile-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.profile-name {
+  margin: 0 0 0 3vw;
+}
+
+.participants-head {
+  display: flex;
+  justify-content: space-between;
+}
+
+.refresh-button {
+  display: flex;
+  align-items: center;
+  background-color: #009380;
+  padding: 1vw 2vw;
+  border-radius: 5px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.16);
+}
+
+.refresh-button-text {
+  font-size: 0.75rem;
+  text-align: center;
+  margin: 0 0 0 1vw;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  color: #fff;
+}
+
+.participants-contaier {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.participant-item {
+  margin: 1.5vh 0;
+  width: 48%;
+  background: #fff;
+  border-radius: 5px;
+  padding: 2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 0 3px 0px #d6d6d6a1;
+}
+
+.participant-ratio-block {
+  display: flex;
+  align-items: center;
+}
+
+.ratio-text {
+  margin: 0 2vw 0 0;
+}
+
+.ratio-icon-container {
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.ratio-icon {
+  width: 24px;
+  height: 24px;
 }
 

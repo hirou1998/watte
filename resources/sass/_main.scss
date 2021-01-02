@@ -20,6 +20,11 @@ ul{
 li{
     list-style: none;
 }
+a:focus, a:checked, a:visited, a:hover{
+    color: #000;
+    border: none;
+    text-decoration: none;
+}
 .normal-txt{
     font-size: 1.6rem;
 }

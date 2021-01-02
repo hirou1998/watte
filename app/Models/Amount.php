@@ -37,7 +37,7 @@ class Amount extends UuidModel
         ))
         ->where('event_id', $event_id)
         ->groupBy('friend_id')
-        ->orderBy('amount_sum')
+        ->orderBy('amount_sum', 'desc')
         ->get();
 
         return $eachAmount;

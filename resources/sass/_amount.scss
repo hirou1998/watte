@@ -15,14 +15,6 @@
     align-items: center;
     margin-bottom: 1vh;
 }
-.amount-payer-icon{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-.amount-payer{
-    margin: 0 0 0 3vw;
-}
 .amount-number{
     flex: 1;
     text-align: right;
@@ -97,4 +89,14 @@
 .amount-each-head{
     background-color: #dbefeb;
     padding: 1vh 0;
+}
+.amount-each-number[data-deficit="true"]{
+    color: red;
+}
+.amount-each-number[data-deficit="false"]{
+    color: blue;
+}
+.amount-register-date{
+    text-align: right;
+    margin: 1vh 0 0;
 }

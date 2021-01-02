@@ -52,6 +52,13 @@ export default {
             .catch(err => {
                 alert(err)
             })
+        },
+        isParticiapted(){
+            let friend = this.participants.filter(p => p.line_id === this.userInfo.userId);
+            if(!friend){
+                alert('イベント: 「' + this.event.event_name + '」に参加してから登録してください。');
+                window.liff.closeWindow();
+            }
         }
     },
     created(){
@@ -60,6 +67,7 @@ export default {
         })
         .then(() => {
             this.getUserProfile();
+            this.isParticiapted();
         })
     },
     mixins: [getUserInfoMixin]
