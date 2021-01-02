@@ -19,6 +19,7 @@ Vue.component('participants', require('./components/Participants.vue').default);
 Vue.component('participant', require('./components/modules/Participant.vue').default);
 Vue.component('profile-block', require('./components/modules/ProfileBlock.vue').default);
 Vue.component('ratio-block', require('./components/modules/RatioBlock.vue').default);
+Vue.component('ratio-modal', require('./components/modules/RatioModal.vue').default);
 
 const app = new Vue({
     el: '#app',

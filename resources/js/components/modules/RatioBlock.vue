@@ -3,7 +3,7 @@
         <p class="small-txt ratio-text">比率：<span class="big-txt">{{ratioNum}}</span></p>
         <div 
             v-for="ratio in ratioIcons" 
-            :key="random" 
+            :key="random()" 
             :data-ratio="ratio" 
             class="ratio-icon-container"
             :style="{width: 'calc(24px *' + ratio + ')'}"
@@ -33,9 +33,11 @@ export default {
             }
             return this.ratioArray;
         },
+    },
+    methods: {
         random(){
             return Math.random();
         }
-    },
+    }
 }
 </script>

@@ -1,6 +1,7 @@
 .participants-head{
     display: flex;
     justify-content: space-between;
+    margin-bottom: 2vh;
 }
 .refresh-button{
     display: flex;
@@ -32,6 +33,7 @@
     flex-direction: column;
     align-items: center;
     box-shadow: 0 0 3px 0px #d6d6d6a1;
+    user-select: none;
 }
 .participant-ratio-block{
     display: flex;
@@ -44,6 +46,7 @@
     width: 24px;
     height: 24px;
     overflow: hidden;
+    margin: 0 -3px;
 }
 .ratio-icon{
     width: 24px;

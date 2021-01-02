@@ -1,5 +1,5 @@
 <template>
-    <li class="participant-item">
+    <li class="participant-item" @click="showModal">
         <profile-block :user="participant"></profile-block>
         <ratio-block :ratio-num="participant.pivot.ratio"></ratio-block>
     </li>
@@ -15,8 +15,10 @@ export default {
         ProfileBlock,
         RatioBlock
     },
-    mounted(){
-        
+    methods: {
+        showModal(){
+            this.$emit('show');
+        }
     }
 }
 </script>

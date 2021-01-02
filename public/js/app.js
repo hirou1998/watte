@@ -2039,6 +2039,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -2189,7 +2190,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_Participant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/Participant */ "./resources/js/components/modules/Participant.vue");
-/* harmony import */ var _mixins_getUserInfoMixin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mixins/getUserInfoMixin */ "./resources/js/mixins/getUserInfoMixin.js");
+/* harmony import */ var _modules_RatioModal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/RatioModal */ "./resources/js/components/modules/RatioModal.vue");
+/* harmony import */ var _mixins_getUserInfoMixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/getUserInfoMixin */ "./resources/js/mixins/getUserInfoMixin.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2211,19 +2213,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['event', 'liff', 'participants'],
   components: {
-    Participant: _modules_Participant__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Participant: _modules_Participant__WEBPACK_IMPORTED_MODULE_0__["default"],
+    RatioModal: _modules_RatioModal__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
       changeItem: {
         display_name: '',
         picture_url: ''
-      }
+      },
+      modalVisibility: false
     };
   },
   methods: {
@@ -2259,6 +2274,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           var data = _ref.data;
         })["catch"](function (err) {});
       }
+    },
+    showModal: function showModal() {
+      this.modalVisibility = true;
     }
   },
   mounted: function mounted() {
@@ -2270,7 +2288,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       _this2.getUserProfile();
     });
   },
-  mixins: [_mixins_getUserInfoMixin__WEBPACK_IMPORTED_MODULE_1__["default"]]
+  mixins: [_mixins_getUserInfoMixin__WEBPACK_IMPORTED_MODULE_2__["default"]]
 });
 
 /***/ }),
@@ -2522,10 +2540,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['each', 'totalAmount', 'totalRatio'],
+  props: ['each', 'totalAmount', 'totalRatio', 'participantsNum'],
   components: {
     ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__["default"],
     RatioBlock: _RatioBlock__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -2546,6 +2568,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     ratio: function ratio() {
       return this.each.line_friend.events[0].pivot.ratio;
+    },
+    times: function times() {
+      return Math.round(this.participantsNum * this.ratio / this.totalRatio * 100) / 100;
     }
   }
 });
@@ -2826,7 +2851,11 @@ __webpack_require__.r(__webpack_exports__);
     ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__["default"],
     RatioBlock: _RatioBlock__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  mounted: function mounted() {}
+  methods: {
+    showModal: function showModal() {
+      this.$emit('show');
+    }
+  }
 });
 
 /***/ }),
@@ -2908,9 +2937,58 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return this.ratioArray;
-    },
+    }
+  },
+  methods: {
     random: function random() {
       return Math.random();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/RatioModal.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/RatioModal.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ProfileBlock */ "./resources/js/components/modules/ProfileBlock.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['participants'],
+  model: {
+    prop: 'participants',
+    event: 'change'
+  },
+  components: {
+    ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  computed: {// ratio
+  },
+  methods: {
+    close: function close() {
+      this.$emit('close');
     }
   }
 });
@@ -38629,14 +38707,14 @@ var render = function() {
         staticClass: "amount-section"
       },
       [
-        _c("p", { staticClass: "normal-txt" }, [
-          _vm._v("一人当たり: "),
-          _c("span", { staticClass: "txt-bigger" }, [
+        _c("p", { staticClass: "small-txt" }, [
+          _vm._v("1人当たり: "),
+          _c("span", { staticClass: "big-txt" }, [
             _vm._v(_vm._s(_vm.PaymentPerPersonDivided))
           ]),
-          _vm._v("円(合計金額: "),
-          _c("span", { staticClass: "txt-bigger" }, [
-            _vm._v(_vm._s(_vm.sumDivided))
+          _vm._v(" 円 (合計金額: "),
+          _c("span", { staticClass: "big-txt" }, [
+            _vm._v(" " + _vm._s(_vm.sumDivided) + " ")
           ]),
           _vm._v("円)")
         ]),
@@ -38647,7 +38725,8 @@ var render = function() {
             attrs: {
               each: item,
               "total-amount": _vm.sum,
-              "total-ratio": _vm.totalRatio
+              "total-ratio": _vm.totalRatio,
+              "participants-num": _vm.each.length
             }
           })
         })
@@ -38754,44 +38833,72 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("section", [
-    _c("div", { staticClass: "participants-head" }, [
-      _c("h1", { staticClass: "txt-big" }, [
-        _vm._v(
-          _vm._s(_vm.event.event_name) +
-            "(" +
-            _vm._s(_vm.participants.length) +
-            "人)"
+  return _c(
+    "section",
+    [
+      _c("div", { staticClass: "participants-head" }, [
+        _c("h1", { staticClass: "txt-big" }, [
+          _vm._v(
+            _vm._s(_vm.event.event_name) +
+              "(" +
+              _vm._s(_vm.participants.length) +
+              "人)"
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "refresh-button",
+            attrs: { role: "button" },
+            on: { click: _vm.refresh }
+          },
+          [
+            _c("img", { attrs: { src: "/images/refresh.png", alt: "更新" } }),
+            _vm._v(" "),
+            _vm._m(0)
+          ]
         )
       ]),
       _vm._v(" "),
       _c(
-        "div",
-        {
-          staticClass: "refresh-button",
-          attrs: { role: "button" },
-          on: { click: _vm.refresh }
+        "ul",
+        { staticClass: "participants-contaier" },
+        _vm._l(_vm.participants, function(participant) {
+          return _c("participant", {
+            key: participant.line_id,
+            attrs: { participant: participant },
+            on: { show: _vm.showModal }
+          })
+        }),
+        1
+      ),
+      _vm._v(" "),
+      _c("ratio-modal", {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.modalVisibility,
+            expression: "modalVisibility"
+          }
+        ],
+        on: {
+          close: function($event) {
+            _vm.modalVisibility = false
+          }
         },
-        [
-          _c("img", { attrs: { src: "/images/refresh.png", alt: "更新" } }),
-          _vm._v(" "),
-          _vm._m(0)
-        ]
-      )
-    ]),
-    _vm._v(" "),
-    _c(
-      "ul",
-      { staticClass: "participants-contaier" },
-      _vm._l(_vm.participants, function(participant) {
-        return _c("participant", {
-          key: participant.line_id,
-          attrs: { participant: participant }
-        })
-      }),
-      1
-    )
-  ])
+        model: {
+          value: _vm.participants,
+          callback: function($$v) {
+            _vm.participants = $$v
+          },
+          expression: "participants"
+        }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -39017,11 +39124,24 @@ var render = function() {
       [
         _c("profile-block", { attrs: { user: _vm.each.line_friend } }),
         _vm._v(" "),
-        _c("ratio-block", { attrs: { "ratio-num": _vm.ratio } })
+        _c(
+          "div",
+          [
+            _c("div", { staticClass: "amount-times" }, [
+              _c("p", { staticClass: "normal-txt mb-0" }, [
+                _vm._v(_vm._s(_vm.times)),
+                _c("span", { staticClass: "txt-smaller" }, [_vm._v("倍")])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("ratio-block", { attrs: { "ratio-num": _vm.ratio } })
+          ],
+          1
+        )
       ],
       1
     ),
-    _vm._v("\n    " + _vm._s(_vm.mustPayment) + "\n    "),
+    _vm._v(" "),
     _c("table", { staticClass: "amount-each-table" }, [
       _vm._m(0),
       _vm._v(" "),
@@ -39402,7 +39522,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "li",
-    { staticClass: "participant-item" },
+    { staticClass: "participant-item", on: { click: _vm.showModal } },
     [
       _c("profile-block", { attrs: { user: _vm.participant } }),
       _vm._v(" "),
@@ -39480,7 +39600,7 @@ var render = function() {
         return _c(
           "div",
           {
-            key: _vm.random,
+            key: _vm.random(),
             staticClass: "ratio-icon-container",
             style: { width: "calc(24px *" + ratio + ")" },
             attrs: { "data-ratio": ratio }
@@ -39495,6 +39615,93 @@ var render = function() {
       })
     ],
     2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/RatioModal.vue?vue&type=template&id=57270d95&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/RatioModal.vue?vue&type=template&id=57270d95& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "section",
+    { staticClass: "modal-base ratio-modal", on: { click: _vm.close } },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "modal-inner ratio-modal-inner",
+          on: {
+            click: function($event) {
+              $event.stopPropagation()
+            }
+          }
+        },
+        [
+          _c(
+            "ul",
+            _vm._l(_vm.participants, function(participant) {
+              return _c(
+                "li",
+                { key: participant.line_id },
+                [
+                  _c("profile-block", { attrs: { user: participant } }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("p", { staticClass: "small-txt" }, [
+                      _vm._v("現在の比率：")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: participant.pivot.ratio,
+                          expression: "participant.pivot.ratio"
+                        }
+                      ],
+                      attrs: { type: "number" },
+                      domProps: { value: participant.pivot.ratio },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            participant.pivot,
+                            "ratio",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ],
+                1
+              )
+            }),
+            0
+          )
+        ]
+      )
+    ]
   )
 }
 var staticRenderFns = []
@@ -51693,6 +51900,7 @@ Vue.component('participants', __webpack_require__(/*! ./components/Participants.
 Vue.component('participant', __webpack_require__(/*! ./components/modules/Participant.vue */ "./resources/js/components/modules/Participant.vue")["default"]);
 Vue.component('profile-block', __webpack_require__(/*! ./components/modules/ProfileBlock.vue */ "./resources/js/components/modules/ProfileBlock.vue")["default"]);
 Vue.component('ratio-block', __webpack_require__(/*! ./components/modules/RatioBlock.vue */ "./resources/js/components/modules/RatioBlock.vue")["default"]);
+Vue.component('ratio-modal', __webpack_require__(/*! ./components/modules/RatioModal.vue */ "./resources/js/components/modules/RatioModal.vue")["default"]);
 var app = new Vue({
   el: '#app'
 });
@@ -52912,6 +53120,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RatioBlock_vue_vue_type_template_id_09d2e775___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RatioBlock_vue_vue_type_template_id_09d2e775___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/RatioModal.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/modules/RatioModal.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _RatioModal_vue_vue_type_template_id_57270d95___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RatioModal.vue?vue&type=template&id=57270d95& */ "./resources/js/components/modules/RatioModal.vue?vue&type=template&id=57270d95&");
+/* harmony import */ var _RatioModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RatioModal.vue?vue&type=script&lang=js& */ "./resources/js/components/modules/RatioModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RatioModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RatioModal_vue_vue_type_template_id_57270d95___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _RatioModal_vue_vue_type_template_id_57270d95___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/modules/RatioModal.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/RatioModal.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/modules/RatioModal.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RatioModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./RatioModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/RatioModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RatioModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/RatioModal.vue?vue&type=template&id=57270d95&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/modules/RatioModal.vue?vue&type=template&id=57270d95& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RatioModal_vue_vue_type_template_id_57270d95___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./RatioModal.vue?vue&type=template&id=57270d95& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/RatioModal.vue?vue&type=template&id=57270d95&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RatioModal_vue_vue_type_template_id_57270d95___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RatioModal_vue_vue_type_template_id_57270d95___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

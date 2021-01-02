@@ -8,26 +8,39 @@
             </div>
         </div>
         <ul class="participants-contaier">
-            <participant v-for="participant in participants" :participant="participant" :key="participant.line_id"></participant>
+            <participant 
+                v-for="participant in participants" 
+                :participant="participant" 
+                :key="participant.line_id"
+                @show="showModal"
+            ></participant>
         </ul>
+        <ratio-modal
+            v-show="modalVisibility"
+            v-model="participants"
+            @close="modalVisibility = false"
+        ></ratio-modal>
     </section>
 </template>
 
 <script>
 import Participant from './modules/Participant'
+import RatioModal from './modules/RatioModal'
 import getUserInfoMixin from '../mixins/getUserInfoMixin'
 
 export default {
     props: ['event', 'liff', 'participants'],
     components: {
-        Participant
+        Participant,
+        RatioModal
     },
     data(){
         return{
             changeItem: {
                 display_name: '',
                 picture_url: ''
-            }
+            },
+            modalVisibility: false,
         }
     },
     methods: {
@@ -66,6 +79,9 @@ export default {
 
                 })
             }
+        },
+        showModal(){
+            this.modalVisibility = true
         }
     },
     mounted(){

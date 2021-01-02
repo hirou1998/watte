@@ -20,12 +20,13 @@
             </ul>
         </section>
         <section v-show="activeTab == 1" class="amount-section">
-            <p class="normal-txt">一人当たり: <span class="txt-bigger">{{PaymentPerPersonDivided}}</span>円(合計金額: <span class="txt-bigger">{{sumDivided}}</span>円)</p>
+            <p class="small-txt">1人当たり: <span class="big-txt">{{PaymentPerPersonDivided}}</span> 円 (合計金額: <span class="big-txt"> {{sumDivided}} </span>円)</p>
             <amount-each-member
                 v-for="item in each"
                 :each="item"
                 :total-amount="sum"
                 :total-ratio="totalRatio"
+                :participants-num="each.length"
                 :key="item.friend_id"
             ></amount-each-member>
         </section>

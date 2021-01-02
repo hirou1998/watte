@@ -1,0 +1,30 @@
+.modal-base{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+.modal-base::after{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #eee;
+    opacity: .5;
+    top: 0;
+    left: 0;
+}
+.modal-inner{
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    z-index: 1;
+    border-radius: 5px;
+    padding: 2vw;
+    overflow-y: scroll;
+}

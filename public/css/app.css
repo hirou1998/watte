@@ -11363,39 +11363,28 @@ a:hover {
   display: flex;
   position: relative;
   border-radius: 10px;
-  background: #eee;
-  padding: 1vh 0;
-}
-
-.amount-tab-container::before {
-  content: "";
-  position: absolute;
-  width: 49%;
-  height: 90%;
-  background-color: #009380;
-  top: 50%;
-  transition: left 0.15s linear;
-  border-radius: 8px;
-  transform: translate(0, -50%);
-  box-shadow: 0 0 4px #848484;
-}
-
-.amount-tab-container[data-selected="0"]::before {
-  left: 0.5%;
-}
-
-.amount-tab-container[data-selected="1"]::before {
-  left: 50.5%;
+  background: #fff;
 }
 
 .amount-tab {
   flex: 1;
   text-align: center;
   position: relative;
+  border: solid 1px #eee;
+  padding: 0.5vh 0;
 }
 
 .amount-tab.selected {
-  color: #fff;
+  color: #009380;
+  border-color: #009380;
+}
+
+.amount-tab:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+.amount-tab:last-child {
+  border-radius: 0 10px 10px 0;
 }
 
 .amount-each-table {
@@ -11434,6 +11423,17 @@ a:hover {
 .amount-register-date {
   text-align: right;
   margin: 1vh 0 0;
+}
+
+.amount-times {
+  background-image: url(/images/ratio-baloon.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 60px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .setting-container {
@@ -11482,6 +11482,7 @@ a:hover {
 .participants-head {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 2vh;
 }
 
 .refresh-button {
@@ -11520,6 +11521,10 @@ a:hover {
   flex-direction: column;
   align-items: center;
   box-shadow: 0 0 3px 0px #d6d6d6a1;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .participant-ratio-block {
@@ -11535,10 +11540,44 @@ a:hover {
   width: 24px;
   height: 24px;
   overflow: hidden;
+  margin: 0 -3px;
 }
 
 .ratio-icon {
   width: 24px;
   height: 24px;
+}
+
+.modal-base {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.modal-base::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #eee;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+}
+
+.modal-inner {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  z-index: 1;
+  border-radius: 5px;
+  padding: 2vw;
+  overflow-y: scroll;
 }
 
