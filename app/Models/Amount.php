@@ -12,7 +12,7 @@ class Amount extends UuidModel
 
     protected $fillable = ['friend_id', 'event_id', 'amount', 'note'];
 
-    protected $with = ['line_friend'];
+    //protected $with = ['line_friend'];
 
     public function event()
     {
@@ -38,6 +38,9 @@ class Amount extends UuidModel
         ->where('event_id', $event_id)
         ->groupBy('friend_id')
         ->orderBy('amount_sum', 'desc')
+        ->with(['line_friend', 'line_friend.events' => function($query) use($event_id){
+            $query->where('event_id', $event_id);
+        }])
         ->get();
 
         return $eachAmount;

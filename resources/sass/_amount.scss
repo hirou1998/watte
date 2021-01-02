@@ -14,9 +14,9 @@
     display: flex;
     align-items: center;
     margin-bottom: 1vh;
+    justify-content: space-between;
 }
 .amount-number{
-    flex: 1;
     text-align: right;
     font-weight: bold;
 }
@@ -30,45 +30,49 @@
     display: flex;
     position: relative;
     border-radius: 10px;
-    background: #eee;
-    padding: 1vh 0;
+    background: #fff;
     
-    &::before{
-        content: "";
-        position: absolute;
-        width: 49%;
-        height: 90%;
-        background-color: #009380;
-        top: 50%;
-        transition: left 0.15s linear;
-        border-radius: 8px;
-        transform: translate(0, -50%);
-        box-shadow: 0 0 4px #848484;
-    }
+    // &::before{
+    //     content: "";
+    //     position: absolute;
+    //     width: 49%;
+    //     height: 90%;
+    //     background-color: #009380;
+    //     top: 50%;
+    //     transition: left 0.15s linear;
+    //     border-radius: 8px;
+    //     transform: translate(0, -50%);
+    //     box-shadow: 0 0 4px #848484;
+    // }
 
-    &[data-selected="0"]{
-        &::before{
-            left: 0.5%;
-        }
-    }
-    &[data-selected="1"]{
-        &::before{
-            left: 50.5%;
-        }
-    }
+    // &[data-selected="0"]{
+    //     &::before{
+    //         left: 0.5%;
+    //     }
+    // }
+    // &[data-selected="1"]{
+    //     &::before{
+    //         left: 50.5%;
+    //     }
+    // }
 }
 .amount-tab{
     flex: 1;
     text-align: center;
     position: relative;
+    border: solid 1px #eee;
+    padding: .5vh 0;
 
     &.selected{
-        color: #fff;
+        color: #009380;
+        border-color: #009380;
     }
-}
-.amount-section{
-    // height: 80vh;
-    // overflow-y: scroll;
+    &:first-child{
+        border-radius: 10px 0 0 10px;
+    }
+    &:last-child{
+        border-radius: 0 10px 10px 0;
+    }
 }
 
 .amount-each-table{
@@ -99,4 +103,14 @@
 .amount-register-date{
     text-align: right;
     margin: 1vh 0 0;
+}
+.amount-times{
+    background-image: url(/images/ratio-baloon.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 60px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

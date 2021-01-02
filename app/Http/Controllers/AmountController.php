@@ -30,9 +30,11 @@ class AmountController extends Controller
 
     public function show(Event $event, Request $request)
     {
-        $amount_lists = $event->amounts()->orderBy('created_at', 'desc')->get();
+        $amount_lists = $event->amounts()->with('line_friend')->orderBy('created_at', 'desc')->get();
 
         $each_calc_amount = Amount::calcAmountEach($event->id);
+
+        //$ratio = $event->line_friends
 
         return view('amounts', compact('amount_lists', 'event', 'each_calc_amount'));
     }
