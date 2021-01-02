@@ -18,7 +18,7 @@ class Event extends UuidModel
             'event_line_friend',
             'event_id',
             'line_friend_id'
-        );
+        )->withPivot('ratio');
     }
 
     public function group()

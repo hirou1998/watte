@@ -81,7 +81,6 @@ export default {
         },
         getGroupId(){
             let context = window.liff.getContext()
-            console.log(context)
             if(context.type === 'group'){
                 this.groupId = context.groupId
             }else{

@@ -1,13 +1,6 @@
 <template>
     <li class="amount-item">
-        <div class="amount-head-container">
-            <img 
-                class="amount-payer-icon"
-                :src="each.line_friend.picture_url" 
-                :alt="each.line_friend.display_name"
-            >
-            <p class="normal-txt amount-payer">{{each.line_friend.display_name}}</p>
-        </div>
+        <profile-block :user="each.line_friend"></profile-block>
         <table class="amount-each-table">
             <tr>
                 <th class="small-txt amount-each-head amount-each-item">支払済金額</th>
@@ -25,8 +18,13 @@
 </template>
 
 <script>
+import ProfileBlock from './ProfileBlock';
+
 export default {
     props: ['each', 'total'],
+    components: {
+        ProfileBlock
+    },
     computed: {
         gap(){
             let calcGap = Number(this.each.amount_sum) - Number(this.total);

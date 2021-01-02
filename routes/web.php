@@ -20,3 +20,6 @@ Route::post('/confirm/register/{event}', 'EventController@register_confirm');
 Route::get('/amounts/add/{event}', 'AmountController@index');
 Route::post('/amounts/add/{event}', 'AmountController@store');
 Route::get('/amounts/show/{event}', 'AmountController@show');
+Route::get('/participants/{event}', 'ParticipantController@index');
+Route::get('/setting/{event}', 'SettingController@index');
+Route::put('/participant/info/update/{line_friend}', 'ParticipantController@update');

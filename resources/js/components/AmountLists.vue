@@ -10,7 +10,7 @@
                 @select="selectTab"
             ></amount-tab>
         </ul>
-        <section v-if="activeTab == 0" class="amount-section">
+        <section v-show="activeTab == 0" class="amount-section">
             <ul>
                 <amount-item 
                     v-for="amount in amounts"
@@ -19,7 +19,7 @@
                 ></amount-item>
             </ul>
         </section>
-        <section v-else class="amount-section">
+        <section v-show="activeTab == 1" class="amount-section">
             <p class="normal-txt">一人当たり: <span class="txt-bigger">{{eachTotalDivided}}</span>円(合計金額: <span class="txt-bigger">{{sumDivided}}</span>円)</p>
             <amount-each-member
                 v-for="item in each"
@@ -35,6 +35,7 @@
 import AmountEachMember from './modules/AmountEachMember'
 import AmountItem from './modules/AmountItem'
 import AmountTab from './modules/AmountTab'
+import getUserInfoMixin from '../mixins/getUserInfoMixin'
 
 export default {
     components: {
@@ -81,6 +82,10 @@ export default {
         selectTab(tab){
             this.activeTab = tab
         }
-    }
+    },
+    mounted(){
+        // this.getUserProfile()
+    },
+    mixins: [getUserInfoMixin]
 }
 </script>

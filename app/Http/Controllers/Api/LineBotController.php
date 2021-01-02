@@ -11,6 +11,7 @@ use App\Services\Line\Event\BlockService;
 use App\Services\Line\Event\PostBackService;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use LINE\LINEBot;
+use LINE\LINEBot\Constant\HTTPHeader;
 
 class LineBotController extends Controller
 {
@@ -19,15 +20,16 @@ class LineBotController extends Controller
 
         $bot = app('line-bot');
 
-        $signature = $_SERVER['HTTP_'.LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
-        if (!LINEBot\SignatureValidator::validateSignature($request->getContent(), env('LINE_CHANNEL_SECRET'), $signature)) {
+        $channel_secret = config('app.channel_secret');
+        $signature = $request->headers->get(HTTPHeader::LINE_SIGNATURE);
+        $event_body = $request->getContent();
+
+        if (!LINEBot\SignatureValidator::validateSignature($request->getContent(), $channel_secret, $signature)) {
             abort(400);
         }
 
         $events = $bot->parseEventRequest($request->getContent(), $signature);
         foreach($events as $event){
-
-            logger([$event]);
 
             $reply_token = $event->getReplyToken();
             $reply_message = 'その操作はサポートしていません。.[' . get_class($event) . '][' . $event->getType() . ']';
