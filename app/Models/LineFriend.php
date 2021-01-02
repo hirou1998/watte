@@ -14,6 +14,8 @@ class LineFriend extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
+    //protected $with = ['events'];
+
     public function events()
     {
         return $this->belongsToMany(
@@ -21,7 +23,7 @@ class LineFriend extends Model
             'event_line_friend',
             'line_friend_id',
             'event_id'
-        );
+        )->withPivot('ratio');
     }
 
     public function amounts()

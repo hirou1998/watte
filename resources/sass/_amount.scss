@@ -14,9 +14,9 @@
     display: flex;
     align-items: center;
     margin-bottom: 1vh;
+    justify-content: space-between;
 }
 .amount-number{
-    flex: 1;
     text-align: right;
     font-weight: bold;
 }

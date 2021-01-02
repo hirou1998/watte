@@ -2038,6 +2038,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -2072,12 +2073,20 @@ __webpack_require__.r(__webpack_exports__);
     sumDivided: function sumDivided() {
       return String(this.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
     },
-    eachTotal: function eachTotal() {
+    PaymentPerPerson: function PaymentPerPerson() {
       var divided = Math.round(this.sum / this.each.length);
       return divided;
     },
-    eachTotalDivided: function eachTotalDivided() {
-      return String(this.eachTotal).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    PaymentPerPersonDivided: function PaymentPerPersonDivided() {
+      return String(this.PaymentPerPerson).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    },
+    totalRatio: function totalRatio() {
+      var total = 0;
+      this.each.forEach(function (item) {
+        var ratio = item.line_friend.events[0].pivot.ratio;
+        total += ratio;
+      });
+      return total;
     }
   },
   methods: {
@@ -2489,6 +2498,11 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ProfileBlock */ "./resources/js/components/modules/ProfileBlock.vue");
+/* harmony import */ var _RatioBlock__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RatioBlock */ "./resources/js/components/modules/RatioBlock.vue");
+//
+//
+//
+//
 //
 //
 //
@@ -2509,14 +2523,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['each', 'total'],
+  props: ['each', 'totalAmount', 'totalRatio'],
   components: {
-    ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__["default"]
+    ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__["default"],
+    RatioBlock: _RatioBlock__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   computed: {
+    mustPayment: function mustPayment() {
+      return Math.ceil(Number(this.totalAmount) / Number(this.totalRatio) * Number(this.ratio));
+    },
     gap: function gap() {
-      var calcGap = Number(this.each.amount_sum) - Number(this.total);
+      var calcGap = Number(this.each.amount_sum) - this.mustPayment;
       return isNaN(calcGap) ? 0 : calcGap;
     },
     gapDivided: function gapDivided() {
@@ -2524,6 +2543,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     sum: function sum() {
       return String(this.each.amount_sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    },
+    ratio: function ratio() {
+      return this.each.line_friend.events[0].pivot.ratio;
     }
   }
 });
@@ -2788,6 +2810,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ProfileBlock */ "./resources/js/components/modules/ProfileBlock.vue");
+/* harmony import */ var _RatioBlock__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RatioBlock */ "./resources/js/components/modules/RatioBlock.vue");
 //
 //
 //
@@ -2795,50 +2818,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['participant'],
   components: {
-    ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__["default"]
+    ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__["default"],
+    RatioBlock: _RatioBlock__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  data: function data() {
-    return {
-      ratioArray: []
-    };
-  },
-  computed: {
-    ratioIcons: function ratioIcons() {
-      var num = Math.floor(this.participant.pivot.ratio);
-      var decimal = String(this.participant.pivot.ratio).split('.')[1];
-
-      for (var i = 0; i < num; i++) {
-        this.ratioArray.push(1);
-      }
-
-      if (decimal) {
-        this.ratioArray.push(decimal);
-      }
-
-      return this.ratioArray;
-    },
-    random: function random() {
-      return Math.random();
-    }
-  },
-  mounted: function mounted() {
-    document;
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -2869,6 +2857,60 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     setDefault: function setDefault(event) {
       event.target.src = '/images/watte-icon.png';
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/RatioBlock.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/RatioBlock.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['ratioNum'],
+  data: function data() {
+    return {
+      ratioArray: []
+    };
+  },
+  computed: {
+    ratioIcons: function ratioIcons() {
+      var num = Math.floor(this.ratioNum);
+      var decimal = String(this.ratioNum).split('.')[1];
+
+      for (var i = 0; i < num; i++) {
+        this.ratioArray.push(1);
+      }
+
+      if (decimal) {
+        this.ratioArray.push(decimal);
+      }
+
+      return this.ratioArray;
+    },
+    random: function random() {
+      return Math.random();
     }
   }
 });
@@ -38590,7 +38632,7 @@ var render = function() {
         _c("p", { staticClass: "normal-txt" }, [
           _vm._v("一人当たり: "),
           _c("span", { staticClass: "txt-bigger" }, [
-            _vm._v(_vm._s(_vm.eachTotalDivided))
+            _vm._v(_vm._s(_vm.PaymentPerPersonDivided))
           ]),
           _vm._v("円(合計金額: "),
           _c("span", { staticClass: "txt-bigger" }, [
@@ -38602,7 +38644,11 @@ var render = function() {
         _vm._l(_vm.each, function(item) {
           return _c("amount-each-member", {
             key: item.friend_id,
-            attrs: { each: item, total: _vm.eachTotal }
+            attrs: {
+              each: item,
+              "total-amount": _vm.sum,
+              "total-ratio": _vm.totalRatio
+            }
           })
         })
       ],
@@ -38964,41 +39010,45 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "li",
-    { staticClass: "amount-item" },
-    [
-      _c("profile-block", { attrs: { user: _vm.each.line_friend } }),
-      _vm._v(" "),
-      _c("table", { staticClass: "amount-each-table" }, [
-        _vm._m(0),
+  return _c("li", { staticClass: "amount-item" }, [
+    _c(
+      "div",
+      { staticClass: "amount-head-container" },
+      [
+        _c("profile-block", { attrs: { user: _vm.each.line_friend } }),
         _vm._v(" "),
-        _c("tr", [
-          _c(
-            "td",
-            { staticClass: "normal-txt amount-each-number amount-each-item" },
-            [
-              _vm._v(_vm._s(_vm.sum) + " "),
-              _c("span", { staticClass: "smaller-txt" }, [_vm._v("円")])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "td",
-            {
-              staticClass: "normal-txt amount-each-number amount-each-item",
-              attrs: { "data-deficit": [_vm.gap < 0 ? "true" : "false"] }
-            },
-            [
-              _vm._v(_vm._s(_vm.gapDivided) + " "),
-              _c("span", { staticClass: "smaller-txt" }, [_vm._v("円")])
-            ]
-          )
-        ])
+        _c("ratio-block", { attrs: { "ratio-num": _vm.ratio } })
+      ],
+      1
+    ),
+    _vm._v("\n    " + _vm._s(_vm.mustPayment) + "\n    "),
+    _c("table", { staticClass: "amount-each-table" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("tr", [
+        _c(
+          "td",
+          { staticClass: "normal-txt amount-each-number amount-each-item" },
+          [
+            _vm._v(_vm._s(_vm.sum) + " "),
+            _c("span", { staticClass: "smaller-txt" }, [_vm._v("円")])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "td",
+          {
+            staticClass: "normal-txt amount-each-number amount-each-item",
+            attrs: { "data-deficit": [_vm.gap < 0 ? "true" : "false"] }
+          },
+          [
+            _vm._v(_vm._s(_vm.gapDivided) + " "),
+            _c("span", { staticClass: "smaller-txt" }, [_vm._v("円")])
+          ]
+        )
       ])
-    ],
-    1
-  )
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -39356,37 +39406,7 @@ var render = function() {
     [
       _c("profile-block", { attrs: { user: _vm.participant } }),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "participant-ratio-block" },
-        [
-          _c("p", { staticClass: "small-txt ratio-text" }, [
-            _vm._v("比率："),
-            _c("span", { staticClass: "big-txt" }, [
-              _vm._v(_vm._s(_vm.participant.pivot.ratio))
-            ])
-          ]),
-          _vm._v(" "),
-          _vm._l(_vm.ratioIcons, function(ratio) {
-            return _c(
-              "div",
-              {
-                key: _vm.random,
-                staticClass: "ratio-icon-container",
-                style: { width: "calc(30px *" + ratio + ")" },
-                attrs: { "data-ratio": ratio }
-              },
-              [
-                _c("img", {
-                  staticClass: "ratio-icon",
-                  attrs: { src: "/images/ratio-icon.png" }
-                })
-              ]
-            )
-          })
-        ],
-        2
-      )
+      _c("ratio-block", { attrs: { "ratio-num": _vm.participant.pivot.ratio } })
     ],
     1
   )
@@ -39424,6 +39444,58 @@ var render = function() {
       _vm._v(_vm._s(_vm.user.display_name))
     ])
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/RatioBlock.vue?vue&type=template&id=09d2e775&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/RatioBlock.vue?vue&type=template&id=09d2e775& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "participant-ratio-block" },
+    [
+      _c("p", { staticClass: "small-txt ratio-text" }, [
+        _vm._v("比率："),
+        _c("span", { staticClass: "big-txt" }, [_vm._v(_vm._s(_vm.ratioNum))])
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.ratioIcons, function(ratio) {
+        return _c(
+          "div",
+          {
+            key: _vm.random,
+            staticClass: "ratio-icon-container",
+            style: { width: "calc(24px *" + ratio + ")" },
+            attrs: { "data-ratio": ratio }
+          },
+          [
+            _c("img", {
+              staticClass: "ratio-icon",
+              attrs: { src: "/images/ratio-icon.png" }
+            })
+          ]
+        )
+      })
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -51620,6 +51692,7 @@ Vue.component('setting', __webpack_require__(/*! ./components/Setting.vue */ "./
 Vue.component('participants', __webpack_require__(/*! ./components/Participants.vue */ "./resources/js/components/Participants.vue")["default"]);
 Vue.component('participant', __webpack_require__(/*! ./components/modules/Participant.vue */ "./resources/js/components/modules/Participant.vue")["default"]);
 Vue.component('profile-block', __webpack_require__(/*! ./components/modules/ProfileBlock.vue */ "./resources/js/components/modules/ProfileBlock.vue")["default"]);
+Vue.component('ratio-block', __webpack_require__(/*! ./components/modules/RatioBlock.vue */ "./resources/js/components/modules/RatioBlock.vue")["default"]);
 var app = new Vue({
   el: '#app'
 });
@@ -52770,6 +52843,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProfileBlock_vue_vue_type_template_id_35d264d7___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProfileBlock_vue_vue_type_template_id_35d264d7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/RatioBlock.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/modules/RatioBlock.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _RatioBlock_vue_vue_type_template_id_09d2e775___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RatioBlock.vue?vue&type=template&id=09d2e775& */ "./resources/js/components/modules/RatioBlock.vue?vue&type=template&id=09d2e775&");
+/* harmony import */ var _RatioBlock_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RatioBlock.vue?vue&type=script&lang=js& */ "./resources/js/components/modules/RatioBlock.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RatioBlock_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RatioBlock_vue_vue_type_template_id_09d2e775___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _RatioBlock_vue_vue_type_template_id_09d2e775___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/modules/RatioBlock.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/RatioBlock.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/modules/RatioBlock.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RatioBlock_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./RatioBlock.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/RatioBlock.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RatioBlock_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/RatioBlock.vue?vue&type=template&id=09d2e775&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/modules/RatioBlock.vue?vue&type=template&id=09d2e775& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RatioBlock_vue_vue_type_template_id_09d2e775___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./RatioBlock.vue?vue&type=template&id=09d2e775& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/RatioBlock.vue?vue&type=template&id=09d2e775&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RatioBlock_vue_vue_type_template_id_09d2e775___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RatioBlock_vue_vue_type_template_id_09d2e775___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

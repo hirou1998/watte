@@ -1,6 +1,10 @@
 <template>
     <li class="amount-item">
-        <profile-block :user="each.line_friend"></profile-block>
+        <div class="amount-head-container">
+            <profile-block :user="each.line_friend"></profile-block>
+            <ratio-block :ratio-num="ratio"></ratio-block>
+        </div>
+        {{mustPayment}}
         <table class="amount-each-table">
             <tr>
                 <th class="small-txt amount-each-head amount-each-item">支払済金額</th>
@@ -19,15 +23,20 @@
 
 <script>
 import ProfileBlock from './ProfileBlock';
+import RatioBlock from './RatioBlock'
 
 export default {
-    props: ['each', 'total'],
+    props: ['each', 'totalAmount', 'totalRatio'],
     components: {
-        ProfileBlock
+        ProfileBlock,
+        RatioBlock
     },
     computed: {
+        mustPayment(){
+            return Math.ceil(Number(this.totalAmount) / Number(this.totalRatio) * Number(this.ratio));
+        },
         gap(){
-            let calcGap = Number(this.each.amount_sum) - Number(this.total);
+            let calcGap = Number(this.each.amount_sum) - this.mustPayment;
             return isNaN(calcGap) ? 0 : calcGap;
         },
         gapDivided(){
@@ -35,6 +44,9 @@ export default {
         },
         sum(){
             return String(this.each.amount_sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+        },
+        ratio(){
+            return this.each.line_friend.events[0].pivot.ratio;
         }
     }
 }

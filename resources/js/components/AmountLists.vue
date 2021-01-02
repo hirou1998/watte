@@ -20,11 +20,12 @@
             </ul>
         </section>
         <section v-show="activeTab == 1" class="amount-section">
-            <p class="normal-txt">一人当たり: <span class="txt-bigger">{{eachTotalDivided}}</span>円(合計金額: <span class="txt-bigger">{{sumDivided}}</span>円)</p>
+            <p class="normal-txt">一人当たり: <span class="txt-bigger">{{PaymentPerPersonDivided}}</span>円(合計金額: <span class="txt-bigger">{{sumDivided}}</span>円)</p>
             <amount-each-member
                 v-for="item in each"
                 :each="item"
-                :total="eachTotal"
+                :total-amount="sum"
+                :total-ratio="totalRatio"
                 :key="item.friend_id"
             ></amount-each-member>
         </section>
@@ -70,12 +71,20 @@ export default {
         sumDivided(){
             return String(this.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
         },
-        eachTotal(){
+        PaymentPerPerson(){
             let divided = Math.round(this.sum / this.each.length);
             return divided;
         },
-        eachTotalDivided(){
-            return String(this.eachTotal).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+        PaymentPerPersonDivided(){
+            return String(this.PaymentPerPerson).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+        },
+        totalRatio(){
+            let total = 0;
+            this.each.forEach(item => {
+                let ratio = item.line_friend.events[0].pivot.ratio;
+                total += ratio;
+            })
+            return total;
         }
     },
     methods: {
