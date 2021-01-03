@@ -11,7 +11,7 @@ class ParticipantController extends Controller
     public function index(Event $event)
     {
         $participants = $event->line_friends()->orderBy('created_at', 'asc')->get();
-        $liff = config('app.liff');
+        $liff = config('line.liff');
         
         return view('participants', ['participants' => $participants, 'event' => $event, 'liff' => $liff]);
     }

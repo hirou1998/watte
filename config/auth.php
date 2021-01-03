@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'line_friends',
     ],
 
     /*
@@ -38,12 +38,12 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'line_friends',
         ],
 
         'api' => [
             'driver' => 'token',
-            'provider' => 'users',
+            'provider' => 'line_friends',
             'hash' => false,
         ],
     ],
@@ -71,10 +71,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'line_friends' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\LineFriend::class,
+        ],
     ],
 
     /*
@@ -99,6 +99,11 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+        'line_friends' => [
+            'provider' => 'line_friens',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ]
     ],
 
     /*

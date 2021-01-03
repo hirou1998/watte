@@ -12,7 +12,7 @@ class EventController extends Controller
 {
     public function index(Request $request)
     {
-        $liff = config('app.liff');
+        $liff = config('line.liff');
 
         return view('index', [
             'liff' => $liff
@@ -45,7 +45,7 @@ class EventController extends Controller
      */
     public function confirm(Request $request, Event $event)
     {
-        $liff = config('app.liff');
+        $liff = config('line.liff');
         $id = $request->input('id');
         $join = $request->input('join');
         $item = $event->where('id', $id)->get()->first();

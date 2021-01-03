@@ -11,7 +11,7 @@ class AmountController extends Controller
 {
     public function index(Event $event, Request $request)
     {
-        $liff = config('app.liff');
+        $liff = config('line.liff');
 
         $participants = $event->line_friends;
         return view('add', compact('event', 'liff', 'participants'));

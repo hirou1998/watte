@@ -72,6 +72,11 @@ export default {
                 }
             ])
         },
+        async checkAuthorization(){
+            await this.getUserProfile();
+            await this.getGroupId();
+            await this.hideLoading();
+        },
         getUserProfile(){
             window.liff.getProfile()
             .then(profile => {
@@ -89,6 +94,9 @@ export default {
             }else{
                 alert('スマートフォンで起動してください')
             }
+        },
+        hideLoading(){
+            this.isLoading = false;
         },
         isRegisteredUser(){
             axios.get(`/api/linefriend?id=${this.userInfo.userId}`)
@@ -154,9 +162,7 @@ export default {
                 this.isStartView = true;
             }
 
-            this.getUserProfile();
-            this.getGroupId();
-            this.isLoading = false;
+            this.checkAuthorization();
         })
     }
 }

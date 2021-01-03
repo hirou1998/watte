@@ -3,18 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class LineFriend extends Model
+
+class LineFriend extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
-    protected $fillable = ['line_id', 'display_name', 'picture_url', 'is_blocked'];
+    protected $table = 'line_friends';
+
+    protected $fillable = ['line_id', 'display_name', 'picture_url', 'is_blocked', 'password'];
     protected $primaryKey = 'line_id';
     protected $keyType = 'string';
     public $incrementing = false;
-
-    //protected $with = ['events'];
 
     public function events()
     {

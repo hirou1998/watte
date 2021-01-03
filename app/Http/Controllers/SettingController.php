@@ -9,7 +9,7 @@ class SettingController extends Controller
 {
     public function index(Event $event)
     {
-        $liff = config('app.liff');
+        $liff = config('line.liff');
         return view('setting', ['liff' => $liff, 'event' => $event]);
     }
 }
