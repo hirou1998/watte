@@ -1923,8 +1923,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_AmountPayerForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/AmountPayerForm */ "./resources/js/components/modules/AmountPayerForm.vue");
 /* harmony import */ var _modules_AmountNumberForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/AmountNumberForm */ "./resources/js/components/modules/AmountNumberForm.vue");
 /* harmony import */ var _modules_AmountNoteForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/AmountNoteForm */ "./resources/js/components/modules/AmountNoteForm.vue");
-/* harmony import */ var _modules_FormButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/FormButton */ "./resources/js/components/modules/FormButton.vue");
-/* harmony import */ var _mixins_getUserInfoMixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/getUserInfoMixin */ "./resources/js/mixins/getUserInfoMixin.js");
+/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
+/* harmony import */ var _modules_FormButton__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/FormButton */ "./resources/js/components/modules/FormButton.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
 //
 //
 //
@@ -1934,6 +1935,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+
 
 
 
@@ -1944,7 +1949,8 @@ __webpack_require__.r(__webpack_exports__);
     AmountPayerForm: _modules_AmountPayerForm__WEBPACK_IMPORTED_MODULE_0__["default"],
     AmountNumberForm: _modules_AmountNumberForm__WEBPACK_IMPORTED_MODULE_1__["default"],
     AmountNoteForm: _modules_AmountNoteForm__WEBPACK_IMPORTED_MODULE_2__["default"],
-    FormButton: _modules_FormButton__WEBPACK_IMPORTED_MODULE_3__["default"]
+    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_3__["default"],
+    FormButton: _modules_FormButton__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   props: ['event', 'liff', 'participants'],
   data: function data() {
@@ -1994,12 +2000,10 @@ __webpack_require__.r(__webpack_exports__);
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this3.getUserProfile();
-
-      _this3.isParticiapted();
+      _this3.checkAccess();
     });
   },
-  mixins: [_mixins_getUserInfoMixin__WEBPACK_IMPORTED_MODULE_4__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_5__["default"]]
 });
 
 /***/ }),
@@ -2016,7 +2020,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_AmountEachMember__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/AmountEachMember */ "./resources/js/components/modules/AmountEachMember.vue");
 /* harmony import */ var _modules_AmountItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/AmountItem */ "./resources/js/components/modules/AmountItem.vue");
 /* harmony import */ var _modules_AmountTab__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/AmountTab */ "./resources/js/components/modules/AmountTab.vue");
-/* harmony import */ var _mixins_getUserInfoMixin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../mixins/getUserInfoMixin */ "./resources/js/mixins/getUserInfoMixin.js");
+/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
 //
 //
 //
@@ -2052,6 +2057,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 
 
 
@@ -2060,9 +2070,10 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     AmountEachMember: _modules_AmountEachMember__WEBPACK_IMPORTED_MODULE_0__["default"],
     AmountItem: _modules_AmountItem__WEBPACK_IMPORTED_MODULE_1__["default"],
-    AmountTab: _modules_AmountTab__WEBPACK_IMPORTED_MODULE_2__["default"]
+    AmountTab: _modules_AmountTab__WEBPACK_IMPORTED_MODULE_2__["default"],
+    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
-  props: ['amounts', 'each'],
+  props: ['amounts', 'each', 'event'],
   data: function data() {
     return {
       tabList: [{
@@ -2072,7 +2083,8 @@ __webpack_require__.r(__webpack_exports__);
         id: 1,
         value: 'ユーザーごと'
       }],
-      activeTab: 0
+      activeTab: 0,
+      isLoading: true
     };
   },
   computed: {
@@ -2107,9 +2119,16 @@ __webpack_require__.r(__webpack_exports__);
       this.activeTab = tab;
     }
   },
-  mounted: function mounted() {// this.getUserProfile()
+  mounted: function mounted() {
+    var _this = this;
+
+    window.liff.init({
+      liffId: this.liff
+    }).then(function (data) {
+      _this.checkAccess();
+    });
   },
-  mixins: [_mixins_getUserInfoMixin__WEBPACK_IMPORTED_MODULE_3__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__["default"]]
 });
 
 /***/ }),
@@ -2124,7 +2143,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_FormButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/FormButton */ "./resources/js/components/modules/FormButton.vue");
-/* harmony import */ var _mixins_getUserInfoMixin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mixins/getUserInfoMixin */ "./resources/js/mixins/getUserInfoMixin.js");
+/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
 //
 //
 //
@@ -2140,11 +2160,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    FormButton: _modules_FormButton__WEBPACK_IMPORTED_MODULE_0__["default"]
+    FormButton: _modules_FormButton__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: ['event', 'join', 'liff'],
   computed: {
@@ -2184,10 +2209,10 @@ __webpack_require__.r(__webpack_exports__);
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this.getUserProfile();
+      _this.checkAccess();
     });
   },
-  mixins: [_mixins_getUserInfoMixin__WEBPACK_IMPORTED_MODULE_1__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_2__["default"]]
 });
 
 /***/ }),
@@ -2201,9 +2226,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _modules_Participant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/Participant */ "./resources/js/components/modules/Participant.vue");
-/* harmony import */ var _modules_RatioModal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/RatioModal */ "./resources/js/components/modules/RatioModal.vue");
-/* harmony import */ var _mixins_getUserInfoMixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/getUserInfoMixin */ "./resources/js/mixins/getUserInfoMixin.js");
+/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
+/* harmony import */ var _modules_Participant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/Participant */ "./resources/js/components/modules/Participant.vue");
+/* harmony import */ var _modules_RatioModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/RatioModal */ "./resources/js/components/modules/RatioModal.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2235,14 +2261,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['event', 'liff', 'participants'],
   components: {
-    Participant: _modules_Participant__WEBPACK_IMPORTED_MODULE_0__["default"],
-    RatioModal: _modules_RatioModal__WEBPACK_IMPORTED_MODULE_1__["default"]
+    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Participant: _modules_Participant__WEBPACK_IMPORTED_MODULE_1__["default"],
+    RatioModal: _modules_RatioModal__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
@@ -2254,6 +2285,40 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
+    getGroupId: function getGroupId() {
+      var context = window.liff.getContext();
+
+      if (context.type === 'none') {
+        //正規ルートはcontextがnone
+        var param = location.search;
+        var paramObj = this.makeObjectFromSearchParam(param);
+        var paramGroupId = paramObj['group'];
+        this.groupId = paramGroupId;
+        this.hideLoading();
+      } else {
+        if (context.type === 'group') {
+          this.groupId = context.groupId; //groupIdが正しいかのチェックを後で実装
+
+          this.hideLoading();
+        } else {
+          alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
+          location.href = "".concat(this.deployUrl, "/err/forbidden");
+          window.liff.closeWindow();
+        }
+      }
+    },
+    makeObjectFromSearchParam: function makeObjectFromSearchParam(param) {
+      param = param.substring(1);
+      param = param.split('&');
+      var paramObj = {};
+      param.forEach(function (p) {
+        var dividedParam = p.split('=');
+        var paramKey = dividedParam[0];
+        var paramValue = dividedParam[1];
+        paramObj = _defineProperty({}, paramKey, paramValue);
+      });
+      return paramObj;
+    },
     refresh: function refresh() {
       var _this = this;
 
@@ -2297,10 +2362,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this2.getUserProfile();
+      _this2.checkAccess();
     });
   },
-  mixins: [_mixins_getUserInfoMixin__WEBPACK_IMPORTED_MODULE_2__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_3__["default"]]
 });
 
 /***/ }),
@@ -2314,7 +2379,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mixins_getUserInfoMixin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/getUserInfoMixin */ "./resources/js/mixins/getUserInfoMixin.js");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
+/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
+//
+//
+//
 //
 //
 //
@@ -2333,11 +2402,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
   props: ['liff', 'event'],
   computed: {
     participantsUrl: function participantsUrl() {
-      return "https://liff.line.me/1655325455-B5Zjk37g/participants/".concat(this.event.id);
+      return "https://liff.line.me/1655325455-B5Zjk37g/participants/".concat(this.event.id, "?group=").concat(this.groupId);
     }
   },
   mounted: function mounted() {
@@ -2346,10 +2419,10 @@ __webpack_require__.r(__webpack_exports__);
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this.getUserProfile();
+      _this.checkAccess();
     });
   },
-  mixins: [_mixins_getUserInfoMixin__WEBPACK_IMPORTED_MODULE_0__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_0__["default"]]
 });
 
 /***/ }),
@@ -2396,8 +2469,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2414,9 +2485,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       registerd: {},
       isLoading: true,
       isStartView: false,
-      isConfirmView: false,
-      isAmountAddView: false,
-      isAmountListView: false
+      isRedirectView: false,
+      otherPath: ['confirm', 'add', 'show', 'setting', 'participants']
     };
   },
   methods: {
@@ -2452,10 +2522,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _this.getUserProfile();
 
               case 2:
-                _context.next = 4;
-                return _this.getGroupId();
+                _this.getGroupId();
 
-              case 4:
+              case 3:
               case "end":
                 return _context.stop();
             }
@@ -2489,32 +2558,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     getGroupId: function getGroupId() {
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                _context3.next = 2;
-                return function () {
-                  var context = window.liff.getContext();
+      var context = window.liff.getContext();
 
-                  if (context.type === 'group') {
-                    this.groupId = context.groupId;
-                    this.hideLoading();
-                  } else {
-                    alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
-                    location.href = "".concat(this.deployUrl, "/err/forbidden");
-                    window.liff.closeWindow();
-                  }
-                };
-
-              case 2:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3);
-      }))();
+      if (context.type === 'group') {
+        this.groupId = context.groupId;
+        this.hideLoading();
+      } else {
+        alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
+        location.href = "".concat(this.deployUrl, "/err/forbidden");
+        window.liff.closeWindow();
+      }
     },
     hideLoading: function hideLoading() {
       this.isLoading = false;
@@ -2561,33 +2614,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     window.liff.init({
       liffId: this.liff
     }).then(function (data) {
-      var param = location.search; //alert(param)
+      var param = location.search;
 
       if (param) {
-        _this4.isStartView = false;
+        _this4.otherPath.forEach(function (p) {
+          if (param.indexOf(p) !== -1) {
+            _this4.isRedirectView = true;
+            return;
+          }
+        });
 
-        switch (true) {
-          case param.indexOf('confirm') !== -1:
-            _this4.isConfirmView = true;
-            break;
+        if (!_this4.isRedirectView) {
+          _this4.isStartView = true;
 
-          case param.indexOf('add') !== -1:
-            _this4.isAmountAddView = true;
-            break;
-
-          case param.indexOf('show') !== -1:
-            _this4.isAmountListView = true;
-            break;
-
-          default:
-            _this4.isStartView = true;
-            break;
+          _this4.checkAccess();
         }
       } else {
         _this4.isStartView = true;
-      }
 
-      _this4.checkAccess();
+        _this4.checkAccess();
+      }
     });
   }
 });
@@ -39435,41 +39481,51 @@ var render = function() {
   return _c(
     "section",
     [
-      _c("amount-payer-form", {
-        attrs: { participants: _vm.participants },
-        model: {
-          value: _vm.userInfo,
-          callback: function($$v) {
-            _vm.userInfo = $$v
-          },
-          expression: "userInfo"
-        }
-      }),
+      !_vm.isLoading
+        ? _c(
+            "article",
+            [
+              _c("amount-payer-form", {
+                attrs: { participants: _vm.participants },
+                model: {
+                  value: _vm.userInfo,
+                  callback: function($$v) {
+                    _vm.userInfo = $$v
+                  },
+                  expression: "userInfo"
+                }
+              }),
+              _vm._v(" "),
+              _c("amount-number-form", {
+                model: {
+                  value: _vm.amount,
+                  callback: function($$v) {
+                    _vm.amount = $$v
+                  },
+                  expression: "amount"
+                }
+              }),
+              _vm._v(" "),
+              _c("amount-note-form", {
+                model: {
+                  value: _vm.note,
+                  callback: function($$v) {
+                    _vm.note = $$v
+                  },
+                  expression: "note"
+                }
+              }),
+              _vm._v(" "),
+              _c("form-button", {
+                attrs: { value: "追加", type: "accept" },
+                on: { send: _vm.add }
+              })
+            ],
+            1
+          )
+        : _vm._e(),
       _vm._v(" "),
-      _c("amount-number-form", {
-        model: {
-          value: _vm.amount,
-          callback: function($$v) {
-            _vm.amount = $$v
-          },
-          expression: "amount"
-        }
-      }),
-      _vm._v(" "),
-      _c("amount-note-form", {
-        model: {
-          value: _vm.note,
-          callback: function($$v) {
-            _vm.note = $$v
-          },
-          expression: "note"
-        }
-      }),
-      _vm._v(" "),
-      _c("form-button", {
-        attrs: { value: "追加", type: "accept" },
-        on: { send: _vm.add }
-      })
+      _vm.isLoading ? _c("loading") : _vm._e()
     ],
     1
   )
@@ -39496,91 +39552,109 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("article", [
-    _c(
-      "ul",
-      {
-        staticClass: "amount-tab-container",
-        attrs: { "data-selected": _vm.activeTab }
-      },
-      _vm._l(_vm.tabList, function(tab) {
-        return _c("amount-tab", {
-          key: tab.id,
-          attrs: { value: tab.value, id: tab.id, selected: _vm.activeTab },
-          on: { select: _vm.selectTab }
-        })
-      }),
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "section",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.activeTab == 0,
-            expression: "activeTab == 0"
-          }
-        ],
-        staticClass: "amount-section"
-      },
-      [
-        _c(
-          "ul",
-          _vm._l(_vm.amounts, function(amount) {
-            return _c("amount-item", {
-              key: amount.id,
-              attrs: { amount: amount }
-            })
-          }),
-          1
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "section",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.activeTab == 1,
-            expression: "activeTab == 1"
-          }
-        ],
-        staticClass: "amount-section"
-      },
-      [
-        _c("p", { staticClass: "small-txt" }, [
-          _vm._v("1人当たり: "),
-          _c("span", { staticClass: "big-txt" }, [
-            _vm._v(_vm._s(_vm.PaymentPerPersonDivided))
-          ]),
-          _vm._v(" 円 (合計金額: "),
-          _c("span", { staticClass: "big-txt" }, [
-            _vm._v(" " + _vm._s(_vm.sumDivided) + " ")
-          ]),
-          _vm._v("円)")
-        ]),
-        _vm._v(" "),
-        _vm._l(_vm.each, function(item) {
-          return _c("amount-each-member", {
-            key: item.friend_id,
-            attrs: {
-              each: item,
-              "total-amount": _vm.sum,
-              "total-ratio": _vm.totalRatio,
-              "participants-num": _vm.each.length
-            }
-          })
-        })
-      ],
-      2
-    )
-  ])
+  return _c(
+    "section",
+    [
+      !_vm.isLoading
+        ? _c("article", [
+            _c("h1", { staticClass: "amount-show-title txt-big" }, [
+              _vm._v(_vm._s(_vm.event.event_name))
+            ]),
+            _vm._v(" "),
+            _c(
+              "ul",
+              {
+                staticClass: "amount-tab-container",
+                attrs: { "data-selected": _vm.activeTab }
+              },
+              _vm._l(_vm.tabList, function(tab) {
+                return _c("amount-tab", {
+                  key: tab.id,
+                  attrs: {
+                    value: tab.value,
+                    id: tab.id,
+                    selected: _vm.activeTab
+                  },
+                  on: { select: _vm.selectTab }
+                })
+              }),
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "section",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.activeTab == 0,
+                    expression: "activeTab == 0"
+                  }
+                ],
+                staticClass: "amount-section"
+              },
+              [
+                _c(
+                  "ul",
+                  _vm._l(_vm.amounts, function(amount) {
+                    return _c("amount-item", {
+                      key: amount.id,
+                      attrs: { amount: amount }
+                    })
+                  }),
+                  1
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "section",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.activeTab == 1,
+                    expression: "activeTab == 1"
+                  }
+                ],
+                staticClass: "amount-section"
+              },
+              [
+                _c("p", { staticClass: "small-txt" }, [
+                  _vm._v("1人当たり: "),
+                  _c("span", { staticClass: "big-txt" }, [
+                    _vm._v(_vm._s(_vm.PaymentPerPersonDivided))
+                  ]),
+                  _vm._v(" 円 (合計金額: "),
+                  _c("span", { staticClass: "big-txt" }, [
+                    _vm._v(" " + _vm._s(_vm.sumDivided) + " ")
+                  ]),
+                  _vm._v("円)")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.each, function(item) {
+                  return _c("amount-each-member", {
+                    key: item.friend_id,
+                    attrs: {
+                      each: item,
+                      "total-amount": _vm.sum,
+                      "total-ratio": _vm.totalRatio,
+                      "participants-num": _vm.each.length
+                    }
+                  })
+                })
+              ],
+              2
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.isLoading ? _c("loading") : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -39606,56 +39680,70 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "section",
+    { staticClass: "content-container" },
     [
-      _vm.isJoining
-        ? [
-            _c("p", { staticClass: "normal-txt text-center" }, [
-              _vm._v(_vm._s(_vm.userInfo.displayName) + "さん"),
-              _c("br"),
-              _vm._v(
-                "イベント: " + _vm._s(_vm.event.event_name) + " に参加します。"
-              ),
-              _c("br"),
-              _vm._v("よろしいですか？")
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "small-txt text-center" }, [
-              _vm._v(
-                "参加しない場合は一度ウィンドウを閉じて「参加しない」ボタンを押してください。"
-              )
-            ]),
-            _vm._v(" "),
-            _c("form-button", {
-              attrs: { value: "参加確定", type: "accept" },
-              on: { send: _vm.send }
-            })
-          ]
-        : [
-            _c("p", { staticClass: "normal-txt text-center" }, [
-              _vm._v(_vm._s(_vm.userInfo.displayName) + "さん"),
-              _c("br"),
-              _vm._v(
-                "イベント: " +
-                  _vm._s(_vm.event.event_name) +
-                  " に参加しません。"
-              ),
-              _c("br"),
-              _vm._v("よろしいですか？")
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "small-txt text-center" }, [
-              _vm._v(
-                "参加する場合は一度ウィンドウを閉じて「参加する」ボタンを押してください。"
-              )
-            ]),
-            _vm._v(" "),
-            _c("form-button", {
-              attrs: { value: "不参加確定", type: "deny" },
-              on: { send: _vm.send }
-            })
-          ]
+      !_vm.isLoading
+        ? _c(
+            "article",
+            { staticClass: "vertical-center-container" },
+            [
+              _vm.isJoining
+                ? [
+                    _c("p", { staticClass: "normal-txt text-center" }, [
+                      _vm._v(_vm._s(_vm.userInfo.displayName) + "さん"),
+                      _c("br"),
+                      _vm._v(
+                        "イベント: " +
+                          _vm._s(_vm.event.event_name) +
+                          " に参加します。"
+                      ),
+                      _c("br"),
+                      _vm._v("よろしいですか？")
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "small-txt text-center" }, [
+                      _vm._v(
+                        "参加しない場合は一度ウィンドウを閉じて「参加しない」ボタンを押してください。"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("form-button", {
+                      attrs: { value: "参加確定", type: "accept" },
+                      on: { send: _vm.send }
+                    })
+                  ]
+                : [
+                    _c("p", { staticClass: "normal-txt text-center" }, [
+                      _vm._v(_vm._s(_vm.userInfo.displayName) + "さん"),
+                      _c("br"),
+                      _vm._v(
+                        "イベント: " +
+                          _vm._s(_vm.event.event_name) +
+                          " に参加しません。"
+                      ),
+                      _c("br"),
+                      _vm._v("よろしいですか？")
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "small-txt text-center" }, [
+                      _vm._v(
+                        "参加する場合は一度ウィンドウを閉じて「参加する」ボタンを押してください。"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("form-button", {
+                      attrs: { value: "不参加確定", type: "deny" },
+                      on: { send: _vm.send }
+                    })
+                  ]
+            ],
+            2
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.isLoading ? _c("loading") : _vm._e()
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -39683,66 +39771,78 @@ var render = function() {
   return _c(
     "section",
     [
-      _c("div", { staticClass: "participants-head" }, [
-        _c("h1", { staticClass: "txt-big" }, [
-          _vm._v(
-            _vm._s(_vm.event.event_name) +
-              "(" +
-              _vm._s(_vm.participants.length) +
-              "人)"
+      !_vm.isLoading
+        ? _c(
+            "article",
+            [
+              _c("div", { staticClass: "participants-head" }, [
+                _c("h1", { staticClass: "txt-big" }, [
+                  _vm._v(
+                    _vm._s(_vm.event.event_name) +
+                      "(" +
+                      _vm._s(_vm.participants.length) +
+                      "人)"
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "refresh-button",
+                    attrs: { role: "button" },
+                    on: { click: _vm.refresh }
+                  },
+                  [
+                    _c("img", {
+                      attrs: { src: "/images/refresh.png", alt: "更新" }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "ul",
+                { staticClass: "participants-contaier" },
+                _vm._l(_vm.participants, function(participant) {
+                  return _c("participant", {
+                    key: participant.line_id,
+                    attrs: { participant: participant },
+                    on: { show: _vm.showModal }
+                  })
+                }),
+                1
+              ),
+              _vm._v(" "),
+              _c("ratio-modal", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.modalVisibility,
+                    expression: "modalVisibility"
+                  }
+                ],
+                on: {
+                  close: function($event) {
+                    _vm.modalVisibility = false
+                  }
+                },
+                model: {
+                  value: _vm.participants,
+                  callback: function($$v) {
+                    _vm.participants = $$v
+                  },
+                  expression: "participants"
+                }
+              })
+            ],
+            1
           )
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "refresh-button",
-            attrs: { role: "button" },
-            on: { click: _vm.refresh }
-          },
-          [
-            _c("img", { attrs: { src: "/images/refresh.png", alt: "更新" } }),
-            _vm._v(" "),
-            _vm._m(0)
-          ]
-        )
-      ]),
+        : _vm._e(),
       _vm._v(" "),
-      _c(
-        "ul",
-        { staticClass: "participants-contaier" },
-        _vm._l(_vm.participants, function(participant) {
-          return _c("participant", {
-            key: participant.line_id,
-            attrs: { participant: participant },
-            on: { show: _vm.showModal }
-          })
-        }),
-        1
-      ),
-      _vm._v(" "),
-      _c("ratio-modal", {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.modalVisibility,
-            expression: "modalVisibility"
-          }
-        ],
-        on: {
-          close: function($event) {
-            _vm.modalVisibility = false
-          }
-        },
-        model: {
-          value: _vm.participants,
-          callback: function($$v) {
-            _vm.participants = $$v
-          },
-          expression: "participants"
-        }
-      })
+      _vm.isLoading ? _c("loading") : _vm._e()
     ],
     1
   )
@@ -39780,37 +39880,51 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("section", { staticClass: "setting-container" }, [
-    _c(
-      "a",
-      {
-        staticClass: "setting-menu",
-        attrs: { href: _vm.participantsUrl, role: "button" }
-      },
-      [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("p", { staticClass: "normal-txt text-center setting-menu-text" }, [
-          _vm._v("参加者の管理")
-        ])
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "a",
-      {
-        staticClass: "setting-menu",
-        attrs: { href: _vm.participantsUrl, role: "button" }
-      },
-      [
-        _vm._m(1),
-        _vm._v(" "),
-        _c("p", { staticClass: "normal-txt text-center setting-menu-text" }, [
-          _vm._v("イベント情報変更")
-        ])
-      ]
-    )
-  ])
+  return _c(
+    "section",
+    [
+      !_vm.isLoading
+        ? _c("article", { staticClass: "setting-container" }, [
+            _c(
+              "a",
+              {
+                staticClass: "setting-menu",
+                attrs: { href: _vm.participantsUrl, role: "button" }
+              },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "p",
+                  { staticClass: "normal-txt text-center setting-menu-text" },
+                  [_vm._v("参加者の管理")]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "setting-menu",
+                attrs: { href: _vm.participantsUrl, role: "button" }
+              },
+              [
+                _vm._m(1),
+                _vm._v(" "),
+                _c(
+                  "p",
+                  { staticClass: "normal-txt text-center setting-menu-text" },
+                  [_vm._v("イベント情報変更")]
+                )
+              ]
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.isLoading ? _c("loading") : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -39922,21 +40036,9 @@ var render = function() {
                     )
                   ]
                 : [
-                    _vm.isConfirmView
+                    _vm.isRedirectView
                       ? _c("p", { staticClass: "normal-txt text-center" }, [
-                          _vm._v("参加確認画面にリダイレクトします。")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.isAmountAddView
-                      ? _c("p", { staticClass: "normal-txt text-center" }, [
-                          _vm._v("割り勘追加画面にリダイレクトします。")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.isAmountListView
-                      ? _c("p", { staticClass: "normal-txt text-center" }, [
-                          _vm._v("一覧画面にリダイレクトします。")
+                          _vm._v("リダイレクトします。")
                         ])
                       : _vm._e()
                   ]
@@ -40347,11 +40449,15 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("section", { staticClass: "text-center" }, [
-      _c("img", { attrs: { src: "/images/logo.png", alt: "watte-logo" } }),
-      _vm._v(" "),
-      _c("p", { staticClass: "text-center" }, [_vm._v("Now Loading...")])
-    ])
+    return _c(
+      "section",
+      { staticClass: "text-center vertical-center-container" },
+      [
+        _c("img", { attrs: { src: "/images/logo.png", alt: "watte-logo" } }),
+        _vm._v(" "),
+        _c("p", { staticClass: "text-center" }, [_vm._v("Now Loading...")])
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -54049,6 +54155,100 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/mixins/checkAccessMixin.js":
+/*!*************************************************!*\
+  !*** ./resources/js/mixins/checkAccessMixin.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['liff', 'deployUrl'],
+  data: function data() {
+    return {
+      userInfo: {},
+      groupId: '',
+      isLoading: true
+    };
+  },
+  methods: {
+    checkAccess: function checkAccess() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _this.getUserProfile();
+
+              case 2:
+                _this.getGroupId();
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    getUserProfile: function getUserProfile() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return window.liff.getProfile().then(function (profile) {
+                  _this2.userInfo = profile; //this.isRegisteredUser();
+                })["catch"](function (e) {
+                  alert("403: Forbidden\nスマートフォンのLINEアプリからアクセスしてください。");
+                  location.href = "".concat(_this2.deployUrl, "/err/forbidden");
+                  window.liff.closeWindow(); //lineからのアクセス対策
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    getGroupId: function getGroupId() {
+      var context = window.liff.getContext();
+
+      if (context.type === 'group') {
+        this.groupId = context.groupId;
+        this.hideLoading();
+      } else {
+        alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
+        location.href = "".concat(this.deployUrl, "/err/forbidden");
+        window.liff.closeWindow();
+      }
+    },
+    hideLoading: function hideLoading() {
+      this.isLoading = false;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/mixins/formatDateTimeMixin.js":
 /*!****************************************************!*\
   !*** ./resources/js/mixins/formatDateTimeMixin.js ***!
@@ -54067,36 +54267,6 @@ __webpack_require__.r(__webpack_exports__);
       var hour = Number(date.substring(11, 13)) + 9;
       var min = date.substring(14, 16);
       return "".concat(year, "/").concat(month, "/").concat(day, " ").concat(hour, ":").concat(min);
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./resources/js/mixins/getUserInfoMixin.js":
-/*!*************************************************!*\
-  !*** ./resources/js/mixins/getUserInfoMixin.js ***!
-  \*************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      userInfo: {}
-    };
-  },
-  methods: {
-    getUserProfile: function getUserProfile() {
-      var _this = this;
-
-      window.liff.getProfile().then(function (profile) {
-        _this.userInfo = profile;
-      })["catch"](function (e) {
-        alert('ユーザー情報の取得に失敗しました');
-      });
     }
   }
 });

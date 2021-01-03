@@ -64,7 +64,7 @@ class EventController extends Controller
         $join = $request->input('join');
         $item = $event->where('id', $id)->get()->first();
 
-        return view('confirm', ['item' => $item, 'join' => $join, 'liff' => $this->liff]);
+        return view('confirm', ['item' => $item, 'join' => $join, 'liff' => $this->liff, 'deploy_url' => $this->deploy_url]);
     }
     /**
      * イベントの参加確認(POST)
