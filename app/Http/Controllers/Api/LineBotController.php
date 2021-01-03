@@ -15,6 +15,7 @@ use LINE\LINEBot\Constant\HTTPHeader;
 
 class LineBotController extends Controller
 {
+
     public function callback(Request $request)
     {
 

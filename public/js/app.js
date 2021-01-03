@@ -2376,6 +2376,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2423,6 +2425,8 @@ __webpack_require__.r(__webpack_exports__);
 
       window.liff.getProfile().then(function (profile) {
         _this.userInfo = profile;
+
+        _this.isRegisteredUser();
       }); // .catch(e => {
       //     alert('ユーザー情報の取得に失敗しました');
       // })
@@ -2436,6 +2440,14 @@ __webpack_require__.r(__webpack_exports__);
         alert('スマートフォンで起動してください');
       }
     },
+    isRegisteredUser: function isRegisteredUser() {
+      axios.get("/api/linefriend?id=".concat(this.userInfo.userId)).then(function (_ref) {
+        var data = _ref.data;
+        alert(data);
+      })["catch"](function (err) {
+        alert(err);
+      });
+    },
     send: function send() {
       var _this2 = this;
 
@@ -2443,8 +2455,8 @@ __webpack_require__.r(__webpack_exports__);
         event_name: this.eventName,
         group_id: this.groupId,
         creator_id: this.userInfo.userId
-      }).then(function (_ref) {
-        var data = _ref.data;
+      }).then(function (_ref2) {
+        var data = _ref2.data;
         var text = "イベント: 「" + data.event_name + "」 を作成しました。\n参加しますか？";
         var eventId = data.id;
 
@@ -2464,13 +2476,12 @@ __webpack_require__.r(__webpack_exports__);
       }]);
     }
   },
-  mounted: function mounted() {
+  created: function created() {
     var _this3 = this;
 
     window.liff.init({
       liffId: this.liff
     }).then(function (data) {
-      _this3.isLoading = false;
       var param = location.search; //alert(param)
 
       if (param) {
@@ -2500,6 +2511,8 @@ __webpack_require__.r(__webpack_exports__);
       _this3.getUserProfile();
 
       _this3.getGroupId();
+
+      _this3.isLoading = false;
     });
   }
 });
@@ -2926,7 +2939,7 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     ratioIcons: function ratioIcons() {
       var num = Math.floor(this.ratioNum);
-      var decimal = String(this.ratioNum).split('.')[1];
+      var decimal = this.ratioNum - num;
 
       for (var i = 0; i < num; i++) {
         this.ratioArray.push(1);
@@ -39005,94 +39018,102 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
-    { staticClass: "start-form-container" },
+    "article",
     [
-      _vm.isLoading ? _c("loading") : _vm._e(),
-      _vm._v(" "),
-      _vm.isStartView
-        ? [
-            _c("p", { staticClass: "normal-txt text-center" }, [
-              _vm._v(_vm._s(_vm.userInfo.displayName) + "さん"),
-              _c("br"),
-              _vm._v("watteのご利用ありがとうございます！")
-            ]),
-            _vm._v(" "),
-            _c(
-              "form",
-              {
-                staticClass: "w-100",
-                on: {
-                  submit: function($event) {
-                    $event.preventDefault()
-                  }
-                }
-              },
-              [
-                _c("div", { staticClass: "form-group mt-5" }, [
-                  _c("p", { staticClass: "normal-txt" }, [
-                    _vm._v("何を割り勘しますか？")
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
+      !_vm.isLoading
+        ? _c(
+            "section",
+            { staticClass: "start-form-container" },
+            [
+              _vm.isStartView
+                ? [
+                    _c("p", { staticClass: "normal-txt text-center" }, [
+                      _vm._v(_vm._s(_vm.userInfo.displayName) + "さん"),
+                      _c("br"),
+                      _vm._v("watteのご利用ありがとうございます！")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "form",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.eventName,
-                        expression: "eventName"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      placeholder: "例：〇〇旅行、〇〇飲み会"
-                    },
-                    domProps: { value: _vm.eventName },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                        staticClass: "w-100",
+                        on: {
+                          submit: function($event) {
+                            $event.preventDefault()
+                          }
                         }
-                        _vm.eventName = $event.target.value
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _vm.eventName !== ""
-                  ? [
-                      _c("form-button", {
-                        attrs: { value: "送信", type: "accept" },
-                        on: { send: _vm.send }
-                      })
-                    ]
-                  : _vm._e()
-              ],
-              2
-            )
-          ]
-        : [
-            _vm.isConfirmView
-              ? _c("p", { staticClass: "normal-txt text-center" }, [
-                  _vm._v("参加確認画面にリダイレクトします。")
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.isAmountAddView
-              ? _c("p", { staticClass: "normal-txt text-center" }, [
-                  _vm._v("割り勘追加画面にリダイレクトします。")
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.isAmountListView
-              ? _c("p", { staticClass: "normal-txt text-center" }, [
-                  _vm._v("一覧画面にリダイレクトします。")
-                ])
-              : _vm._e()
-          ]
+                      },
+                      [
+                        _c("div", { staticClass: "form-group mt-5" }, [
+                          _c("p", { staticClass: "normal-txt" }, [
+                            _vm._v("何を割り勘しますか？")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.eventName,
+                                expression: "eventName"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              placeholder: "例：〇〇旅行、〇〇飲み会"
+                            },
+                            domProps: { value: _vm.eventName },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.eventName = $event.target.value
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _vm.eventName !== ""
+                          ? [
+                              _c("form-button", {
+                                attrs: { value: "送信", type: "accept" },
+                                on: { send: _vm.send }
+                              })
+                            ]
+                          : _vm._e()
+                      ],
+                      2
+                    )
+                  ]
+                : [
+                    _vm.isConfirmView
+                      ? _c("p", { staticClass: "normal-txt text-center" }, [
+                          _vm._v("参加確認画面にリダイレクトします。")
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.isAmountAddView
+                      ? _c("p", { staticClass: "normal-txt text-center" }, [
+                          _vm._v("割り勘追加画面にリダイレクトします。")
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.isAmountListView
+                      ? _c("p", { staticClass: "normal-txt text-center" }, [
+                          _vm._v("一覧画面にリダイレクトします。")
+                        ])
+                      : _vm._e()
+                  ]
+            ],
+            2
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.isLoading ? _c("loading") : _vm._e()
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -39492,7 +39513,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("section", [
+    return _c("section", { staticClass: "text-center" }, [
       _c("img", { attrs: { src: "/images/logo.png", alt: "watte-logo" } }),
       _vm._v(" "),
       _c("p", { staticClass: "text-center" }, [_vm._v("Now Loading...")])
