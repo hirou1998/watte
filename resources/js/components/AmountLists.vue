@@ -1,51 +1,57 @@
 <template>
-    <article>
-        <ul class="amount-tab-container" :data-selected="activeTab">
-            <amount-tab
-                v-for="tab in tabList"
-                :value="tab.value"
-                :id="tab.id"
-                :key="tab.id"
-                :selected="activeTab"
-                @select="selectTab"
-            ></amount-tab>
-        </ul>
-        <section v-show="activeTab == 0" class="amount-section">
-            <ul>
-                <amount-item 
-                    v-for="amount in amounts"
-                    :key="amount.id"
-                    :amount="amount"
-                ></amount-item>
+    <section>
+        <article v-if="!isLoading">
+            <h1 class="amount-show-title txt-big">{{event.event_name}}</h1>
+            <ul class="amount-tab-container" :data-selected="activeTab">
+                <amount-tab
+                    v-for="tab in tabList"
+                    :value="tab.value"
+                    :id="tab.id"
+                    :key="tab.id"
+                    :selected="activeTab"
+                    @select="selectTab"
+                ></amount-tab>
             </ul>
-        </section>
-        <section v-show="activeTab == 1" class="amount-section">
-            <p class="small-txt">1人当たり: <span class="big-txt">{{PaymentPerPersonDivided}}</span> 円 (合計金額: <span class="big-txt"> {{sumDivided}} </span>円)</p>
-            <amount-each-member
-                v-for="item in each"
-                :each="item"
-                :total-amount="sum"
-                :total-ratio="totalRatio"
-                :participants-num="each.length"
-                :key="item.friend_id"
-            ></amount-each-member>
-        </section>
-    </article>
+            <section v-show="activeTab == 0" class="amount-section">
+                <ul>
+                    <amount-item 
+                        v-for="amount in amounts"
+                        :key="amount.id"
+                        :amount="amount"
+                    ></amount-item>
+                </ul>
+            </section>
+            <section v-show="activeTab == 1" class="amount-section">
+                <p class="small-txt">1人当たり: <span class="big-txt">{{PaymentPerPersonDivided}}</span> 円 (合計金額: <span class="big-txt"> {{sumDivided}} </span>円)</p>
+                <amount-each-member
+                    v-for="item in each"
+                    :each="item"
+                    :total-amount="sum"
+                    :total-ratio="totalRatio"
+                    :participants-num="each.length"
+                    :key="item.friend_id"
+                ></amount-each-member>
+            </section>
+        </article>
+        <loading v-if="isLoading"></loading>
+    </section>
 </template>
 
 <script>
 import AmountEachMember from './modules/AmountEachMember'
 import AmountItem from './modules/AmountItem'
 import AmountTab from './modules/AmountTab'
-import getUserInfoMixin from '../mixins/getUserInfoMixin'
+import Loading from './modules/Loading'
+import checkAccessMixin from '../mixins/checkAccessMixin'
 
 export default {
     components: {
         AmountEachMember,
         AmountItem,
-        AmountTab
+        AmountTab,
+        Loading
     },
-    props: ['amounts', 'each'],
+    props: ['amounts', 'each', 'event'],
     data: function(){
         return{
             tabList: [
@@ -58,7 +64,8 @@ export default {
                     value: 'ユーザーごと'
                 }
             ],
-            activeTab: 0
+            activeTab: 0,
+            isLoading: true
         }
     },
     computed: {
@@ -94,8 +101,13 @@ export default {
         }
     },
     mounted(){
-        // this.getUserProfile()
+        window.liff.init({
+            liffId: this.liff
+        })
+        .then((data) => {
+            this.checkAccess();
+        })
     },
-    mixins: [getUserInfoMixin]
+    mixins: [checkAccessMixin]
 }
 </script>

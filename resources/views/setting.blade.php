@@ -5,5 +5,5 @@
 @endsection
 
 @section('content')
-    <setting liff="{{$liff}}" :event="{{$event}}"></setting>
+    <setting liff="{{$liff}}" :event="{{$event}}" deploy-url="{{$deploy_url}}"></setting>
 @endsection

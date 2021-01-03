@@ -1,9 +1,12 @@
 <template>
     <section>
-        <amount-payer-form v-model="userInfo" :participants="participants"></amount-payer-form>
-        <amount-number-form v-model="amount"></amount-number-form>
-        <amount-note-form v-model="note"></amount-note-form>
-        <form-button value="追加" type="accept" @send="add"></form-button>
+        <article v-if="!isLoading">
+            <amount-payer-form v-model="userInfo" :participants="participants"></amount-payer-form>
+            <amount-number-form v-model="amount"></amount-number-form>
+            <amount-note-form v-model="note"></amount-note-form>
+            <form-button value="追加" type="accept" @send="add"></form-button>
+        </article>
+        <loading v-if="isLoading"></loading>
     </section>
 </template>
 
@@ -11,15 +14,17 @@
 import AmountPayerForm from './modules/AmountPayerForm'
 import AmountNumberForm from './modules/AmountNumberForm'
 import AmountNoteForm from './modules/AmountNoteForm'
+import Loading from './modules/Loading'
 import FormButton from './modules/FormButton'
-import getUserInfoMixin from '../mixins/getUserInfoMixin'
+import checkAccessMixin from '../mixins/checkAccessMixin'
 
 export default {
     components: {
         AmountPayerForm,
         AmountNumberForm,
         AmountNoteForm,
-        FormButton
+        Loading,
+        FormButton,
     },
     props: ['event', 'liff', 'participants'],
     data: function(){
@@ -66,10 +71,9 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            this.getUserProfile();
-            this.isParticiapted();
+            this.checkAccess();
         })
     },
-    mixins: [getUserInfoMixin]
+    mixins: [checkAccessMixin]
 }
 </script>

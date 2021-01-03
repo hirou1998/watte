@@ -1,24 +1,28 @@
 <template>
-    <section>
-        <template v-if="isJoining">
-            <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>イベント: {{ event.event_name }} に参加します。<br>よろしいですか？</p>
-            <p class="small-txt text-center">参加しない場合は一度ウィンドウを閉じて「参加しない」ボタンを押してください。</p>
-            <form-button value="参加確定" type="accept" @send="send"></form-button>
-        </template>
-        <template v-else>
-            <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>イベント: {{ event.event_name }} に参加しません。<br>よろしいですか？</p>
-            <p class="small-txt text-center">参加する場合は一度ウィンドウを閉じて「参加する」ボタンを押してください。</p>
-            <form-button value="不参加確定" type="deny" @send="send"></form-button>
-        </template>
+    <section class="content-container">
+        <article v-if="!isLoading" class="vertical-center-container">
+            <template v-if="isJoining">
+                <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>イベント: {{ event.event_name }} に参加します。<br>よろしいですか？</p>
+                <p class="small-txt text-center">参加しない場合は一度ウィンドウを閉じて「参加しない」ボタンを押してください。</p>
+                <form-button value="参加確定" type="accept" @send="send"></form-button>
+            </template>
+            <template v-else>
+                <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>イベント: {{ event.event_name }} に参加しません。<br>よろしいですか？</p>
+                <p class="small-txt text-center">参加する場合は一度ウィンドウを閉じて「参加する」ボタンを押してください。</p>
+                <form-button value="不参加確定" type="deny" @send="send"></form-button>
+            </template>
+        </article>
+        <loading v-if="isLoading"></loading>
     </section>
 </template>
 
 <script>
 import FormButton from './modules/FormButton';
-import getUserInfoMixin from '../mixins/getUserInfoMixin';
+import Loading from './modules/Loading';
+import checkAccessMixin from '../mixins/checkAccessMixin'
 
 export default {
-  components: { FormButton },
+  components: { FormButton, Loading },
     props: ['event', 'join', 'liff'],
     computed: {
         isJoining(){
@@ -60,9 +64,9 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            this.getUserProfile();
+            this.checkAccess();
         })
     },
-    mixins: [getUserInfoMixin]
+    mixins: [checkAccessMixin]
 }
 </script>

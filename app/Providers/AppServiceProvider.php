@@ -16,8 +16,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind('line-bot', function($app, array $parameters){
             return new LINEBot(
-                new LINEBot\HTTPClient\CurlHTTPClient(config('app.line_access_token')),
-                ['channelSecret' => config('app.channel_secret')]
+                new LINEBot\HTTPClient\CurlHTTPClient(config('line.line_access_token')),
+                ['channelSecret' => config('line.channel_secret')]
             );
         });
     }

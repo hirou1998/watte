@@ -9,12 +9,25 @@ use App\Models\LineFriend;
 
 class AmountController extends Controller
 {
-    public function index(Event $event, Request $request)
-    {
-        $liff = config('app.liff');
+    /**
+     * @param
+     */
+    private $liff;
+    private $deploy_url;
 
+    /**
+     * constructor
+     */
+    public function __construct()
+    {
+        $this->liff = config('line.liff');
+        $this->deploy_url = config('app.deploy_url');
+    }
+
+    public function add(Event $event, Request $request)
+    {
         $participants = $event->line_friends;
-        return view('add', compact('event', 'liff', 'participants'));
+        return view('add', ['event' => $event, 'liff' => $this->liff, 'participants' => $participants, 'deploy_url' => $this->deploy_url]);
     }
 
     public function store(Event $event, Request $request)
@@ -34,8 +47,6 @@ class AmountController extends Controller
 
         $each_calc_amount = Amount::calcAmountEach($event->id);
 
-        //$ratio = $event->line_friends
-
-        return view('amounts', compact('amount_lists', 'event', 'each_calc_amount'));
+        return view('amounts', ['amount_lists' => $amount_lists, 'event' => $event, 'each_calc_amount' => $each_calc_amount, 'liff' => $this->liff, 'deploy_url' => $this->deploy_url]);
     }
 }

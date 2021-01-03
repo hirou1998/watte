@@ -8,12 +8,27 @@ use App\Models\LineFriend;
 
 class ParticipantController extends Controller
 {
+    /**
+     * @param
+     */
+    private $liff;
+    private $deploy_url;
+
+    /**
+     * constructor
+     */
+    public function __construct()
+    {
+        $this->liff = config('line.liff');
+        $this->deploy_url = config('app.deploy_url');
+    }
+
     public function index(Event $event)
     {
         $participants = $event->line_friends()->orderBy('created_at', 'asc')->get();
         $liff = config('app.liff');
         
-        return view('participants', ['participants' => $participants, 'event' => $event, 'liff' => $liff]);
+        return view('participants', ['participants' => $participants, 'event' => $event, 'liff' => $this->liff, 'deploy_url' => $this->deploy_url]);
     }
 
     public function update(LineFriend $friend, Request $request)

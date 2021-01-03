@@ -14,9 +14,7 @@
                 </form>
             </template>
             <template v-else>
-                <p class="normal-txt text-center" v-if="isConfirmView">参加確認画面にリダイレクトします。</p>
-                <p class="normal-txt text-center" v-if="isAmountAddView">割り勘追加画面にリダイレクトします。</p>
-                <p class="normal-txt text-center" v-if="isAmountListView">一覧画面にリダイレクトします。</p>
+                <p class="normal-txt text-center" v-if="isRedirectView">リダイレクトします。</p>
             </template>
         </section>
         <loading v-if="isLoading"></loading>
@@ -32,7 +30,7 @@ export default {
         FormButton,
         Loading
     },
-    props: ['liff'],
+    props: ['liff', 'deployUrl'],
     data: function(){
         return{
             userInfo: {},
@@ -41,9 +39,8 @@ export default {
             registerd: {},
             isLoading: true,
             isStartView: false,
-            isConfirmView: false,
-            isAmountAddView: false,
-            isAmountListView: false
+            isRedirectView: false,
+            otherPath: ['confirm', 'add', 'show', 'setting', 'participants']
         }
     },
     methods: {
@@ -72,23 +69,35 @@ export default {
                 }
             ])
         },
-        getUserProfile(){
-            window.liff.getProfile()
-            .then(profile => {
-                this.userInfo = profile;
-                this.isRegisteredUser();
-            })
-            // .catch(e => {
-            //     alert('ユーザー情報の取得に失敗しました');
-            // })
+        async checkAccess(){
+            await this.getUserProfile();
+            this.getGroupId();
+        },
+        async getUserProfile(){
+            await window.liff.getProfile()
+                    .then(profile => {
+                        this.userInfo = profile;
+                        //this.isRegisteredUser();
+                    })
+                    .catch(e => {
+                        alert("403: Forbidden\nスマートフォンのLINEアプリからアクセスしてください。");
+                        location.href = `${this.deployUrl}/err/forbidden`;
+                        window.liff.closeWindow(); //lineからのアクセス対策
+                    })
         },
         getGroupId(){
             let context = window.liff.getContext()
             if(context.type === 'group'){
                 this.groupId = context.groupId
+                this.hideLoading();
             }else{
-                alert('スマートフォンで起動してください')
+                alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
+                location.href = `${this.deployUrl}/err/forbidden`;
+                window.liff.closeWindow();
             }
+        },
+        hideLoading(){
+            this.isLoading = false;
         },
         isRegisteredUser(){
             axios.get(`/api/linefriend?id=${this.userInfo.userId}`)
@@ -132,31 +141,22 @@ export default {
         .then((data) => {
 
             let param = location.search;
-            //alert(param)
+            
             if(param){
-                this.isStartView = false;
-                switch(true){
-                    case param.indexOf('confirm') !== -1:
-                        this.isConfirmView = true
-                        break
-                    case param.indexOf('add') !== -1:
-                        this.isAmountAddView = true
-                        break
-                    case param.indexOf('show') !== -1:
-                        this.isAmountListView = true
-                        break
-                    default:
-                        this.isStartView = true
-                        break
+                this.otherPath.forEach(p => {
+                    if(param.indexOf(p) !== -1){
+                        this.isRedirectView = true;
+                        return
+                    }
+                })
+                if(!this.isRedirectView){
+                    this.isStartView = true;
+                    this.checkAccess();
                 }
-
             }else{
                 this.isStartView = true;
+                this.checkAccess();
             }
-
-            this.getUserProfile();
-            this.getGroupId();
-            this.isLoading = false;
         })
     }
 }

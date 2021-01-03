@@ -10,12 +10,27 @@ use App\Services\Line\Event\AskJoinService;
 
 class EventController extends Controller
 {
+
+    /**
+     * @param
+     */
+    private $liff;
+    private $deploy_url;
+
+    /**
+     * constructor
+     */
+    public function __construct()
+    {
+        $this->liff = config('line.liff');
+        $this->deploy_url = config('app.deploy_url');
+    }
+
     public function index(Request $request)
     {
-        $liff = config('app.liff');
-
         return view('index', [
-            'liff' => $liff
+            'liff' => $this->liff,
+            'deploy_url' => $this->deploy_url
         ]);
     }
 
@@ -45,12 +60,11 @@ class EventController extends Controller
      */
     public function confirm(Request $request, Event $event)
     {
-        $liff = config('app.liff');
         $id = $request->input('id');
         $join = $request->input('join');
         $item = $event->where('id', $id)->get()->first();
 
-        return view('confirm', compact('item', 'join', 'liff'));
+        return view('confirm', ['item' => $item, 'join' => $join, 'liff' => $this->liff, 'deploy_url' => $this->deploy_url]);
     }
     /**
      * イベントの参加確認(POST)
