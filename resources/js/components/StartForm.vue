@@ -1,24 +1,26 @@
 <template>
-    <div class="start-form-container">
+    <article>
+        <section class="start-form-container" v-if="!isLoading">
+            <template v-if="isStartView">
+                <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>watteのご利用ありがとうございます！</p>
+                <form @submit.prevent class="w-100">
+                    <div class="form-group mt-5">
+                        <p class="normal-txt">何を割り勘しますか？</p>
+                        <input type="text" class="form-control" v-model="eventName" placeholder="例：〇〇旅行、〇〇飲み会">
+                    </div>
+                    <template v-if="eventName !== ''">
+                        <form-button value="送信" type="accept" @send="send"></form-button>
+                    </template>
+                </form>
+            </template>
+            <template v-else>
+                <p class="normal-txt text-center" v-if="isConfirmView">参加確認画面にリダイレクトします。</p>
+                <p class="normal-txt text-center" v-if="isAmountAddView">割り勘追加画面にリダイレクトします。</p>
+                <p class="normal-txt text-center" v-if="isAmountListView">一覧画面にリダイレクトします。</p>
+            </template>
+        </section>
         <loading v-if="isLoading"></loading>
-        <template v-if="isStartView">
-            <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>watteのご利用ありがとうございます！</p>
-            <form @submit.prevent class="w-100">
-                <div class="form-group mt-5">
-                    <p class="normal-txt">何を割り勘しますか？</p>
-                    <input type="text" class="form-control" v-model="eventName" placeholder="例：〇〇旅行、〇〇飲み会">
-                </div>
-                <template v-if="eventName !== ''">
-                    <form-button value="送信" type="accept" @send="send"></form-button>
-                </template>
-            </form>
-        </template>
-        <template v-else>
-            <p class="normal-txt text-center" v-if="isConfirmView">参加確認画面にリダイレクトします。</p>
-            <p class="normal-txt text-center" v-if="isAmountAddView">割り勘追加画面にリダイレクトします。</p>
-            <p class="normal-txt text-center" v-if="isAmountListView">一覧画面にリダイレクトします。</p>
-        </template>
-    </div>
+    </article>
 </template>
 
 <script>
@@ -74,6 +76,7 @@ export default {
             window.liff.getProfile()
             .then(profile => {
                 this.userInfo = profile;
+                this.isRegisteredUser();
             })
             // .catch(e => {
             //     alert('ユーザー情報の取得に失敗しました');
@@ -86,6 +89,15 @@ export default {
             }else{
                 alert('スマートフォンで起動してください')
             }
+        },
+        isRegisteredUser(){
+            axios.get(`/api/linefriend?id=${this.userInfo.userId}`)
+            .then(({data}) => {
+                alert(data)
+            })
+            .catch(err => {
+                alert(err)
+            })
         },
         send(){
             window.axios.post('/create/new/', {
@@ -113,12 +125,11 @@ export default {
             ])
         }
     },
-    mounted(){
+    created(){
         window.liff.init({
             liffId: this.liff
         })
         .then((data) => {
-            this.isLoading = false;
 
             let param = location.search;
             //alert(param)
@@ -145,6 +156,7 @@ export default {
 
             this.getUserProfile();
             this.getGroupId();
+            this.isLoading = false;
         })
     }
 }

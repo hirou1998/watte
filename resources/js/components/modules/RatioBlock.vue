@@ -24,7 +24,7 @@ export default {
     computed: {
         ratioIcons(){
             let num = Math.floor(this.ratioNum);
-            let decimal = String(this.ratioNum).split('.')[1];
+            let decimal = this.ratioNum - num;
             for(var i = 0; i < num; i++){
                 this.ratioArray.push(1)
             }
