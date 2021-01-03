@@ -2436,45 +2436,39 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _modules_FormButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/FormButton */ "./resources/js/components/modules/FormButton.vue");
-/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
+/* harmony import */ var _modules_FormButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/FormButton */ "./resources/js/components/modules/FormButton.vue");
+/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    FormButton: _modules_FormButton__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_2__["default"]
+    FormButton: _modules_FormButton__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: ['liff', 'deployUrl'],
   data: function data() {
@@ -2486,7 +2480,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       isLoading: true,
       isStartView: false,
       isRedirectView: false,
-      otherPath: ['confirm', 'add', 'show', 'setting', 'participants']
+      otherPath: ['confirm', 'add', 'show', 'setting', 'participants'],
+      session: {
+        line_id: '',
+        group_id: ''
+      }
     };
   },
   methods: {
@@ -2510,93 +2508,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       }]);
     },
-    checkAccess: function checkAccess() {
-      var _this = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return _this.getUserProfile();
-
-              case 2:
-                _this.getGroupId();
-
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }))();
-    },
-    getUserProfile: function getUserProfile() {
-      var _this2 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _context2.next = 2;
-                return window.liff.getProfile().then(function (profile) {
-                  _this2.userInfo = profile; //this.isRegisteredUser();
-                })["catch"](function (e) {
-                  alert("403: Forbidden\nスマートフォンのLINEアプリからアクセスしてください。");
-                  location.href = "".concat(_this2.deployUrl, "/err/forbidden");
-                  window.liff.closeWindow(); //lineからのアクセス対策
-                });
-
-              case 2:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }))();
-    },
-    getGroupId: function getGroupId() {
-      var context = window.liff.getContext();
-
-      if (context.type === 'group') {
-        this.groupId = context.groupId;
-        this.hideLoading();
-      } else {
-        alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
-        location.href = "".concat(this.deployUrl, "/err/forbidden");
-        window.liff.closeWindow();
-      }
-    },
-    hideLoading: function hideLoading() {
-      this.isLoading = false;
-    },
-    isRegisteredUser: function isRegisteredUser() {
-      axios.get("/api/linefriend?id=".concat(this.userInfo.userId)).then(function (_ref) {
-        var data = _ref.data;
-        alert(data);
-      })["catch"](function (err) {
-        alert(err);
-      });
-    },
     send: function send() {
-      var _this3 = this;
+      var _this = this;
 
       window.axios.post('/create/new/', {
         event_name: this.eventName,
         group_id: this.groupId,
         creator_id: this.userInfo.userId
-      }).then(function (_ref2) {
-        var data = _ref2.data;
+      }).then(function (_ref) {
+        var data = _ref.data;
         var text = "イベント: 「" + data.event_name + "」 を作成しました。\n参加しますか？";
         var eventId = data.id;
 
-        _this3.askJoin(text, eventId);
+        _this.askJoin(text, eventId);
 
         window.liff.closeWindow();
       })["catch"](function (e) {
-        _this3.sendErr();
+        _this.sendErr();
 
         window.liff.closeWindow();
       });
@@ -2608,8 +2536,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }]);
     }
   },
-  created: function created() {
-    var _this4 = this;
+  mounted: function mounted() {
+    var _this2 = this;
 
     window.liff.init({
       liffId: this.liff
@@ -2617,25 +2545,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var param = location.search;
 
       if (param) {
-        _this4.otherPath.forEach(function (p) {
+        _this2.otherPath.forEach(function (p) {
           if (param.indexOf(p) !== -1) {
-            _this4.isRedirectView = true;
+            _this2.isRedirectView = true;
             return;
           }
         });
 
-        if (!_this4.isRedirectView) {
-          _this4.isStartView = true;
+        if (!_this2.isRedirectView) {
+          _this2.isStartView = true;
 
-          _this4.checkAccess();
+          _this2.checkAccess();
         }
       } else {
-        _this4.isStartView = true;
+        _this2.isStartView = true;
 
-        _this4.checkAccess();
+        _this2.checkAccess();
       }
     });
-  }
+  },
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_2__["default"]]
 });
 
 /***/ }),
@@ -54186,6 +54115,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var sessionValue;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -54196,7 +54126,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 2:
                 _this.getGroupId();
 
-              case 3:
+                sessionValue = _this.checkSession();
+
+                if (!(sessionValue.lineId === _this.userInfo.userId && sessionValue.groupId === _this.groupId)) {
+                  _context.next = 10;
+                  break;
+                }
+
+                alert('session あるよ');
+
+                _this.hideLoading();
+
+                return _context.abrupt("return");
+
+              case 10:
+                alert('session ないよ');
+                _context.next = 13;
+                return _this.checkIfUserAndGroupRegistered();
+
+              case 13:
               case "end":
                 return _context.stop();
             }
@@ -54204,7 +54152,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    getUserProfile: function getUserProfile() {
+    checkIfUserAndGroupRegistered: function checkIfUserAndGroupRegistered() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
@@ -54213,11 +54161,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return window.liff.getProfile().then(function (profile) {
-                  _this2.userInfo = profile; //this.isRegisteredUser();
-                })["catch"](function (e) {
-                  alert("403: Forbidden\nスマートフォンのLINEアプリからアクセスしてください。");
-                  location.href = "".concat(_this2.deployUrl, "/err/forbidden");
+                return axios.post('/auth/user-and-group', {
+                  lineId: _this2.userInfo.userId,
+                  groupId: _this2.groupId
+                }).then(function (_ref) {
+                  var data = _ref.data;
+
+                  _this2.hideLoading();
+                })["catch"](function (err) {
+                  if (String(err).indexOf('401') !== -1) {
+                    alert("401: Unauthorized\nWatteアカウントが参加しているグループ内でアクセスしてください。");
+                    location.href = "".concat(_this2.deployUrl, "/err/forbidden");
+                  } else {
+                    alert("500: Server Error\n予期せぬエラーが発生しました。");
+                    location.href = "".concat(_this2.deployUrl, "/err/servererror");
+                  }
+
                   window.liff.closeWindow(); //lineからのアクセス対策
                 });
 
@@ -54229,12 +54188,46 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
+    checkSession: function checkSession() {
+      var _document$querySelect, _document$querySelect2;
+
+      var sessionLineId = (_document$querySelect = document.querySelector('meta[name="line-id"]').getAttribute('content')) !== null && _document$querySelect !== void 0 ? _document$querySelect : '';
+      var sessionGroupId = (_document$querySelect2 = document.querySelector('meta[name="group-id"]').getAttribute('content')) !== null && _document$querySelect2 !== void 0 ? _document$querySelect2 : '';
+      return {
+        lineId: sessionLineId,
+        groupId: sessionGroupId
+      };
+    },
+    getUserProfile: function getUserProfile() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return window.liff.getProfile().then(function (profile) {
+                  _this3.userInfo = profile;
+                })["catch"](function (e) {
+                  alert("403: Forbidden\nスマートフォンのLINEアプリからアクセスしてください。");
+                  location.href = "".concat(_this3.deployUrl, "/err/forbidden");
+                  window.liff.closeWindow(); //lineからのアクセス対策
+                });
+
+              case 2:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
     getGroupId: function getGroupId() {
       var context = window.liff.getContext();
 
       if (context.type === 'group') {
         this.groupId = context.groupId;
-        this.hideLoading();
       } else {
         alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
         location.href = "".concat(this.deployUrl, "/err/forbidden");

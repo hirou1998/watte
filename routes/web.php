@@ -14,10 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/err/unauthorized', function(){
     abort(401, 'Unauthorized');
-});
+})->name('unauthorized');
 Route::get('/err/forbidden', function(){
     abort(403, 'Forbidden');
-});
+})->name('forbidden');
+Route::get('/err/servererr', function(){
+    abort(500, 'Server Error');
+})->name('servererror');
+
+Route::post('/auth/user-and-group', 'Auth\LineFriendGroupController@index');
 
 Route::get('/', 'EventController@index');
 Route::post('/create/new/', 'EventController@create');
