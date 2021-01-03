@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/err/unauthorized', function(){
+    abort(401, 'Unauthorized');
+});
+Route::get('/err/forbidden', function(){
+    abort(403, 'Forbidden');
+});
 
 Route::get('/', 'EventController@index');
 Route::post('/create/new/', 'EventController@create');

@@ -15,12 +15,6 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
-    'liff' => env('LIFF_ID'),
-
-    'channel_secret' => env('LINE_CHANNEL_SECRET'),
-
-    'line_access_token' => env('LINE_ACCESS_TOKEN'),
-
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -59,7 +53,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-
+    'deploy_url' => env('DEPLOY_URL'),
     'asset_url' => env('ASSET_URL', null),
 
     /*

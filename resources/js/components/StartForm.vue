@@ -32,7 +32,7 @@ export default {
         FormButton,
         Loading
     },
-    props: ['liff'],
+    props: ['liff', 'deployUrl'],
     data: function(){
         return{
             userInfo: {},
@@ -72,23 +72,37 @@ export default {
                 }
             ])
         },
-        getUserProfile(){
-            window.liff.getProfile()
-            .then(profile => {
-                this.userInfo = profile;
-                this.isRegisteredUser();
-            })
-            // .catch(e => {
-            //     alert('ユーザー情報の取得に失敗しました');
-            // })
+        async checkAccess(){
+            await this.getUserProfile();
+            await this.getGroupId();
         },
-        getGroupId(){
-            let context = window.liff.getContext()
-            if(context.type === 'group'){
-                this.groupId = context.groupId
-            }else{
-                alert('スマートフォンで起動してください')
-            }
+        async getUserProfile(){
+            await window.liff.getProfile()
+                    .then(profile => {
+                        this.userInfo = profile;
+                        //this.isRegisteredUser();
+                    })
+                    .catch(e => {
+                        alert("403: Forbidden\nスマートフォンのLINEアプリからアクセスしてください。");
+                        location.href = `${this.deployUrl}/err/forbidden`;
+                        window.liff.closeWindow(); //lineからのアクセス対策
+                    })
+        },
+        async getGroupId(){
+            await (function(){
+                let context = window.liff.getContext()
+                if(context.type === 'group'){
+                    this.groupId = context.groupId
+                    this.hideLoading();
+                }else{
+                    alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
+                    location.href = `${this.deployUrl}/err/forbidden`;
+                    window.liff.closeWindow();
+                }
+            })
+        },
+        hideLoading(){
+            this.isLoading = false;
         },
         isRegisteredUser(){
             axios.get(`/api/linefriend?id=${this.userInfo.userId}`)
@@ -154,9 +168,7 @@ export default {
                 this.isStartView = true;
             }
 
-            this.getUserProfile();
-            this.getGroupId();
-            this.isLoading = false;
+            this.checkAccess();
         })
     }
 }
