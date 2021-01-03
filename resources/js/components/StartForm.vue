@@ -24,6 +24,7 @@
 <script>
 import FormButton from './modules/FormButton';
 import Loading from './modules/Loading';
+import checkAccessMixin from '../mixins/checkAccessMixin'
 
 export default {
     components: {
@@ -40,7 +41,11 @@ export default {
             isLoading: true,
             isStartView: false,
             isRedirectView: false,
-            otherPath: ['confirm', 'add', 'show', 'setting', 'participants']
+            otherPath: ['confirm', 'add', 'show', 'setting', 'participants'],
+            session: {
+                line_id: '',
+                group_id: ''
+            }
         }
     },
     methods: {
@@ -69,45 +74,6 @@ export default {
                 }
             ])
         },
-        async checkAccess(){
-            await this.getUserProfile();
-            this.getGroupId();
-        },
-        async getUserProfile(){
-            await window.liff.getProfile()
-                    .then(profile => {
-                        this.userInfo = profile;
-                        //this.isRegisteredUser();
-                    })
-                    .catch(e => {
-                        alert("403: Forbidden\nスマートフォンのLINEアプリからアクセスしてください。");
-                        location.href = `${this.deployUrl}/err/forbidden`;
-                        window.liff.closeWindow(); //lineからのアクセス対策
-                    })
-        },
-        getGroupId(){
-            let context = window.liff.getContext()
-            if(context.type === 'group'){
-                this.groupId = context.groupId
-                this.hideLoading();
-            }else{
-                alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
-                location.href = `${this.deployUrl}/err/forbidden`;
-                window.liff.closeWindow();
-            }
-        },
-        hideLoading(){
-            this.isLoading = false;
-        },
-        isRegisteredUser(){
-            axios.get(`/api/linefriend?id=${this.userInfo.userId}`)
-            .then(({data}) => {
-                alert(data)
-            })
-            .catch(err => {
-                alert(err)
-            })
-        },
         send(){
             window.axios.post('/create/new/', {
                 event_name: this.eventName,
@@ -134,7 +100,7 @@ export default {
             ])
         }
     },
-    created(){
+    mounted(){
         window.liff.init({
             liffId: this.liff
         })
@@ -158,6 +124,7 @@ export default {
                 this.checkAccess();
             }
         })
-    }
+    },
+    mixins: [checkAccessMixin]
 }
 </script>

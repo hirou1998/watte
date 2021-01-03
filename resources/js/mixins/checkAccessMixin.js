@@ -11,12 +11,47 @@ export default{
         async checkAccess(){
             await this.getUserProfile();
             this.getGroupId();
+            let sessionValue = this.checkSession();
+            if(sessionValue.lineId === this.userInfo.userId && sessionValue.groupId === this.groupId){
+                alert('session あるよ')
+                this.hideLoading();
+                return
+            }else{
+                alert('session ないよ')
+                await this.checkIfUserAndGroupRegistered();
+            }
+        },
+        async checkIfUserAndGroupRegistered(){
+            await axios.post('/auth/user-and-group', {
+                lineId: this.userInfo.userId,
+                groupId: this.groupId
+            })
+            .then(({data}) => {
+                this.hideLoading();
+            })
+            .catch((err) => {
+                if(String(err).indexOf('401') !== -1){
+                    alert("401: Unauthorized\nWatteアカウントが参加しているグループ内でアクセスしてください。");
+                    location.href = `${this.deployUrl}/err/forbidden`;
+                }else{
+                    alert("500: Server Error\n予期せぬエラーが発生しました。");
+                    location.href = `${this.deployUrl}/err/servererror`;
+                }
+                window.liff.closeWindow(); //lineからのアクセス対策
+            })
+        },
+        checkSession(){
+            let sessionLineId = document.querySelector('meta[name="line-id"]').getAttribute('content') ?? '';
+            let sessionGroupId = document.querySelector('meta[name="group-id"]').getAttribute('content') ?? '';
+            return {
+                lineId: sessionLineId,
+                groupId: sessionGroupId
+            }
         },
         async getUserProfile(){
             await window.liff.getProfile()
                     .then(profile => {
                         this.userInfo = profile;
-                        //this.isRegisteredUser();
                     })
                     .catch(e => {
                         alert("403: Forbidden\nスマートフォンのLINEアプリからアクセスしてください。");
@@ -28,7 +63,6 @@ export default{
             let context = window.liff.getContext()
             if(context.type === 'group'){
                 this.groupId = context.groupId
-                this.hideLoading();
             }else{
                 alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
                 location.href = `${this.deployUrl}/err/forbidden`;
@@ -37,6 +71,6 @@ export default{
         },
         hideLoading(){
             this.isLoading = false;
-        }
+        },
     }
 }
