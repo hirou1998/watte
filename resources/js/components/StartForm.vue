@@ -25,6 +25,7 @@
 import FormButton from './modules/FormButton';
 import Loading from './modules/Loading';
 import checkAccessMixin from '../mixins/checkAccessMixin'
+import checkIfUserAndGroupIsRegistered from '../mixins/checkIfUserAndGroupIsRegistered'
 
 export default {
     components: {
@@ -125,6 +126,6 @@ export default {
             }
         })
     },
-    mixins: [checkAccessMixin]
+    mixins: [checkAccessMixin, checkIfUserAndGroupIsRegistered]
 }
 </script>

@@ -31,6 +31,7 @@ import Loading from './modules/Loading'
 import Participant from './modules/Participant'
 import RatioModal from './modules/RatioModal'
 import checkAccessMixin from '../mixins/checkAccessMixin'
+import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
 
 export default {
     props: ['event', 'liff', 'participants'],
@@ -60,8 +61,6 @@ export default {
             }else{
                 if(context.type === 'group'){
                     this.groupId = context.groupId
-                    //groupIdが正しいかのチェックを後で実装
-                    this.hideLoading();
                 }else{
                     alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
                     location.href = `${this.deployUrl}/err/forbidden`;
@@ -131,6 +130,6 @@ export default {
             this.checkAccess();
         })
     },
-    mixins: [checkAccessMixin]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]
 }
 </script>

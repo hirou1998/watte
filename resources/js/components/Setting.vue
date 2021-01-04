@@ -19,8 +19,9 @@
 </template>
 
 <script>
-import checkAccessMixin from '../mixins/checkAccessMixin'
 import Loading from './modules/Loading';
+import checkAccessMixin from '../mixins/checkAccessMixin'
+import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
 
 export default {
     components: { Loading },
@@ -38,6 +39,6 @@ export default {
             this.checkAccess();
         })
     },
-    mixins: [checkAccessMixin]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]
 }
 </script>
