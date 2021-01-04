@@ -17,6 +17,7 @@ import AmountNoteForm from './modules/AmountNoteForm'
 import Loading from './modules/Loading'
 import FormButton from './modules/FormButton'
 import checkAccessMixin from '../mixins/checkAccessMixin'
+import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
 
 export default {
     components: {
@@ -74,6 +75,6 @@ export default {
             this.checkAccess();
         })
     },
-    mixins: [checkAccessMixin]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]
 }
 </script>
