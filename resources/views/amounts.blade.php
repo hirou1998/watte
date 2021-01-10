@@ -5,5 +5,11 @@
 @endsection
 
 @section('content')
-    <amount-lists :amounts="{{$amount_lists}}" :each="{{$each_calc_amount}}" liff="{{$liff}}" deploy-url="{{$deploy_url}}" :event="{{$event}}"></amount-lists>
+    <amount-lists 
+        :amounts="{{$amount_lists}}" 
+        :each="{{$each_calc_amount}}" 
+        liff="{{$liff}}" 
+        deploy-url="{{$deploy_url}}" 
+        :event="{{$event}}"
+    ></amount-lists>
 @endsection

@@ -18,7 +18,7 @@
             </ul>
             <ratio-modal
                 v-show="modalVisibility"
-                v-model="participants"
+                v-model="participantsFormItem"
                 @close="modalVisibility = false"
             ></ratio-modal>
         </article>
@@ -34,7 +34,7 @@ import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
 
 export default {
-    props: ['event', 'liff', 'participants'],
+    props: ['event', 'liff'],
     components: {
         Loading,
         Participant,
@@ -47,6 +47,9 @@ export default {
                 picture_url: ''
             },
             modalVisibility: false,
+            isLoading: false,
+            participants: {},
+            participantsFormItem: {}
         }
     },
     methods: {
@@ -68,6 +71,16 @@ export default {
                 }
             }
         },
+        getParticipants(){
+            axios.get(`/api/participants/${this.event.id}`)
+            .then(({data}) => {
+                this.participants = data;
+                this.participantsFormItem = data;
+            })
+            .catch(err => {
+                alert("404: Not Found\nデータが見つかりませんでした。");
+            })
+        },
         makeObjectFromSearchParam(param){
             param = param.substring(1);
             param = param.split('&');
@@ -83,6 +96,7 @@ export default {
             return paramObj;
         },
         refresh(){
+            alert('aa')
             let accessUser = this.participants.filter(p => p.line_id === this.userInfo.userId)[0];
             if(accessUser.display_name !== this.userInfo.displayName){
                 this.changeItem = {
@@ -127,7 +141,8 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            this.checkAccess();
+            //this.checkAccess();
+            this.getParticipants();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]

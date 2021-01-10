@@ -52,3 +52,17 @@
     width: 24px;
     height: 24px;
 }
+.ratio-form-block{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 70%;
+    margin: 1vh auto;
+}
+.ratio-form-text{
+    margin: 0 1vw 0 0;
+}
+.ratio-form-input{
+    width: 40%;
+    text-align: center;
+}

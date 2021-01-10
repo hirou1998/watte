@@ -5,5 +5,10 @@
 @endsection
 
 @section('content')
-    <confirm :event="{{$item}}" join="{{$join}}" liff="{{$liff}}" deploy-url="{{$deploy_url}}"></confirm>
+    <confirm 
+        :event="{{$item}}" 
+        join="{{$join}}" 
+        liff="{{$liff}}" 
+        deploy-url="{{$deploy_url}}"
+    ></confirm>
 @endsection

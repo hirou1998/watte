@@ -8,7 +8,7 @@ Vue.component('confirm', require('./components/Confirm.vue').default);
 Vue.component('form-button', require('./components/modules/FormButton.vue').default);
 Vue.component('add-amount', require('./components/AddAmount.vue').default);
 Vue.component('amount-number-form', require('./components/modules/AmountNumberForm.vue').default);
-Vue.component('amount-payer-form', require('./components/modules/AmountPayerForm').default);
+Vue.component('amount-user-form', require('./components/modules/AmountUserForm.vue').default);
 Vue.component('amount-note-form', require('./components/modules/AmountNoteForm.vue').default);
 Vue.component('amount-lists', require('./components/AmountLists.vue').default);
 Vue.component('amount-item', require('./components/modules/AmountItem.vue').default);
@@ -20,6 +20,7 @@ Vue.component('participant', require('./components/modules/Participant.vue').def
 Vue.component('profile-block', require('./components/modules/ProfileBlock.vue').default);
 Vue.component('ratio-block', require('./components/modules/RatioBlock.vue').default);
 Vue.component('ratio-modal', require('./components/modules/RatioModal.vue').default);
+Vue.component('toggle-block', require('./components/modules/ToggleBlock.vue').default);
 
 const app = new Vue({
     el: '#app',

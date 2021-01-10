@@ -4,12 +4,19 @@
             <ul>
                 <li v-for="participant in participants" :key="participant.line_id">
                     <profile-block :user="participant"></profile-block>
-                    <div class="form-group">
-                        <p class="small-txt">現在の比率：</p>
-                        <input type="number" v-model="participant.pivot.ratio">
+                    <div class="form-group ratio-form-block">
+                        <p class="small-txt ratio-form-text">現在の比率：</p>
+                        <input 
+                            type="number" 
+                            step="0.1" 
+                            :value="participant.pivot.ratio"
+                            :ref="'ratio-' + participant.id"
+                            class="form-control ratio-form-input"
+                        >
                     </div>
                 </li>
             </ul>
+            
         </div>
     </section>
 </template>
@@ -27,7 +34,10 @@ export default {
         ProfileBlock
     },
     computed: {
-        // ratio
+        // ratio,
+        test(){
+            return this.participants[0]
+        }
     },
     methods: {
         close(){

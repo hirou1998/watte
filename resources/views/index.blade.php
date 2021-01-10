@@ -6,6 +6,9 @@
 
 @section('content')
 
-    <start-form liff="{{ $liff }}" deploy-url="{{$deploy_url}}"></start-form>
+    <start-form 
+        liff="{{ $liff }}" 
+        deploy-url="{{$deploy_url}}"
+    ></start-form>
 
 @endsection

@@ -31,30 +31,6 @@
     position: relative;
     border-radius: 10px;
     background: #fff;
-    
-    // &::before{
-    //     content: "";
-    //     position: absolute;
-    //     width: 49%;
-    //     height: 90%;
-    //     background-color: #009380;
-    //     top: 50%;
-    //     transition: left 0.15s linear;
-    //     border-radius: 8px;
-    //     transform: translate(0, -50%);
-    //     box-shadow: 0 0 4px #848484;
-    // }
-
-    // &[data-selected="0"]{
-    //     &::before{
-    //         left: 0.5%;
-    //     }
-    // }
-    // &[data-selected="1"]{
-    //     &::before{
-    //         left: 50.5%;
-    //     }
-    // }
 }
 .amount-tab{
     flex: 1;
@@ -113,4 +89,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.amount-number-block{
+    align-items: flex-end;
+}
+.private-amount-container{
+    padding: 1rem;
+    border-radius: 5px;
+    border: solid 1px #777;
+    background-color: #fff;
+    margin-bottom: 2rem;
+}
+.amount-user-add-button{
+    display: block;
+    margin: 1vh auto;
 }

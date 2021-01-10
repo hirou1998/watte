@@ -20,6 +20,9 @@ main{
 input.form-control, textarea.form-control, select.form-control{
     font-size: 1.6rem;
 }
+input::placeholder, option:disabled{
+    color: #eee;
+}
 select{
     -webkit-appearance: none;
     -moz-appearance: none;

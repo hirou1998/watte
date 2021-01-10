@@ -5,5 +5,9 @@
 @endsection
 
 @section('content')
-    <participants liff="{{$liff}}" :event="{{$event}}" :participants="{{$participants}}" deploy-url="{{$deploy_url}}"></participants>
+    <participants 
+        liff="{{$liff}}" 
+        :event="{{$event}}"
+        deploy-url="{{$deploy_url}}"
+    ></participants>
 @endsection

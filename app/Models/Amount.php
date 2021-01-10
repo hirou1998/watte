@@ -30,6 +30,13 @@ class Amount extends UuidModel
         );
     }
 
+    public function deals()
+    {
+        return $this->hasMany(
+            Deal::class
+        );
+    }
+
     public static function calcAmountEach($event_id)
     {
         $eachAmount = static::select(DB::raw(
