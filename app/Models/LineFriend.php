@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class LineFriend extends Model
 {
@@ -13,8 +14,6 @@ class LineFriend extends Model
     protected $primaryKey = 'line_id';
     protected $keyType = 'string';
     public $incrementing = false;
-
-    //protected $with = ['events'];
 
     public function events()
     {
@@ -29,7 +28,18 @@ class LineFriend extends Model
     public function amounts()
     {
         return $this->hasMany(
-            Amount::class
+            Amount::class,
+            'friend_id',
+            'line_id'
+        );
+    }
+
+    public function deals()
+    {
+        return $this->hasMany(
+            Deal::class,
+            'payer',
+            'line_id'
         );
     }
 

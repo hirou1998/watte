@@ -22,13 +22,13 @@
                 </ul>
             </section>
             <section v-show="activeTab == 1" class="amount-section">
-                <p class="small-txt">1人当たり: <span class="big-txt">{{PaymentPerPersonDivided}}</span> 円 (合計金額: <span class="big-txt"> {{sumDivided}} </span>円)</p>
+                <p class="small-txt amount-result-head">1人当たり: <span class="big-txt">{{PaymentPerPersonDivided}}</span> 円 (合計金額: <span class="big-txt"> {{sumDivided}} </span>円)</p>
                 <amount-each-member
                     v-for="item in each"
                     :each="item"
                     :total-amount="sum"
                     :total-ratio="totalRatio"
-                    :participants-num="each.length"
+                    :participants="participants"
                     :key="item.friend_id"
                 ></amount-each-member>
             </section>
@@ -52,7 +52,7 @@ export default {
         AmountTab,
         Loading
     },
-    props: ['amounts', 'each', 'event'],
+    props: ['amounts', 'each', 'event', 'participants'],
     data: function(){
         return{
             tabList: [
@@ -66,14 +66,14 @@ export default {
                 }
             ],
             activeTab: 0,
-            isLoading: true
+            isLoading: false
         }
     },
     computed: {
         sum(){
             let sumAmount = 0;
             this.each.forEach(item => {
-                sumAmount += Number(item.amount_sum);
+                sumAmount += Number(item.sum);
             });
             return sumAmount;
         },
@@ -90,7 +90,7 @@ export default {
         totalRatio(){
             let total = 0;
             this.each.forEach(item => {
-                let ratio = item.line_friend.events[0].pivot.ratio;
+                let ratio = item.line_friend.pivot.ratio;
                 total += ratio;
             })
             return total;
@@ -106,7 +106,7 @@ export default {
             liffId: this.liff
         })
         .then((data) => {
-            this.checkAccess();
+            //this.checkAccess();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]

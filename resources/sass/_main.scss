@@ -4,7 +4,7 @@ html{
 main{
     width: 100%;
     height: 100vh;
-    padding: 1.5rem;
+    padding: 1.5rem 0;
 }
 .content-container{
     width: 100%;
@@ -16,6 +16,10 @@ main{
     align-items: center;
     justify-content: center;
     height: 100vh;
+}
+.section-inner{
+    width: 96%;
+    margin: 0 auto;
 }
 input.form-control, textarea.form-control, select.form-control{
     font-size: 1.6rem;

@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section class="section-inner">
         <article v-if="!isLoading">
             <amount-user-form 
                 v-model="userInfo" 
@@ -15,6 +15,7 @@
             <toggle-block 
                 v-model="isPrivate" 
                 text="個人間の貸し借りを記録する"
+                v-if="participants.length > 2"
             ></toggle-block>
             <section class="private-amount-container" v-if="isPrivate">
                 <template v-for="(user, index) in partner">
@@ -58,7 +59,7 @@ export default {
         return{
             amount: 0,
             note: '',
-            isLoading: false,
+            isLoading: true,
             isPrivate: false,
             partner: [
                 {
@@ -101,12 +102,19 @@ export default {
                     private: false
                 }
             }
+
             window.axios.post(`/amounts/add/${this.event.id}`, formItem)
             .then(({data}) => {
+                let returnText;
+                if(data.private){
+                    returnText = "【個人】イベント: " + this.event.event_name + "\n" + data.amount + "円（" + data.note + "）\nを追加しました。";
+                }else{
+                    returnText = "【全体】イベント: " + this.event.event_name + "\n" + data.amount + "円（" + data.note + "）\nを追加しました。";
+                }
                 window.liff.sendMessages([
                     {
                         type: 'text',
-                        text: 'イベント: ' + this.event.event_name +  data.amount + '円' + '(' + data.note + ')を追加しました。'
+                        text: returnText
                     }
                 ])
                 .then(() => {
@@ -144,7 +152,7 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            //this.checkAccess();
+            this.checkAccess();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]

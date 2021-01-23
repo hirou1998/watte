@@ -1,10 +1,13 @@
 .amount-item{
-    width: 94%;
-    margin: 0 auto 2vh;
-    padding: 2vw;
-    border-radius: 5px;
-    border: solid 1px #fff;
+    padding: 1rem 1.5rem;
     background-color: #fff;
+    width: 96%;
+    margin: 0 auto 1rem;
+    border-radius: 10px 10px 0 0;
+
+    &:not(:last-child){
+        border-bottom: solid 1px #eee;
+    }
 }
 .amount-show-title{
     margin: 0 auto 2vh;
@@ -21,7 +24,7 @@
     font-weight: bold;
 }
 .amount-memo{
-    border: solid 1px #eee;
+    background-color: #eff5f4;
     padding: 1vh 1vw;
     margin-bottom: 0;
     border-radius: 5px;
@@ -31,6 +34,8 @@
     position: relative;
     border-radius: 10px;
     background: #fff;
+    width: 94%;
+    margin: 0 auto 1rem;
 }
 .amount-tab{
     flex: 1;
@@ -40,8 +45,8 @@
     padding: .5vh 0;
 
     &.selected{
-        color: #009380;
-        border-color: #009380;
+        color: $main-color;
+        border-color: $main-color;
     }
     &:first-child{
         border-radius: 10px 0 0 10px;
@@ -103,4 +108,24 @@
 .amount-user-add-button{
     display: block;
     margin: 1vh auto;
+}
+.amount-result-head{
+    margin: 0 auto 1rem;
+    width: 94%;
+}
+.amount-partners-container{
+    display: flex;
+    align-items: center;
+    margin: 1rem 0 0;
+}
+.amount-partner-title{
+    margin: 0 1rem 0 0;
+    background: #c05b77;
+    color: #fff;
+    padding: .2rem;
+    border-radius: 3px;
+
+    img{
+        width: 1.2rem;
+    }
 }

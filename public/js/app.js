@@ -1964,6 +1964,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -1986,7 +1987,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       amount: 0,
       note: '',
-      isLoading: false,
+      isLoading: true,
       isPrivate: false,
       partner: [{
         user: {
@@ -2037,9 +2038,17 @@ __webpack_require__.r(__webpack_exports__);
 
       window.axios.post("/amounts/add/".concat(this.event.id), formItem).then(function (_ref) {
         var data = _ref.data;
+        var returnText;
+
+        if (data["private"]) {
+          returnText = "【個人】イベント: " + _this2.event.event_name + "\n" + data.amount + "円（" + data.note + "）\nを追加しました。";
+        } else {
+          returnText = "【全体】イベント: " + _this2.event.event_name + "\n" + data.amount + "円（" + data.note + "）\nを追加しました。";
+        }
+
         window.liff.sendMessages([{
           type: 'text',
-          text: 'イベント: ' + _this2.event.event_name + data.amount + '円' + '(' + data.note + ')を追加しました。'
+          text: returnText
         }]).then(function () {
           window.liff.closeWindow();
         })["catch"](function (err) {
@@ -2074,9 +2083,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
+    var _this4 = this;
+
     window.liff.init({
       liffId: this.liff
-    }).then(function () {//this.checkAccess();
+    }).then(function () {
+      _this4.checkAccess();
     });
   },
   mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_6__["default"]]
@@ -2151,7 +2163,7 @@ __webpack_require__.r(__webpack_exports__);
     AmountTab: _modules_AmountTab__WEBPACK_IMPORTED_MODULE_2__["default"],
     Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
-  props: ['amounts', 'each', 'event'],
+  props: ['amounts', 'each', 'event', 'participants'],
   data: function data() {
     return {
       tabList: [{
@@ -2162,14 +2174,14 @@ __webpack_require__.r(__webpack_exports__);
         value: 'ユーザーごと'
       }],
       activeTab: 0,
-      isLoading: true
+      isLoading: false
     };
   },
   computed: {
     sum: function sum() {
       var sumAmount = 0;
       this.each.forEach(function (item) {
-        sumAmount += Number(item.amount_sum);
+        sumAmount += Number(item.sum);
       });
       return sumAmount;
     },
@@ -2186,7 +2198,7 @@ __webpack_require__.r(__webpack_exports__);
     totalRatio: function totalRatio() {
       var total = 0;
       this.each.forEach(function (item) {
-        var ratio = item.line_friend.events[0].pivot.ratio;
+        var ratio = item.line_friend.pivot.ratio;
         total += ratio;
       });
       return total;
@@ -2198,12 +2210,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var _this = this;
-
     window.liff.init({
       liffId: this.liff
-    }).then(function (data) {
-      _this.checkAccess();
+    }).then(function (data) {//this.checkAccess();
     });
   },
   mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__["default"]]
@@ -2223,6 +2232,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_FormButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/FormButton */ "./resources/js/components/modules/FormButton.vue");
 /* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
 /* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
+/* harmony import */ var _mixins_checkIfUserAndGroupIsRegistered__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../mixins/checkIfUserAndGroupIsRegistered */ "./resources/js/mixins/checkIfUserAndGroupIsRegistered.js");
 //
 //
 //
@@ -2241,6 +2251,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -2290,7 +2301,7 @@ __webpack_require__.r(__webpack_exports__);
       _this.checkAccess();
     });
   },
-  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_2__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_2__["default"], _mixins_checkIfUserAndGroupIsRegistered__WEBPACK_IMPORTED_MODULE_3__["default"]]
 });
 
 /***/ }),
@@ -2705,10 +2716,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['each', 'totalAmount', 'totalRatio', 'participantsNum'],
+  props: ['each', 'totalAmount', 'totalRatio', 'participants'],
   components: {
     ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__["default"],
     RatioBlock: _RatioBlock__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -2718,20 +2740,20 @@ __webpack_require__.r(__webpack_exports__);
       return Math.ceil(Number(this.totalAmount) / Number(this.totalRatio) * Number(this.ratio));
     },
     gap: function gap() {
-      var calcGap = Number(this.each.amount_sum) - this.mustPayment;
+      var calcGap = Number(this.each.sum) - this.mustPayment;
       return isNaN(calcGap) ? 0 : calcGap;
     },
     gapDivided: function gapDivided() {
       return String(this.gap).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
     },
     sum: function sum() {
-      return String(this.each.amount_sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+      return String(this.each.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
     },
     ratio: function ratio() {
-      return this.each.line_friend.events[0].pivot.ratio;
+      return this.each.line_friend.pivot.ratio;
     },
     times: function times() {
-      return Math.round(this.participantsNum * this.ratio / this.totalRatio * 100) / 100;
+      return Math.round(this.participants.length * this.ratio / this.totalRatio * 100) / 100;
     }
   }
 });
@@ -2749,6 +2771,16 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_formatDateTimeMixin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixins/formatDateTimeMixin */ "./resources/js/mixins/formatDateTimeMixin.js");
 /* harmony import */ var _ProfileBlock__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ProfileBlock */ "./resources/js/components/modules/ProfileBlock.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3046,8 +3078,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user'],
+  props: ['user', 'iconSize'],
   methods: {
     setDefault: function setDefault(event) {
       event.target.src = '/images/watte-icon.png';
@@ -39571,6 +39604,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "section",
+    { staticClass: "section-inner" },
     [
       !_vm.isLoading
         ? _c(
@@ -39607,16 +39641,18 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _c("toggle-block", {
-                attrs: { text: "個人間の貸し借りを記録する" },
-                model: {
-                  value: _vm.isPrivate,
-                  callback: function($$v) {
-                    _vm.isPrivate = $$v
-                  },
-                  expression: "isPrivate"
-                }
-              }),
+              _vm.participants.length > 2
+                ? _c("toggle-block", {
+                    attrs: { text: "個人間の貸し借りを記録する" },
+                    model: {
+                      value: _vm.isPrivate,
+                      callback: function($$v) {
+                        _vm.isPrivate = $$v
+                      },
+                      expression: "isPrivate"
+                    }
+                  })
+                : _vm._e(),
               _vm._v(" "),
               _vm.isPrivate
                 ? _c(
@@ -39765,7 +39801,7 @@ var render = function() {
                 staticClass: "amount-section"
               },
               [
-                _c("p", { staticClass: "small-txt" }, [
+                _c("p", { staticClass: "small-txt amount-result-head" }, [
                   _vm._v("1人当たり: "),
                   _c("span", { staticClass: "big-txt" }, [
                     _vm._v(_vm._s(_vm.PaymentPerPersonDivided))
@@ -39784,7 +39820,7 @@ var render = function() {
                       each: item,
                       "total-amount": _vm.sum,
                       "total-ratio": _vm.totalRatio,
-                      "participants-num": _vm.each.length
+                      participants: _vm.participants
                     }
                   })
                 })
@@ -40110,6 +40146,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "article",
+    { staticClass: "section-inner" },
     [
       !_vm.isLoading
         ? _c(
@@ -40222,7 +40259,9 @@ var render = function() {
       "div",
       { staticClass: "amount-head-container" },
       [
-        _c("profile-block", { attrs: { user: _vm.each.line_friend } }),
+        _c("profile-block", {
+          attrs: { user: _vm.each.line_friend, iconSize: "50" }
+        }),
         _vm._v(" "),
         _c(
           "div",
@@ -40267,7 +40306,33 @@ var render = function() {
           ]
         )
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "ul",
+      _vm._l(_vm.each.deals, function(deal) {
+        return _c(
+          "li",
+          { key: deal.partner.line_id },
+          [
+            _c("profile-block", {
+              attrs: { user: deal.partner, iconSize: "20" }
+            }),
+            _vm._v(
+              "\n            " +
+                _vm._s(deal.pay_sum) +
+                "\n            " +
+                _vm._s(deal.paid_sum) +
+                "\n            " +
+                _vm._s(deal.pay_sum - deal.paid_sum) +
+                "\n        "
+            )
+          ],
+          1
+        )
+      }),
+      0
+    )
   ])
 }
 var staticRenderFns = [
@@ -40307,33 +40372,76 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("li", { staticClass: "amount-item" }, [
-    _c(
-      "div",
-      { staticClass: "amount-head-container" },
-      [
-        _c("profile-block", { attrs: { user: _vm.amount.line_friend } }),
+  return _c(
+    "li",
+    {
+      staticClass: "amount-item",
+      attrs: { "data-private": _vm.amount.private }
+    },
+    [
+      _c(
+        "div",
+        { staticClass: "amount-head-container" },
+        [
+          _c("profile-block", {
+            attrs: { user: _vm.amount.line_friend, "icon-size": "50" }
+          }),
+          _vm._v(" "),
+          _c("p", { staticClass: "big-txt amount-number" }, [
+            _vm._v(_vm._s(_vm.number) + " "),
+            _c("span", { staticClass: "txt-smaller" }, [_vm._v("円")])
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", [
+        _c("p", { staticClass: "normal-txt amount-memo" }, [
+          _vm._v(_vm._s(_vm.amount.note))
+        ]),
         _vm._v(" "),
-        _c("p", { staticClass: "big-txt amount-number" }, [
-          _vm._v(_vm._s(_vm.number) + " "),
-          _c("span", { staticClass: "txt-smaller" }, [_vm._v("円")])
-        ])
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", [
-      _c("p", { staticClass: "normal-txt amount-memo" }, [
-        _vm._v(_vm._s(_vm.amount.note))
+        _vm.amount.deals.length > 0
+          ? _c(
+              "ul",
+              { staticClass: "amount-partners-container" },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _vm._l(_vm.amount.deals, function(deal) {
+                  return _c(
+                    "li",
+                    { key: deal.partner, staticClass: "amount-partner" },
+                    [
+                      _c("profile-block", {
+                        attrs: { user: deal.line_friend, "icon-size": "20" }
+                      })
+                    ],
+                    1
+                  )
+                })
+              ],
+              2
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("p", { staticClass: "small-txt amount-register-date" }, [
+        _vm._v("登録日時：" + _vm._s(_vm.dateParser(_vm.amount.created_at)))
       ])
-    ]),
-    _vm._v(" "),
-    _c("p", { staticClass: "small-txt amount-register-date" }, [
-      _vm._v("登録日時：" + _vm._s(_vm.dateParser(_vm.amount.created_at)))
-    ])
-  ])
+    ]
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "small-txt amount-partner-title" }, [
+      _vm._v("相手"),
+      _c("img", { attrs: { src: "/images/person-icon.png", alt: "" } })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -40644,7 +40752,9 @@ var render = function() {
     "li",
     { staticClass: "participant-item", on: { click: _vm.showModal } },
     [
-      _c("profile-block", { attrs: { user: _vm.participant } }),
+      _c("profile-block", {
+        attrs: { user: _vm.participant, "icon-size": "50" }
+      }),
       _vm._v(" "),
       _c("ratio-block", { attrs: { "ratio-num": _vm.participant.pivot.ratio } })
     ],
@@ -40676,6 +40786,7 @@ var render = function() {
   return _c("div", { staticClass: "profile-block" }, [
     _c("img", {
       staticClass: "profile-icon",
+      style: { width: _vm.iconSize + "px", height: _vm.iconSize + "px" },
       attrs: { src: _vm.user.picture_url, alt: _vm.user.display_name },
       on: { error: _vm.setDefault }
     }),
@@ -54753,9 +54864,18 @@ __webpack_require__.r(__webpack_exports__);
       var year = date.substring(0, 4);
       var month = date.substring(5, 7);
       var day = date.substring(8, 10);
-      var hour = Number(date.substring(11, 13)) + 9;
+      var hour = Number(date.substring(11, 13));
       var min = date.substring(14, 16);
-      return "".concat(year, "/").concat(month, "/").concat(day, " ").concat(hour, ":").concat(min);
+      var dateValue = new Date(year, month - 1, day, hour + 9, min);
+      year = dateValue.getFullYear();
+      month = dateValue.getMonth() + 1;
+      day = dateValue.getDate();
+      hour = dateValue.getHours();
+      min = dateValue.getMinutes();
+      return "".concat(year, "/").concat(this.makeNumberDoubleDigits(month), "/").concat(this.makeNumberDoubleDigits(day), " ").concat(this.makeNumberDoubleDigits(hour), ":").concat(this.makeNumberDoubleDigits(min));
+    },
+    makeNumberDoubleDigits: function makeNumberDoubleDigits(num) {
+      return String(num).length === 1 ? '0' + num : num;
     }
   }
 });

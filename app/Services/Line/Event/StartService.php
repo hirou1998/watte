@@ -48,7 +48,7 @@ class StartService
         //新規イベントスタート
         $start_event_button = $this->generateColumn('新規割り勘スタート', '割り勘を', $this->imageUrl, [$start_button, $detail_button, $privacy_button]);
 
-        $events = EventModel::where('group_id', $this->group_id)->get();
+        $events = EventModel::where('group_id', $this->group_id)->orderBy('created_at', 'desc')->get();
 
         foreach($events as $event){
             $add_button = new UriTemplateActionBuilder('支払いを追加', 'https://liff.line.me/1655325455-B5Zjk37g/amounts/add/' . $event->id);

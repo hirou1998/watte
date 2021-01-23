@@ -7,7 +7,8 @@
 @section('content')
     <amount-lists 
         :amounts="{{$amount_lists}}" 
-        :each="{{$each_calc_amount}}" 
+        :each="{{$each}}"
+        :participants="{{$participants}}"
         liff="{{$liff}}" 
         deploy-url="{{$deploy_url}}" 
         :event="{{$event}}"

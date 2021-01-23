@@ -1,5 +1,5 @@
 <template>
-    <article>
+    <article class="section-inner">
         <section class="start-form-container" v-if="!isLoading">
             <template v-if="isStartView">
                 <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>watteのご利用ありがとうございます！</p>
