@@ -11277,7 +11277,7 @@ main {
 }
 
 .section-inner {
-  width: 96%;
+  width: 94%;
   margin: 0 auto;
 }
 
@@ -11671,6 +11671,89 @@ a:hover {
   padding: 2vw;
   overflow-y: scroll;
   border: solid 1px #353535;
+}
+
+.api-loading {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.api-loading::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #3D92A4;
+  opacity: 0.1;
+}
+
+.api-loading-block {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.api-loading-circle {
+  display: block;
+  width: 30px;
+  height: 30px;
+  background-color: #3D92A4;
+  transition: transform 0.5s;
+  transform-origin: center;
+  transform: scale(0);
+  border-radius: 50%;
+}
+
+.api-loading-circle:nth-child(1) {
+  -webkit-animation: bounceCircle 1s linear 0s infinite forwards;
+  animation: bounceCircle 1s linear 0s infinite forwards;
+}
+
+.api-loading-circle:nth-child(2) {
+  -webkit-animation: bounceCircle 1s linear 0.33s infinite forwards;
+  animation: bounceCircle 1s linear 0.33s infinite forwards;
+}
+
+.api-loading-circle:nth-child(3) {
+  -webkit-animation: bounceCircle 1s linear 0.66s infinite forwards;
+  animation: bounceCircle 1s linear 0.66s infinite forwards;
+}
+
+@-webkit-keyframes bounceCircle {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes bounceCircle {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0);
+  }
 }
 
 .toggle-block {

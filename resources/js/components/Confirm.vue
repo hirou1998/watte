@@ -1,5 +1,5 @@
 <template>
-    <section class="content-container">
+    <section class="section-inner">
         <article v-if="!isLoading" class="vertical-center-container">
             <template v-if="isJoining">
                 <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>イベント: {{ event.event_name }} に参加します。<br>よろしいですか？</p>

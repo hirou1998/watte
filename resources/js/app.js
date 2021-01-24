@@ -21,6 +21,7 @@ Vue.component('profile-block', require('./components/modules/ProfileBlock.vue').
 Vue.component('ratio-block', require('./components/modules/RatioBlock.vue').default);
 Vue.component('ratio-modal', require('./components/modules/RatioModal.vue').default);
 Vue.component('toggle-block', require('./components/modules/ToggleBlock.vue').default);
+Vue.component('api-loading', require('./components/modules/ApiLoading.vue').default);
 
 const app = new Vue({
     el: '#app',

@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section class="section-inner">
         <article v-if="!isLoading">
             <div class="participants-head">
                 <h1 class="txt-big">{{event.event_name}}({{participants.length}}人)</h1>
@@ -18,15 +18,18 @@
             </ul>
             <ratio-modal
                 v-show="modalVisibility"
-                v-model="participantsFormItem"
+                :participants="participants"
+                @save="changeRatio"
                 @close="modalVisibility = false"
             ></ratio-modal>
         </article>
         <loading v-if="isLoading"></loading>
+        <api-loading v-if="isApiLoading"></api-loading>
     </section>
 </template>
 
 <script>
+import ApiLoading from './modules/ApiLoading'
 import Loading from './modules/Loading'
 import Participant from './modules/Participant'
 import RatioModal from './modules/RatioModal'
@@ -36,6 +39,7 @@ import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFro
 export default {
     props: ['event', 'liff'],
     components: {
+        ApiLoading,
         Loading,
         Participant,
         RatioModal,
@@ -47,12 +51,38 @@ export default {
                 picture_url: ''
             },
             modalVisibility: false,
-            isLoading: false,
+            isLoading: true,
+            isApiLoading: false,
             participants: {},
-            participantsFormItem: {}
         }
     },
     methods: {
+        changeRatio(param){
+            let changedItems = param.filter(item => {
+                let currentUserInfo = this.participants.find(participant => participant.line_id === item.line_id)
+                let newRatio = item.ratio
+                let currentRatio = currentUserInfo.pivot.ratio
+                if(item.ratio !== currentUserInfo.pivot.ratio){
+                    return item
+                }
+            })
+            if(changedItems.length > 0){
+                this.isApiLoading = true
+                axios.put(`/ratio/update/${this.event.id}`, {
+                    value: changedItems
+                })
+                .then(({data}) => {
+                    this.participants = data;
+                    this.isApiLoading = false
+                })
+                .catch(err => {
+                    console.log(err)
+                    this.isApiLoading = false
+                })
+            }else{
+                alert('変更された比率がありませんでした。')
+            }
+        },
         getGroupId(){
             let context = window.liff.getContext()
             if(context.type === 'none'){ //正規ルートはcontextがnone
@@ -75,7 +105,6 @@ export default {
             axios.get(`/api/participants/${this.event.id}`)
             .then(({data}) => {
                 this.participants = data;
-                this.participantsFormItem = data;
             })
             .catch(err => {
                 alert("404: Not Found\nデータが見つかりませんでした。");
@@ -96,8 +125,7 @@ export default {
             return paramObj;
         },
         refresh(){
-            alert('aa')
-            let accessUser = this.participants.filter(p => p.line_id === this.userInfo.userId)[0];
+            let accessUser = this.participants.find(p => p.line_id === this.userInfo.userId);
             if(accessUser.display_name !== this.userInfo.displayName){
                 this.changeItem = {
                     ...this.changeItem,
@@ -141,7 +169,7 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            //this.checkAccess();
+            this.checkAccess();
             this.getParticipants();
         })
     },

@@ -18,7 +18,7 @@ main{
     height: 100vh;
 }
 .section-inner{
-    width: 96%;
+    width: 94%;
     margin: 0 auto;
 }
 input.form-control, textarea.form-control, select.form-control{
@@ -57,4 +57,9 @@ a:focus, a:checked, a:visited, a:hover{
 }
 .txt-bigger{
     font-size: 1.25em;
+}
+
+@mixin animationValue($name, $duration, $function, $delay, $count, $state){
+    -webkit-animation: $name $duration+s $function $delay+s $count $state;
+    animation: $name $duration+s $function $delay+s $count $state;
 }
