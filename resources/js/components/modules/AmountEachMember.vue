@@ -64,7 +64,7 @@ export default {
             return this.each.line_friend.pivot.ratio;
         },
         times(){
-            return Math.round(this.participants.length * this.ratio / this.totalRatio * 100) / 100;
+            return Math.ceil(this.participants.length * this.ratio / this.totalRatio * 100) / 100;
         },
     }
 }

@@ -64,6 +64,7 @@ class AmountController extends Controller
         $amount_lists = $event
                             ->amounts()
                             ->with('line_friend')
+                            ->orderBy('archive_flg', 'asc')
                             ->orderBy('created_at', 'desc')
                             ->with('deals')
                             ->get();
@@ -88,5 +89,19 @@ class AmountController extends Controller
         $amount->delete();
 
         return response()->json([]);
+    }
+
+    public function archive(Amount $amount)
+    {
+        $amount->update(['archive_flg' => true]);
+
+        return $amount;
+    }
+
+    public function unarchive(Amount $amount)
+    {
+        $amount->update(['archive_flg' => false]);
+
+        return $amount;
     }
 }

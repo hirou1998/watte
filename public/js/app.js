@@ -2206,6 +2206,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -2244,8 +2246,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: {
     sum: function sum() {
       var sumAmount = 0;
-      this.each.forEach(function (item) {
-        sumAmount += Number(item.sum);
+      this.amounts.forEach(function (item) {
+        sumAmount += Number(item.amount);
       });
       return sumAmount;
     },
@@ -2253,7 +2255,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return String(this.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
     },
     PaymentPerPerson: function PaymentPerPerson() {
-      var divided = Math.round(this.sum / this.each.length);
+      var divided = Math.ceil(this.sum / this.each.length);
       return divided;
     },
     PaymentPerPersonDivided: function PaymentPerPersonDivided() {
@@ -2269,28 +2271,78 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   methods: {
-    archiveAmount: function archiveAmount() {},
-    deleteAmount: function deleteAmount() {
+    archiveRelatedAction: function archiveRelatedAction(type) {
       var _this = this;
 
-      window.axios["delete"]("/amount/delete/".concat(this.targetAmount.id)).then(function () {
-        _this.amounts = _this.amounts.filter(function (amount) {
-          return amount.id !== _this.targetAmount.id;
+      var url;
+      var archive_flg_state;
+      var formula;
+
+      if (type === 'archive') {
+        url = "/amount/archive/".concat(this.targetAmount.id);
+        archive_flg_state = 1;
+        formula = 1;
+      } else if (type === 'unarchive') {
+        url = "/amount/unarchive/".concat(this.targetAmount.id);
+        archive_flg_state = 0;
+        formula = -1;
+      }
+
+      window.axios.put(url).then(function (_ref) {
+        var data = _ref.data;
+        var archivedAmountDivided = Math.ceil(_this.targetAmount.amount / _this.participants.length);
+        _this.amounts = _this.amounts.map(function (amount) {
+          if (amount.id === _this.targetAmount.id) {
+            return _objectSpread(_objectSpread({}, amount), {}, {
+              archive_flg: archive_flg_state
+            });
+          } else {
+            return amount;
+          }
         });
         _this.each = _this.each.map(function (item) {
           if (item.line_friend.line_id === _this.targetAmount.line_friend.line_id) {
             return _objectSpread(_objectSpread({}, item), {}, {
-              sum: item.sum - _this.targetAmount.amount
+              sum: item.sum + (formula * archivedAmountDivided + formula * _this.targetAmount.amount * -1)
+            });
+          } else {
+            return _objectSpread(_objectSpread({}, item), {}, {
+              sum: item.sum + formula * archivedAmountDivided
+            });
+          }
+        });
+
+        _this.sortArray(_this.amounts);
+
+        _this.targetAmount = {};
+      })["catch"](function (err) {
+        alert(err);
+      });
+    },
+    archiveAmount: function archiveAmount() {
+      this.archiveRelatedAction('archive');
+    },
+    deleteAmount: function deleteAmount() {
+      var _this2 = this;
+
+      window.axios["delete"]("/amount/delete/".concat(this.targetAmount.id)).then(function () {
+        _this2.amounts = _this2.amounts.filter(function (amount) {
+          return amount.id !== _this2.targetAmount.id;
+        });
+        _this2.each = _this2.each.map(function (item) {
+          if (item.line_friend.line_id === _this2.targetAmount.line_friend.line_id) {
+            return _objectSpread(_objectSpread({}, item), {}, {
+              sum: item.sum - _this2.targetAmount.amount
             });
           } else {
             return item;
           }
         });
-        var messageText = "イベント: " + _this.event.event_name + "\n" + _this.targetAmount.amount + "円（" + _this.targetAmount.note + "）\n" + "支払い者: " + _this.targetAmount.line_friend.display_name + "\nを精算済にしました。";
+        var messageText = "イベント: " + _this2.event.event_name + "\n" + _this2.targetAmount.amount + "円（" + _this2.targetAmount.note + "）\n" + "支払い者: " + _this2.targetAmount.line_friend.display_name + "\nを精算済にしました。";
 
-        _this.sendMessage(messageText);
+        _this2.sendMessage(messageText);
 
-        _this.targetAmount = {};
+        _this2.targetAmount = {};
       })["catch"](function (err) {
         alert(err);
       });
@@ -2302,12 +2354,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.deleteAmount();
       } else if (type === '編集') {
         this.saveEditAmount();
+      } else if (type === '未精算') {
+        this.unarchiveAmount();
       }
-    },
-    modalRelatedAction: function modalRelatedAction(type) {
-      this.modalType = type;
-      this.modalVisibility = true;
-      this.menuModalVisibility = false;
     },
     saveEditAmount: function saveEditAmount() {},
     sendMessage: function sendMessage(text) {
@@ -2322,15 +2371,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     selectTab: function selectTab(tab) {
       this.activeTab = tab;
     },
-    showArchiveModal: function showArchiveModal(param) {
-      this.modalRelatedAction(param);
-    },
-    showDeleteModal: function showDeleteModal(param) {
-      this.modalRelatedAction(param);
+    showConfirmModal: function showConfirmModal(type) {
+      this.modalType = type;
+      this.modalVisibility = true;
+      this.menuModalVisibility = false;
     },
     showMenuModal: function showMenuModal(amount) {
       this.menuModalVisibility = true;
       this.targetAmount = amount;
+    },
+    sortArray: function sortArray(targetArray) {
+      targetArray.sort(function (a, b) {
+        if (a.archive_flg < b.archive_flg) return -1;
+        if (a.archive_flg > b.archive_flg) return 1;
+        return 0;
+      });
+    },
+    unarchiveAmount: function unarchiveAmount() {
+      this.archiveRelatedAction('unarchive');
     }
   },
   mounted: function mounted() {
@@ -2919,7 +2977,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.each.line_friend.pivot.ratio;
     },
     times: function times() {
-      return Math.round(this.participants.length * this.ratio / this.totalRatio * 100) / 100;
+      return Math.ceil(this.participants.length * this.ratio / this.totalRatio * 100) / 100;
     }
   }
 });
@@ -3054,6 +3112,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3061,7 +3122,7 @@ __webpack_require__.r(__webpack_exports__);
     ModalBase: _ModalBase__WEBPACK_IMPORTED_MODULE_0__["default"],
     OptionWindow: _OptionWindow__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  props: ['visibility'],
+  props: ['visibility', 'target'],
   data: function data() {
     return {};
   },
@@ -3074,6 +3135,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     deleteAmount: function deleteAmount() {
       this.$emit('delete', '削除');
+    },
+    unarchiveAmount: function unarchiveAmount() {
+      this.$emit('unarchive', '未精算');
     }
   }
 });
@@ -40323,13 +40387,17 @@ var render = function() {
             expression: "menuModalVisibility"
           }
         ],
-        attrs: { visibility: _vm.menuModalVisibility },
+        attrs: {
+          visibility: _vm.menuModalVisibility,
+          target: _vm.targetAmount
+        },
         on: {
           close: function($event) {
             _vm.menuModalVisibility = false
           },
-          archive: _vm.showArchiveModal,
-          delete: _vm.showDeleteModal
+          archive: _vm.showConfirmModal,
+          delete: _vm.showConfirmModal,
+          unarchive: _vm.showConfirmModal
         }
       }),
       _vm._v(" "),
@@ -40913,7 +40981,10 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "li",
-    { staticClass: "amount-item" },
+    {
+      staticClass: "amount-item",
+      attrs: { "data-archived": _vm.amount.archive_flg }
+    },
     [
       _c(
         "section",
@@ -41058,29 +41129,45 @@ var render = function() {
             key: "default",
             fn: function() {
               return [
-                _c("ul", { staticClass: "option-block" }, [
-                  _c("li", { staticClass: "option-button" }, [
-                    _vm._v("支払い内容を編集")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    {
-                      staticClass: "option-button",
-                      on: { click: _vm.archiveAmount }
-                    },
-                    [_vm._v("精算済にする")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    {
-                      staticClass: "option-button btn-danger",
-                      on: { click: _vm.deleteAmount }
-                    },
-                    [_vm._v("削除する")]
-                  )
-                ]),
+                _c(
+                  "ul",
+                  { staticClass: "option-block" },
+                  [
+                    _c("li", { staticClass: "option-button" }, [
+                      _vm._v("支払い内容を編集")
+                    ]),
+                    _vm._v(" "),
+                    [
+                      _vm.target.archive_flg == 0
+                        ? _c(
+                            "li",
+                            {
+                              staticClass: "option-button",
+                              on: { click: _vm.archiveAmount }
+                            },
+                            [_vm._v("精算済にする")]
+                          )
+                        : _c(
+                            "li",
+                            {
+                              staticClass: "option-button",
+                              on: { click: _vm.unarchiveAmount }
+                            },
+                            [_vm._v("未精算に戻す")]
+                          )
+                    ],
+                    _vm._v(" "),
+                    _c(
+                      "li",
+                      {
+                        staticClass: "option-button btn-danger",
+                        on: { click: _vm.deleteAmount }
+                      },
+                      [_vm._v("削除する")]
+                    )
+                  ],
+                  2
+                ),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -41203,7 +41290,10 @@ var render = function() {
                 _c("form-button", {
                   attrs: {
                     value: _vm.modalType + "する",
-                    type: _vm.modalType == "精算" ? "accept" : "deny"
+                    type:
+                      _vm.modalType == "精算" || _vm.modalType == "未精算"
+                        ? "accept"
+                        : "deny"
                   },
                   on: { send: _vm.execute }
                 }),

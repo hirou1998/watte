@@ -1,5 +1,5 @@
 <template>
-    <li class="amount-item">
+    <li class="amount-item" :data-archived="amount.archive_flg">
         <section class="amount-item-inner" :data-menu-expanded="hamburgerButtonClicked">
             <div class="amount-head-container">
                 <profile-block :user="amount.line_friend" icon-size="50"></profile-block>

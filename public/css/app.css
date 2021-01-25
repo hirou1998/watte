@@ -11375,6 +11375,14 @@ a:hover {
   overflow: hidden;
 }
 
+.amount-item[data-archived="1"] {
+  background-color: #eee;
+}
+
+.amount-item[data-archived="1"] .amount-memo {
+  background-color: #f5f5f5 !important;
+}
+
 .amount-item:not(:last-child) {
   border-bottom: solid 1px #eee;
 }

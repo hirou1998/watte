@@ -10,7 +10,7 @@ class Amount extends UuidModel
 {
     use HasFactory;
 
-    protected $fillable = ['friend_id', 'event_id', 'amount', 'note', 'private'];
+    protected $fillable = ['friend_id', 'event_id', 'amount', 'note', 'private', 'archive_flg'];
 
     //protected $with = ['deals'];
 
@@ -51,6 +51,18 @@ class Amount extends UuidModel
     {
         $allAmounts = json_decode(static::where('event_id', $event_id)->with(['line_friend', 'deals'])->get());
         $participants = Event::where('id', $event_id)->get()->first()->line_friends;
+        // $uparchivedAllAmounts = array_filter(
+        //     $allAmounts,
+        //     function($value){
+        //         return $value->archive_flg == false;
+        //     }
+        // );
+        // $archivedAllAmounts = array_filter(
+        //     $allAmounts,
+        //     function($value){
+        //         return $value->archive_flg == true;
+        //     }
+        // );
         $notPrivateAmounts = array_filter(
             $allAmounts,
             function($value){
@@ -78,9 +90,23 @@ class Amount extends UuidModel
             $eachPayerDeal = static::getPrivateDealPerUser($privateDeals, 'payer', $participant, $otherParticipants);
             $eachPartnerDeal = static::getPrivateDealPerUser($privateDeals, 'partner', $participant, $otherParticipants);
             $joinedDeals = static::joinPayerDealAndPartnerDeal($eachPayerDeal, $eachPartnerDeal, $otherParticipants);
+
+            $notePrivateUnarchivedAmounts = [];
+            $notPrivateArchivedAmounts = [];
+
+            foreach($notPrivateAmounts as $amount){
+                if($amount->archive_flg == 0){
+                    array_push($notePrivateUnarchivedAmounts, $amount);
+                }else{
+                    array_push($notPrivateArchivedAmounts, $amount);
+                }
+            }
+
+            $archivedAmountsSum = static::calcSum($notPrivateArchivedAmounts);
+            $archivedAmountsSum = ceil($archivedAmountsSum / count($participants));
             
             $matchData = array_filter(
-                $notPrivateAmounts,
+                $notePrivateUnarchivedAmounts,
                 function($value) use($participant){
                     return $participant->line_id == $value->friend_id;
                 }
@@ -88,7 +114,7 @@ class Amount extends UuidModel
             $sum = static::calcSum($matchData);
             $pushData = [
                 'line_friend' => $participant,
-                'sum' => $sum,
+                'sum' => $sum + $archivedAmountsSum,
                 'deals' => $joinedDeals
             ];
             array_push($amountPerUser, $pushData);

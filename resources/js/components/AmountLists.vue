@@ -39,9 +39,11 @@
         <amount-item-option-window 
             v-show="menuModalVisibility"
             :visibility="menuModalVisibility"
+            :target="targetAmount"
             @close="menuModalVisibility = false"
-            @archive="showArchiveModal"
-            @delete="showDeleteModal"
+            @archive="showConfirmModal"
+            @delete="showConfirmModal"
+            @unarchive="showConfirmModal"
         ></amount-item-option-window>
         <amount-menu-modal
             v-if="modalVisibility"
@@ -96,8 +98,8 @@ export default {
     computed: {
         sum(){
             let sumAmount = 0;
-            this.each.forEach(item => {
-                sumAmount += Number(item.sum);
+            this.amounts.forEach(item => {
+                sumAmount += Number(item.amount);
             });
             return sumAmount;
         },
@@ -105,7 +107,7 @@ export default {
             return String(this.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
         },
         PaymentPerPerson(){
-            let divided = Math.round(this.sum / this.each.length);
+            let divided = Math.ceil(this.sum / this.each.length);
             return divided;
         },
         PaymentPerPersonDivided(){
@@ -121,8 +123,55 @@ export default {
         }
     },
     methods: {
+        archiveRelatedAction(type){
+            let url
+            let archive_flg_state
+            let formula
+            if(type === 'archive'){
+                url = `/amount/archive/${this.targetAmount.id}`
+                archive_flg_state = 1
+                formula = 1
+            }else if(type === 'unarchive'){
+                url = `/amount/unarchive/${this.targetAmount.id}`
+                archive_flg_state = 0
+                formula = -1
+            }
+            
+            window.axios.put(url)
+            .then(({data}) => {
+                let archivedAmountDivided = Math.ceil(this.targetAmount.amount / this.participants.length)
+                this.amounts = this.amounts.map(amount => {
+                    if(amount.id === this.targetAmount.id){
+                        return {
+                            ...amount,
+                            archive_flg: archive_flg_state
+                        }
+                    }else{
+                        return amount
+                    }
+                });
+                this.each = this.each.map(item => {
+                    if(item.line_friend.line_id === this.targetAmount.line_friend.line_id){
+                        return {
+                            ...item,
+                            sum: item.sum + (formula * archivedAmountDivided + formula * this.targetAmount.amount * -1)
+                        }
+                    }else{
+                        return {
+                            ...item,
+                            sum: item.sum + formula * archivedAmountDivided
+                        }
+                    }
+                });
+                this.sortArray(this.amounts)
+                this.targetAmount = {}
+            })
+            .catch(err => {
+                alert(err)
+            })
+        },
         archiveAmount(){
-
+            this.archiveRelatedAction('archive')
         },
         deleteAmount(){
             window.axios.delete(`/amount/delete/${this.targetAmount.id}`)
@@ -153,12 +202,9 @@ export default {
                 this.deleteAmount()
             }else if(type === '編集'){
                 this.saveEditAmount()
+            }else if(type === '未精算'){
+                this.unarchiveAmount()
             }
-        },
-        modalRelatedAction(type){
-            this.modalType = type;
-            this.modalVisibility = true;
-            this.menuModalVisibility = false;
         },
         saveEditAmount(){
 
@@ -180,15 +226,24 @@ export default {
         selectTab(tab){
             this.activeTab = tab
         },
-        showArchiveModal(param){
-            this.modalRelatedAction(param)
-        },
-        showDeleteModal(param){
-            this.modalRelatedAction(param)
+        showConfirmModal(type){
+            this.modalType = type;
+            this.modalVisibility = true;
+            this.menuModalVisibility = false;
         },
         showMenuModal(amount){
             this.menuModalVisibility = true;
             this.targetAmount = amount;
+        },
+        sortArray(targetArray){
+            targetArray.sort((a, b) => {
+                if(a.archive_flg < b.archive_flg) return -1;
+                if(a.archive_flg > b.archive_flg) return 1;
+                return 0;
+            })
+        },
+        unarchiveAmount(){
+            this.archiveRelatedAction('unarchive')
         }
     },
     mounted(){

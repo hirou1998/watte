@@ -4,7 +4,10 @@
             <template v-slot:default>
                 <ul class="option-block">
                     <li class="option-button">支払い内容を編集</li>
-                    <li class="option-button" @click="archiveAmount">精算済にする</li>
+                    <template>
+                        <li class="option-button" @click="archiveAmount" v-if="target.archive_flg == 0">精算済にする</li>
+                        <li class="option-button" @click="unarchiveAmount" v-else>未精算に戻す</li>
+                    </template>
                     <li class="option-button btn-danger" @click="deleteAmount">削除する</li>
                 </ul>
                 <div class="option-block option-button" data-type="cancel" @click="close">取消</div>
@@ -22,7 +25,7 @@ export default {
         ModalBase,
         OptionWindow
     },
-    props: ['visibility'],
+    props: ['visibility', 'target'],
     data(){
         return{
 
@@ -37,6 +40,9 @@ export default {
         },
         deleteAmount(){
             this.$emit('delete', '削除')
+        },
+        unarchiveAmount(){
+            this.$emit('unarchive', '未精算')
         }
     }
 }

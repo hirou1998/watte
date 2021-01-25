@@ -7,6 +7,12 @@
     position: relative;
     overflow: hidden;
 
+    &[data-archived="1"]{
+        background-color: #eee;
+        .amount-memo{
+            background-color: #f5f5f5!important;
+        }
+    }
     &:not(:last-child){
         border-bottom: solid 1px #eee;
     }
