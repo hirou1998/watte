@@ -13,9 +13,14 @@
     align-items: center;
     border-radius: 20px;
     padding: 4vw 1vw;
+    margin: 1vh 0;
 }
 .setting-menu-icon{
     margin-bottom: 1vw;
+    
+    img{
+        width: 60px;
+    }
 }
 .setting-menu-text{
     margin-bottom: 0;

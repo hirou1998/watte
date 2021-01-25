@@ -5,7 +5,7 @@
                 <div class="setting-menu-icon">
                     <img src="/images/members.png" alt="">
                 </div>
-                <p class="normal-txt text-center setting-menu-text">参加者の管理</p>
+                <p class="normal-txt text-center setting-menu-text">参加者確認<br>割り勘比率変更</p>
             </a>
             <a :href="participantsUrl" class="setting-menu" role="button">
                 <div class="setting-menu-icon">
@@ -13,6 +13,12 @@
                 </div>
                 <p class="normal-txt text-center setting-menu-text">イベント情報変更</p>
             </a>
+            <div class="setting-menu" role="button" @click="sendInvitation">
+                <div class="setting-menu-icon">
+                    <img src="/images/plus-icon.png" alt="">
+                </div>
+                <p class="normal-txt text-center setting-menu-text">参加者の追加</p>
+            </div>
         </article>
         <loading v-if="isLoading"></loading>
     </section>
@@ -26,9 +32,42 @@ import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFro
 export default {
     components: { Loading },
     props: ['liff', 'event'],
+    data(){
+        return{
+            isLoading: false
+        }
+    },
     computed: {
         participantsUrl(){
             return `https://liff.line.me/1655325455-B5Zjk37g/participants/${this.event.id}?group=${this.groupId}`;
+        }
+    },
+    methods: {
+        sendInvitation(){
+            let url = `https://liff.line.me/1655325455-B5Zjk37g/confirm?type=confirm&id=${this.event.id}`;
+            window.liff.sendMessages([
+                {
+                    type: 'template',
+                    altText: `イベント: ${this.event.event_name}\nに参加しますか？`,
+                    template: {
+                        type: 'confirm',
+                        text: `イベント: ${this.event.event_name}\nに参加しますか？`,
+                        actions: [
+                            {
+                                type: 'uri',
+                                label: '参加する',
+                                uri: url + '&join=yes'
+                            },
+                            {
+                                type: 'uri',
+                                label: '参加しない',
+                                uri: url + '&join=no'
+                            }
+                        ]
+                    }
+                }
+            ]);
+            window.liff.closeWindow();
         }
     },
     mounted(){
@@ -36,7 +75,7 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            this.checkAccess();
+            //this.checkAccess();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]

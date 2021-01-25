@@ -1,0 +1,21 @@
+.amount-item-menu{
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    width: 65px;
+    height: 100%;
+    transform: translate(100%, 0);
+    transition: .3s;
+
+    &[data-menu-expanded="true"]{
+        transform: translate(0)
+    }
+
+    &-button{
+        border-radius: 0;
+        flex: 1;
+        font-size: 1.4rem;
+    }
+}

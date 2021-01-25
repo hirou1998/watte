@@ -83,10 +83,10 @@ class AmountController extends Controller
         );
     }
 
-    public function test(Event $event)
+    public function delete(Amount $amount)
     {
-        $data = Amount::getEachUserAmount($event->id);
+        $amount->delete();
 
-        return $data;
+        return response()->json([]);
     }
 }

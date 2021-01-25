@@ -8,14 +8,20 @@ use App\Models\Event;
 
 class ParitipantController extends Controller
 {
-    public function index(Event $event)
+    public function index(Event $event, Request $request)
     {
-        $participants = $event->line_friends()->orderBy('created_at', 'asc')->get();
+        $userToken = $request->bearerToken();
 
-        if($participants->isEmpty()){
-            abort(404, 'Not Found');
+        if($userToken && $userToken == session()->get('_token')){
+            $participants = $event->line_friends()->orderBy('created_at', 'asc')->get();
+
+            if($participants->isEmpty()){
+                abort(404, 'Not Found');
+            }else{
+                return $participants;
+            }
         }else{
-            return $participants;
+            abort(401, 'Unauthorized');
         }
     }
 }

@@ -1,0 +1,37 @@
+.option-window{
+    position: absolute;
+    width: 96%;
+    bottom: 0;
+    left: 50%;
+    z-index: 1;
+    transform: translate(-50%, 0);
+    padding-bottom: 1vh;
+}
+.option-block{
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.option-button{
+    padding: 2vh 0;
+    text-align: center;
+    font-size: 1.2rem;
+
+    &:not(:last-child){
+        border-bottom: solid 1px #eee;
+    }
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to{
+    opacity: 0;
+}
+.slide-enter-active, .slide-leave-active{
+    transform: translate(-50%, 0);
+    transition: transform .3s;
+}
+.slide-enter, .slide-leave-to{
+    transform: translate(-50%, 100%);
+}

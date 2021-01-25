@@ -18,6 +18,8 @@
                         v-for="amount in amounts"
                         :key="amount.id"
                         :amount="amount"
+                        :user="userInfo"
+                        @show="showMenuModal"
                     ></amount-item>
                 </ul>
             </section>
@@ -34,12 +36,28 @@
             </section>
         </article>
         <loading v-if="isLoading"></loading>
+        <amount-item-option-window 
+            v-show="menuModalVisibility"
+            :visibility="menuModalVisibility"
+            @close="menuModalVisibility = false"
+            @archive="showArchiveModal"
+            @delete="showDeleteModal"
+        ></amount-item-option-window>
+        <amount-menu-modal
+            v-if="modalVisibility"
+            @close="modalVisibility = false"
+            @execute="executeAction"
+            :modal-type="modalType"
+            :target="targetAmount"
+        ></amount-menu-modal>
     </section>
 </template>
 
 <script>
 import AmountEachMember from './modules/AmountEachMember'
 import AmountItem from './modules/AmountItem'
+import AmountItemOptionWindow from './modules/AmountItemOptionWindow'
+import AmountMenuModal from './modules/AmountMenuModal'
 import AmountTab from './modules/AmountTab'
 import Loading from './modules/Loading'
 import checkAccessMixin from '../mixins/checkAccessMixin'
@@ -49,6 +67,8 @@ export default {
     components: {
         AmountEachMember,
         AmountItem,
+        AmountItemOptionWindow,
+        AmountMenuModal,
         AmountTab,
         Loading
     },
@@ -66,7 +86,11 @@ export default {
                 }
             ],
             activeTab: 0,
-            isLoading: false
+            isLoading: false,
+            targetAmount: {},
+            modalVisibility: false,
+            menuModalVisibility: false,
+            modalType: '',
         }
     },
     computed: {
@@ -97,8 +121,74 @@ export default {
         }
     },
     methods: {
+        archiveAmount(){
+
+        },
+        deleteAmount(){
+            window.axios.delete(`/amount/delete/${this.targetAmount.id}`)
+            .then(() => {
+                this.amounts = this.amounts.filter(amount => amount.id !== this.targetAmount.id);
+                this.each = this.each.map(item => {
+                    if(item.line_friend.line_id === this.targetAmount.line_friend.line_id){
+                        return {
+                            ...item,
+                            sum: item.sum - this.targetAmount.amount
+                        }
+                    }else{
+                        return item
+                    }
+                })
+                let messageText = "イベント: " + this.event.event_name + "\n" + this.targetAmount.amount + "円（" + this.targetAmount.note + "）\n" + "支払い者: " + this.targetAmount.line_friend.display_name + "\nを精算済にしました。";
+                this.sendMessage(messageText)
+                this.targetAmount = {}
+            })
+            .catch(err => {
+                alert(err)
+            })
+        },
+        executeAction(type){
+            if(type === '精算'){
+                this.archiveAmount()
+            }else if(type === '削除'){
+                this.deleteAmount()
+            }else if(type === '編集'){
+                this.saveEditAmount()
+            }
+        },
+        modalRelatedAction(type){
+            this.modalType = type;
+            this.modalVisibility = true;
+            this.menuModalVisibility = false;
+        },
+        saveEditAmount(){
+
+        },
+        sendMessage(text){
+            window.liff.sendMessages([
+                {
+                    type: 'text',
+                    text: text
+                }
+            ])
+            .then(() => {
+                //window.liff.closeWindow();
+            })
+            .catch((err) => {
+                alert(err)
+            })
+        },
         selectTab(tab){
             this.activeTab = tab
+        },
+        showArchiveModal(param){
+            this.modalRelatedAction(param)
+        },
+        showDeleteModal(param){
+            this.modalRelatedAction(param)
+        },
+        showMenuModal(amount){
+            this.menuModalVisibility = true;
+            this.targetAmount = amount;
         }
     },
     mounted(){

@@ -4,9 +4,17 @@
     width: 96%;
     margin: 0 auto 1rem;
     border-radius: 10px 10px 0 0;
+    position: relative;
+    overflow: hidden;
 
     &:not(:last-child){
         border-bottom: solid 1px #eee;
+    }
+}
+.amount-item-inner{
+    transition: .3s;
+    &[data-menu-expanded="true"]{
+        transform: translate(-65px, 0);
     }
 }
 .amount-show-title{
@@ -18,6 +26,7 @@
     align-items: center;
     margin-bottom: 1vh;
     justify-content: space-between;
+    width: 96%;
 }
 .amount-number{
     text-align: right;
@@ -127,5 +136,48 @@
 
     img{
         width: 1.2rem;
+    }
+}
+.amount-modal-inner{
+    display: flex;
+    flex-direction: column;
+    height: 75%;
+    width: 80%;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: flex-start;
+}
+.amount-modal-block{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1vh;
+    font-size: 1.4rem;
+    border-bottom: solid 1px #cacaca;
+
+    p{
+        margin: 0;
+    }
+    &--title{
+        flex: 1;
+    }
+    &--content{
+        flex: 2;
+    }
+}
+.amount-modal-confirm{
+    margin-top: 5vh;
+}
+.amount-modal-button-container{
+    display: flex;
+    position: absolute;
+    width: 80%;
+    left: 50%;
+    bottom: 5%;
+    transform: translate(-50%, 0);
+    justify-content: space-between;
+
+    button{
+        margin: 0 .5rem;
     }
 }

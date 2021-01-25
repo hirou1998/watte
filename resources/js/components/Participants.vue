@@ -35,6 +35,7 @@ import Participant from './modules/Participant'
 import RatioModal from './modules/RatioModal'
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
+import allowAccessIfWithGroupIdMixin from '../mixins/allowAccessIfWithGroupIdMixin'
 
 export default {
     props: ['event', 'liff'],
@@ -51,7 +52,7 @@ export default {
                 picture_url: ''
             },
             modalVisibility: false,
-            isLoading: true,
+            isLoading: false,
             isApiLoading: false,
             participants: {},
         }
@@ -68,7 +69,7 @@ export default {
             })
             if(changedItems.length > 0){
                 this.isApiLoading = true
-                axios.put(`/ratio/update/${this.event.id}`, {
+                window.axios.put(`/ratio/update/${this.event.id}`, {
                     value: changedItems
                 })
                 .then(({data}) => {
@@ -83,26 +84,8 @@ export default {
                 alert('変更された比率がありませんでした。')
             }
         },
-        getGroupId(){
-            let context = window.liff.getContext()
-            if(context.type === 'none'){ //正規ルートはcontextがnone
-                let param = location.search;
-                let paramObj = this.makeObjectFromSearchParam(param)
-                let paramGroupId = paramObj['group'];
-                this.groupId = paramGroupId;
-                this.hideLoading();
-            }else{
-                if(context.type === 'group'){
-                    this.groupId = context.groupId
-                }else{
-                    alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
-                    location.href = `${this.deployUrl}/err/forbidden`;
-                    window.liff.closeWindow();
-                }
-            }
-        },
         getParticipants(){
-            axios.get(`/api/participants/${this.event.id}`)
+            window.axios.get(`/api/participants/${this.event.id}`)
             .then(({data}) => {
                 this.participants = data;
             })
@@ -110,19 +93,9 @@ export default {
                 alert("404: Not Found\nデータが見つかりませんでした。");
             })
         },
-        makeObjectFromSearchParam(param){
-            param = param.substring(1);
-            param = param.split('&');
-            let paramObj = {};
-            param.forEach(p => {
-                let dividedParam = p.split('=');
-                let paramKey = dividedParam[0];
-                let paramValue = dividedParam[1];
-                paramObj = {
-                    [paramKey]: paramValue
-                }
-            });
-            return paramObj;
+        hideLoading(){
+            this.isLoading = false;
+            this.getParticipants();
         },
         refresh(){
             let accessUser = this.participants.find(p => p.line_id === this.userInfo.userId);
@@ -170,9 +143,9 @@ export default {
         })
         .then(() => {
             this.checkAccess();
-            this.getParticipants();
+            //this.getParticipants();
         })
     },
-    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, allowAccessIfWithGroupIdMixin]
 }
 </script>

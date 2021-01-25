@@ -22,6 +22,14 @@ Vue.component('ratio-block', require('./components/modules/RatioBlock.vue').defa
 Vue.component('ratio-modal', require('./components/modules/RatioModal.vue').default);
 Vue.component('toggle-block', require('./components/modules/ToggleBlock.vue').default);
 Vue.component('api-loading', require('./components/modules/ApiLoading.vue').default);
+Vue.component('hamburger-button', require('./components/modules/HamburgerButton.vue').default);
+Vue.component('amount-itme-menu', require('./components/modules/AmountItemMenu.vue').default);
+Vue.component('modal-base', require('./components/modules/ModalBase.vue').default);
+Vue.component('amount-menu-modal', require('./components/modules/AmountMenuModal.vue').default);
+Vue.component('option-window', require('./components/modules/OptionWindow.vue').default);
+Vue.component('amount-item-option-window', require('./components/modules/AmountItemOptionWindow.vue').default);
+
+axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="user-token"]').getAttribute('content');
 
 const app = new Vue({
     el: '#app',

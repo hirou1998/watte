@@ -20,7 +20,8 @@
 import FormButton from './modules/FormButton';
 import Loading from './modules/Loading';
 import checkAccessMixin from '../mixins/checkAccessMixin'
-import checkIfUserAndGroupIsRegistered from '../mixins/checkIfUserAndGroupIsRegistered'
+import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
+import allowAccessIfWithGroupIdMixin from '../mixins/allowAccessIfWithGroupIdMixin'
 
 export default {
   components: { FormButton, Loading },
@@ -68,6 +69,6 @@ export default {
             this.checkAccess();
         })
     },
-    mixins: [checkAccessMixin, checkIfUserAndGroupIsRegistered]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, allowAccessIfWithGroupIdMixin]
 }
 </script>

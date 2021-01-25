@@ -85,6 +85,7 @@ export default {
     },
     methods: {
         add(){
+            this.isParticipated();
             let formItem;
             if(this.isPrivate){
                 formItem = {
@@ -102,14 +103,15 @@ export default {
                     private: false
                 }
             }
-
             window.axios.post(`/amounts/add/${this.event.id}`, formItem)
             .then(({data}) => {
                 let returnText;
+                let payer = this.participants.find(participant => participant.line_id == data.friend_id);
+                let payerName = payer.display_name;
                 if(data.private){
-                    returnText = "【個人】イベント: " + this.event.event_name + "\n" + data.amount + "円（" + data.note + "）\nを追加しました。";
+                    returnText = "【個人】イベント: " + this.event.event_name + "\n" + data.amount + "円（" + data.note + "）\n" + "支払い者: " + payerName + "\nを追加しました。";
                 }else{
-                    returnText = "【全体】イベント: " + this.event.event_name + "\n" + data.amount + "円（" + data.note + "）\nを追加しました。";
+                    returnText = "【全体】イベント: " + this.event.event_name + "\n" + data.amount + "円（" + data.note + "）\n" + "支払い者: " + payerName + "\nを追加しました。";
                 }
                 window.liff.sendMessages([
                     {
@@ -139,15 +141,19 @@ export default {
                 alert('これ以上相手を増やせません')
             }
         },
-        isParticiapted(){
-            let friend = this.participants.filter(p => p.line_id === this.userInfo.userId);
+        hideLoading(){
+            this.isLoading = false;
+            this.isParticipated();
+        },
+        isParticipated(){
+            let friend = this.participants.find(p => p.line_id === this.userInfo.userId);
             if(!friend){
                 alert('イベント: 「' + this.event.event_name + '」に参加してから登録してください。');
-                window.liff.closeWindow();
+                location.href = `https://liff.line.me/1655325455-B5Zjk37g/confirm?type=confirm&id=${this.event.id}&join=yes&group=${this.groupId}`;
             }
         },
     },
-    created(){
+    async created(){
         window.liff.init({
             liffId: this.liff
         })
