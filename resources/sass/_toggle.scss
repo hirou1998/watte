@@ -1,0 +1,51 @@
+.toggle-block{
+    display: flex;
+    margin: 2vh auto 1vh;
+}
+.toggle-block-txt{
+    margin-bottom: 0;
+    margin-right: 1rem;
+}
+.toggle-button{
+    position: relative;
+    height: 30px;
+
+    &__input{
+        display: none;
+    }
+
+    &__switch{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50px;
+        height: 25px;
+        background-color: #fff;
+        border: solid 1px #777;
+        border-radius: 100vh;
+
+        &[data-enabled="true"]{
+            background-color: $main-color;
+            border: solid 1px $main-color;
+        }
+
+        &::after{
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            transform: translate(0, -50%);
+            border-radius: 50%;
+            transition: .25s left, .25s background-color;
+        }
+        &[data-enabled="true"]::after{
+            background-color: #fff;
+            left: 54%;
+        }
+        &[data-enabled="false"]::after{
+            left: 2%;
+            background-color: #777;
+        }
+    }
+}

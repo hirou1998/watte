@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Amount;
 use App\Models\LineFriend;
+use App\Models\Deal;
 
 class AmountController extends Controller
 {
@@ -30,23 +31,77 @@ class AmountController extends Controller
         return view('add', ['event' => $event, 'liff' => $this->liff, 'participants' => $participants, 'deploy_url' => $this->deploy_url]);
     }
 
-    public function store(Event $event, Request $request)
+    public function store(Event $event, Deal $deal, Request $request)
     {
+        $isPrivate = $request->private;
+
         $new_amount = $event->amounts()->create([
             'friend_id' => $request->userId,
             'amount' => $request->amount,
-            'note' => $request->note
+            'note' => $request->note,
+            'private' => $isPrivate
         ]);
+
+        if($isPrivate){
+            foreach ($request->partner as $item){
+                $partner_line_id = $item['user']['userId'];
+                $new_amount->deals()->create([
+                    'payer' => $request->userId,
+                    'partner' => $partner_line_id,
+                    'amount' => $request->amount,
+                    'event_id' => $event->id
+                ]);
+            }
+        }
 
         return $new_amount;
     }
 
     public function show(Event $event, Request $request)
     {
-        $amount_lists = $event->amounts()->with('line_friend')->orderBy('created_at', 'desc')->get();
+        $participants = $event->line_friends;
 
-        $each_calc_amount = Amount::calcAmountEach($event->id);
+        $amount_lists = $event
+                            ->amounts()
+                            ->with('line_friend')
+                            ->orderBy('archive_flg', 'asc')
+                            ->orderBy('created_at', 'desc')
+                            ->with('deals')
+                            ->get();
 
-        return view('amounts', ['amount_lists' => $amount_lists, 'event' => $event, 'each_calc_amount' => $each_calc_amount, 'liff' => $this->liff, 'deploy_url' => $this->deploy_url]);
+        $eachUserData = Amount::getEachUserAmount($event->id);
+
+        return view(
+            'amounts', 
+            [
+                'amount_lists' => $amount_lists, 
+                'event' => $event, 
+                'each' => json_encode($eachUserData),
+                'participants' => $participants, 
+                'liff' => $this->liff, 
+                'deploy_url' => $this->deploy_url
+            ]
+        );
+    }
+
+    public function delete(Amount $amount)
+    {
+        $amount->delete();
+
+        return response()->json([]);
+    }
+
+    public function archive(Amount $amount)
+    {
+        $amount->update(['archive_flg' => true]);
+
+        return $amount;
+    }
+
+    public function unarchive(Amount $amount)
+    {
+        $amount->update(['archive_flg' => false]);
+
+        return $amount;
     }
 }

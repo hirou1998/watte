@@ -5,6 +5,7 @@
             :src="user.picture_url" 
             :alt="user.display_name"
             @error="setDefault"
+            :style="{width: iconSize + 'px', height: iconSize + 'px'}"
         >
         <p class="normal-txt profile-name">{{user.display_name}}</p>
     </div>
@@ -12,7 +13,7 @@
 
 <script>
 export default {
-    props: ['user'],
+    props: ['user', 'iconSize'],
     methods: {
         setDefault(event){
             event.target.src = '/images/watte-icon.png'

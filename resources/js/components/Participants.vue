@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section class="section-inner">
         <article v-if="!isLoading">
             <div class="participants-head">
                 <h1 class="txt-big">{{event.event_name}}({{participants.length}}人)</h1>
@@ -18,24 +18,29 @@
             </ul>
             <ratio-modal
                 v-show="modalVisibility"
-                v-model="participants"
+                :participants="participants"
+                @save="changeRatio"
                 @close="modalVisibility = false"
             ></ratio-modal>
         </article>
         <loading v-if="isLoading"></loading>
+        <api-loading v-if="isApiLoading"></api-loading>
     </section>
 </template>
 
 <script>
+import ApiLoading from './modules/ApiLoading'
 import Loading from './modules/Loading'
 import Participant from './modules/Participant'
 import RatioModal from './modules/RatioModal'
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
+import allowAccessIfWithGroupIdMixin from '../mixins/allowAccessIfWithGroupIdMixin'
 
 export default {
-    props: ['event', 'liff', 'participants'],
+    props: ['event', 'liff'],
     components: {
+        ApiLoading,
         Loading,
         Participant,
         RatioModal,
@@ -47,43 +52,53 @@ export default {
                 picture_url: ''
             },
             modalVisibility: false,
+            isLoading: false,
+            isApiLoading: false,
+            participants: {},
         }
     },
     methods: {
-        getGroupId(){
-            let context = window.liff.getContext()
-            if(context.type === 'none'){ //正規ルートはcontextがnone
-                let param = location.search;
-                let paramObj = this.makeObjectFromSearchParam(param)
-                let paramGroupId = paramObj['group'];
-                this.groupId = paramGroupId;
-                this.hideLoading();
-            }else{
-                if(context.type === 'group'){
-                    this.groupId = context.groupId
-                }else{
-                    alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
-                    location.href = `${this.deployUrl}/err/forbidden`;
-                    window.liff.closeWindow();
+        changeRatio(param){
+            let changedItems = param.filter(item => {
+                let currentUserInfo = this.participants.find(participant => participant.line_id === item.line_id)
+                let newRatio = item.ratio
+                let currentRatio = currentUserInfo.pivot.ratio
+                if(item.ratio !== currentUserInfo.pivot.ratio){
+                    return item
                 }
+            })
+            if(changedItems.length > 0){
+                this.isApiLoading = true
+                window.axios.put(`/ratio/update/${this.event.id}`, {
+                    value: changedItems
+                })
+                .then(({data}) => {
+                    this.participants = data;
+                    this.isApiLoading = false
+                })
+                .catch(err => {
+                    console.log(err)
+                    this.isApiLoading = false
+                })
+            }else{
+                alert('変更された比率がありませんでした。')
             }
         },
-        makeObjectFromSearchParam(param){
-            param = param.substring(1);
-            param = param.split('&');
-            let paramObj = {};
-            param.forEach(p => {
-                let dividedParam = p.split('=');
-                let paramKey = dividedParam[0];
-                let paramValue = dividedParam[1];
-                paramObj = {
-                    [paramKey]: paramValue
-                }
-            });
-            return paramObj;
+        getParticipants(){
+            window.axios.get(`/api/participants/${this.event.id}`)
+            .then(({data}) => {
+                this.participants = data;
+            })
+            .catch(err => {
+                alert("404: Not Found\nデータが見つかりませんでした。");
+            })
+        },
+        hideLoading(){
+            this.isLoading = false;
+            this.getParticipants();
         },
         refresh(){
-            let accessUser = this.participants.filter(p => p.line_id === this.userInfo.userId)[0];
+            let accessUser = this.participants.find(p => p.line_id === this.userInfo.userId);
             if(accessUser.display_name !== this.userInfo.displayName){
                 this.changeItem = {
                     ...this.changeItem,
@@ -128,8 +143,9 @@ export default {
         })
         .then(() => {
             this.checkAccess();
+            //this.getParticipants();
         })
     },
-    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, allowAccessIfWithGroupIdMixin]
 }
 </script>

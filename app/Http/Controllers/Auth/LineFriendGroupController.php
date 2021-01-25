@@ -29,6 +29,7 @@ class LineFriendGroupController extends Controller
         $group_result = $this->isGroupRegistered($group_id);
 
         if($user_result && $group_result){
+            session()->regenerate();
             session()->put('line_id', $line_id);
             session()->put('group_id', $group_id);
             return true;

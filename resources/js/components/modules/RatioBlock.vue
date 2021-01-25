@@ -15,7 +15,11 @@
 
 <script>
 export default {
-    props: ['ratioNum'],
+    props: {
+        ratioNum: {
+            type: Number,
+        }
+    },
     data: function(){
         return{
             ratioArray: []
@@ -23,6 +27,7 @@ export default {
     },
     computed: {
         ratioIcons(){
+            this.ratioArray = [];
             let num = Math.floor(this.ratioNum);
             let decimal = this.ratioNum - num;
             for(var i = 0; i < num; i++){

@@ -24,11 +24,12 @@ class ParticipantController extends Controller
     }
 
     public function index(Event $event)
-    {
-        $participants = $event->line_friends()->orderBy('created_at', 'asc')->get();
-        $liff = config('app.liff');
-        
-        return view('participants', ['participants' => $participants, 'event' => $event, 'liff' => $this->liff, 'deploy_url' => $this->deploy_url]);
+    {        
+        return view('participants', [
+                'event' => $event, 
+                'liff' => $this->liff, 
+                'deploy_url' => $this->deploy_url
+            ]);
     }
 
     public function update(LineFriend $friend, Request $request)

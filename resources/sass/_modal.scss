@@ -4,16 +4,17 @@
     height: 100%;
     top: 0;
     left: 0;
-}
-.modal-base::after{
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: #eee;
-    opacity: .5;
-    top: 0;
-    left: 0;
+
+    &::after{
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: #eee;
+        opacity: .5;
+        top: 0;
+        left: 0;
+    }
 }
 .modal-inner{
     position: absolute;
@@ -27,4 +28,20 @@
     border-radius: 5px;
     padding: 2vw;
     overflow-y: scroll;
+    border: solid 1px #353535;
+
+    &::before{
+        content: "";
+        background-image: url(/images/logo.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        opacity: .2;
+        top: 0;
+        left: 0;
+        background-size: 50%;
+        z-index: -1;
+    }
 }

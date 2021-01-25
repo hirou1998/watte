@@ -1,5 +1,5 @@
 <template>
-    <section class="content-container">
+    <section class="section-inner">
         <article v-if="!isLoading" class="vertical-center-container">
             <template v-if="isJoining">
                 <p class="normal-txt text-center">{{userInfo.displayName}}さん<br>イベント: {{ event.event_name }} に参加します。<br>よろしいですか？</p>
@@ -20,6 +20,8 @@
 import FormButton from './modules/FormButton';
 import Loading from './modules/Loading';
 import checkAccessMixin from '../mixins/checkAccessMixin'
+import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
+import allowAccessIfWithGroupIdMixin from '../mixins/allowAccessIfWithGroupIdMixin'
 
 export default {
   components: { FormButton, Loading },
@@ -67,6 +69,6 @@ export default {
             this.checkAccess();
         })
     },
-    mixins: [checkAccessMixin]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, allowAccessIfWithGroupIdMixin]
 }
 </script>

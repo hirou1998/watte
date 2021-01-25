@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="line-id" content="{{ session()->get('line_id') ?? '' }}">
     <meta name="group-id" content="{{ session()->get('group_id') ?? '' }}">
+    <meta name="user-token" content="{{ session()->get('_token') ?? '' }}">
     <title>@yield('title')</title>
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">

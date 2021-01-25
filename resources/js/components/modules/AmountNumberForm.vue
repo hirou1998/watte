@@ -1,7 +1,10 @@
 <template>
     <div class="form-group">
         <p class="normal-txt">金額</p>
-        <input type="number" v-model="number" class="form-control">円
+        <div class="d-flex amount-number-block">
+            <input type="number" v-model="number" class="form-control">
+            <p class="small-txt mb-0 ml-2">円</p>
+        </div>
     </div>
 </template>
 

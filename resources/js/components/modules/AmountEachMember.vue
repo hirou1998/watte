@@ -1,7 +1,7 @@
 <template>
     <li class="amount-item">
         <div class="amount-head-container">
-            <profile-block :user="each.line_friend"></profile-block>
+            <profile-block :user="each.line_friend" iconSize="50"></profile-block>
             <div>
                 <div class="amount-times">
                     <p class="normal-txt mb-0">{{times}}<span class="txt-smaller">倍</span></p>
@@ -22,6 +22,17 @@
                 >{{gapDivided}} <span class="smaller-txt">円</span></td>
             </tr>
         </table>
+        <ul>
+            <li
+                v-for="deal in each.deals"
+                :key="deal.partner.line_id"
+            >
+                <profile-block :user="deal.partner" iconSize="20"></profile-block>
+                {{deal.pay_sum}}
+                {{deal.paid_sum}}
+                {{deal.pay_sum - deal.paid_sum}}
+            </li>
+        </ul>
     </li>
 </template>
 
@@ -30,7 +41,7 @@ import ProfileBlock from './ProfileBlock';
 import RatioBlock from './RatioBlock'
 
 export default {
-    props: ['each', 'totalAmount', 'totalRatio', 'participantsNum'],
+    props: ['each', 'totalAmount', 'totalRatio', 'participants'],
     components: {
         ProfileBlock,
         RatioBlock
@@ -40,21 +51,21 @@ export default {
             return Math.ceil(Number(this.totalAmount) / Number(this.totalRatio) * Number(this.ratio));
         },
         gap(){
-            let calcGap = Number(this.each.amount_sum) - this.mustPayment;
+            let calcGap = Number(this.each.sum) - this.mustPayment;
             return isNaN(calcGap) ? 0 : calcGap;
         },
         gapDivided(){
             return String(this.gap).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
         },
         sum(){
-            return String(this.each.amount_sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+            return String(this.each.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
         },
         ratio(){
-            return this.each.line_friend.events[0].pivot.ratio;
+            return this.each.line_friend.pivot.ratio;
         },
         times(){
-            return Math.round(this.participantsNum * this.ratio / this.totalRatio * 100) / 100;
-        }
+            return Math.ceil(this.participants.length * this.ratio / this.totalRatio * 100) / 100;
+        },
     }
 }
 </script>

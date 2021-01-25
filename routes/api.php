@@ -14,8 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-Route::get('/linefriend', 'Api\LineFriendController@isRegistered')->name('linefriend.isRegistered');
+Route::get('/participants/{event}', 'Api\ParitipantController@index')->name('api.participants');
 Route::post('/line/callback', 'Api\LineBotController@callback')->name('line.callback');

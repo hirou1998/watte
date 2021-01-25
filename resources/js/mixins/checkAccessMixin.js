@@ -13,7 +13,7 @@ export default{
                 lineId: this.userInfo.userId,
                 groupId: this.groupId
             })
-            .then(({data}) => {
+            .then(() => {
                 this.hideLoading();
             })
             .catch((err) => {
