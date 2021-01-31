@@ -2207,7 +2207,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 
@@ -2225,9 +2224,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     AmountTab: _modules_AmountTab__WEBPACK_IMPORTED_MODULE_4__["default"],
     Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
-  props: ['amounts', 'each', 'event', 'participants'],
+  props: ['event', 'participants'],
   data: function data() {
     return {
+      amounts: undefined,
+      each: undefined,
       tabList: [{
         id: 0,
         value: '支払いごと'
@@ -2312,7 +2313,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }
         });
 
-        _this.sortArray(_this.amounts);
+        _this.sortArray(_this.amounts, 'created_at', -1);
+
+        _this.sortArray(_this.amounts, 'archive_flg', 1);
 
         _this.targetAmount = {};
       })["catch"](function (err) {
@@ -2358,6 +2361,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.unarchiveAmount();
       }
     },
+    getAmountsData: function getAmountsData() {
+      var _this3 = this;
+
+      window.axios.get("/api/amount/lists/".concat(this.event.id)).then(function (_ref2) {
+        var data = _ref2.data;
+        _this3.amounts = data.amount_lists;
+        _this3.each = data.each;
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
     saveEditAmount: function saveEditAmount() {},
     sendMessage: function sendMessage(text) {
       window.liff.sendMessages([{
@@ -2380,10 +2394,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.menuModalVisibility = true;
       this.targetAmount = amount;
     },
-    sortArray: function sortArray(targetArray) {
+    sortArray: function sortArray(targetArray, key, order) {
       targetArray.sort(function (a, b) {
-        if (a.archive_flg < b.archive_flg) return -1;
-        if (a.archive_flg > b.archive_flg) return 1;
+        if (a[key] < b[key]) return -1 * order;
+        if (a[key] > b[key]) return 1 * order;
         return 0;
       });
     },
@@ -2391,10 +2405,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.archiveRelatedAction('unarchive');
     }
   },
-  mounted: function mounted() {
+  created: function created() {
+    var _this4 = this;
+
     window.liff.init({
       liffId: this.liff
-    }).then(function (data) {//this.checkAccess();
+    }).then(function (data) {
+      _this4.getAmountsData(); //this.checkAccess();
+
     });
   },
   mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_7__["default"]]
@@ -2564,7 +2582,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         picture_url: ''
       },
       modalVisibility: false,
-      isLoading: false,
+      isLoading: true,
       isApiLoading: false,
       participants: {}
     };
@@ -2659,8 +2677,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this4.checkAccess(); //this.getParticipants();
-
+      _this4.checkAccess();
     });
   },
   mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_6__["default"]]
@@ -2716,7 +2733,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['liff', 'event'],
   data: function data() {
     return {
-      isLoading: false
+      isLoading: true
     };
   },
   computed: {
@@ -2748,9 +2765,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    var _this = this;
+
     window.liff.init({
       liffId: this.liff
-    }).then(function () {//this.checkAccess();
+    }).then(function () {
+      _this.checkAccess();
     });
   },
   mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_1__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_2__["default"]]
@@ -3115,6 +3135,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3196,7 +3218,7 @@ __webpack_require__.r(__webpack_exports__);
     FormButton: _FormButton__WEBPACK_IMPORTED_MODULE_0__["default"],
     ModalBase: _ModalBase__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  props: ['modalType', 'target'],
+  props: ['modalType', 'target', 'visibility'],
   methods: {
     cancel: function cancel() {
       this.close();
@@ -3492,9 +3514,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['visibility'],
   methods: {
     close: function close() {
+      document.getElementById('modal-inner').dataset.visibility = 'false';
       this.$emit('close');
     }
   }
@@ -3511,8 +3542,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
 //
 //
 //
@@ -3664,7 +3693,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _FormButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormButton */ "./resources/js/components/modules/FormButton.vue");
-/* harmony import */ var _ProfileBlock__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ProfileBlock */ "./resources/js/components/modules/ProfileBlock.vue");
+/* harmony import */ var _ModalBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ModalBase */ "./resources/js/components/modules/ModalBase.vue");
+/* harmony import */ var _ProfileBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ProfileBlock */ "./resources/js/components/modules/ProfileBlock.vue");
 //
 //
 //
@@ -3689,13 +3719,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['participants'],
+  props: ['participants', 'visibility'],
   components: {
     FormButton: _FormButton__WEBPACK_IMPORTED_MODULE_0__["default"],
-    ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_1__["default"]
+    ModalBase: _ModalBase__WEBPACK_IMPORTED_MODULE_1__["default"],
+    ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
@@ -40379,14 +40413,6 @@ var render = function() {
       _vm.isLoading ? _c("loading") : _vm._e(),
       _vm._v(" "),
       _c("amount-item-option-window", {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.menuModalVisibility,
-            expression: "menuModalVisibility"
-          }
-        ],
         attrs: {
           visibility: _vm.menuModalVisibility,
           target: _vm.targetAmount
@@ -40401,17 +40427,19 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _vm.modalVisibility
-        ? _c("amount-menu-modal", {
-            attrs: { "modal-type": _vm.modalType, target: _vm.targetAmount },
-            on: {
-              close: function($event) {
-                _vm.modalVisibility = false
-              },
-              execute: _vm.executeAction
-            }
-          })
-        : _vm._e()
+      _c("amount-menu-modal", {
+        attrs: {
+          "modal-type": _vm.modalType,
+          target: _vm.targetAmount,
+          visibility: _vm.modalVisibility
+        },
+        on: {
+          close: function($event) {
+            _vm.modalVisibility = false
+          },
+          execute: _vm.executeAction
+        }
+      })
     ],
     1
   )
@@ -40577,15 +40605,10 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("ratio-modal", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.modalVisibility,
-                    expression: "modalVisibility"
-                  }
-                ],
-                attrs: { participants: _vm.participants },
+                attrs: {
+                  visibility: _vm.modalVisibility,
+                  participants: _vm.participants
+                },
                 on: {
                   save: _vm.changeRatio,
                   close: function($event) {
@@ -41118,75 +41141,84 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "section",
-    { staticClass: "modal-base" },
-    [
-      _c("option-window", {
-        attrs: { visibility: _vm.visibility },
-        scopedSlots: _vm._u([
-          {
-            key: "default",
-            fn: function() {
-              return [
-                _c(
-                  "ul",
-                  { staticClass: "option-block" },
-                  [
-                    _c("li", { staticClass: "option-button" }, [
-                      _vm._v("支払い内容を編集")
-                    ]),
-                    _vm._v(" "),
-                    [
-                      _vm.target.archive_flg == 0
-                        ? _c(
-                            "li",
-                            {
-                              staticClass: "option-button",
-                              on: { click: _vm.archiveAmount }
-                            },
-                            [_vm._v("精算済にする")]
-                          )
-                        : _c(
-                            "li",
-                            {
-                              staticClass: "option-button",
-                              on: { click: _vm.unarchiveAmount }
-                            },
-                            [_vm._v("未精算に戻す")]
-                          )
-                    ],
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      {
-                        staticClass: "option-button btn-danger",
-                        on: { click: _vm.deleteAmount }
-                      },
-                      [_vm._v("削除する")]
-                    )
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _vm.visibility
+      ? _c(
+          "section",
+          { staticClass: "modal-base" },
+          [
+            _c("option-window", {
+              attrs: { visibility: _vm.visibility },
+              scopedSlots: _vm._u(
+                [
                   {
-                    staticClass: "option-block option-button",
-                    attrs: { "data-type": "cancel" },
-                    on: { click: _vm.close }
-                  },
-                  [_vm._v("取消")]
-                )
-              ]
-            },
-            proxy: true
-          }
-        ])
-      })
-    ],
-    1
-  )
+                    key: "default",
+                    fn: function() {
+                      return [
+                        _c(
+                          "ul",
+                          { staticClass: "option-block" },
+                          [
+                            _c("li", { staticClass: "option-button" }, [
+                              _vm._v("支払い内容を編集")
+                            ]),
+                            _vm._v(" "),
+                            [
+                              _vm.target.archive_flg == 0
+                                ? _c(
+                                    "li",
+                                    {
+                                      staticClass: "option-button",
+                                      on: { click: _vm.archiveAmount }
+                                    },
+                                    [_vm._v("精算済にする")]
+                                  )
+                                : _c(
+                                    "li",
+                                    {
+                                      staticClass: "option-button",
+                                      on: { click: _vm.unarchiveAmount }
+                                    },
+                                    [_vm._v("未精算に戻す")]
+                                  )
+                            ],
+                            _vm._v(" "),
+                            _c(
+                              "li",
+                              {
+                                staticClass: "option-button btn-danger",
+                                on: { click: _vm.deleteAmount }
+                              },
+                              [_vm._v("削除する")]
+                            )
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "option-block option-button",
+                            attrs: { "data-type": "cancel" },
+                            on: { click: _vm.close }
+                          },
+                          [_vm._v("取消")]
+                        )
+                      ]
+                    },
+                    proxy: true
+                  }
+                ],
+                null,
+                false,
+                3780058934
+              )
+            })
+          ],
+          1
+        )
+      : _vm._e()
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -41211,10 +41243,11 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("modal-base", {
+    attrs: { visibility: _vm.visibility },
     on: { close: _vm.close },
     scopedSlots: _vm._u([
       {
-        key: "default",
+        key: "content",
         fn: function() {
           return [
             _c("div", { staticClass: "amount-modal-inner" }, [
@@ -41264,47 +41297,47 @@ var render = function() {
                   _vm._v(_vm._s(_vm.modalType))
                 ]),
                 _vm._v("してもいいですか？")
-              ])
-            ]),
+              ]),
+              _vm._v(" "),
+              _vm.modalType == "精算"
+                ? _c("p", { staticClass: "note-txt amount-modal-note" }, [
+                    _vm._v(
+                      "※支払いを精算すると、参加者全員の支払額に精算額÷参加人数の金額が加算されます。イベントの合計金額は変わりません。一度精算済にした支払いを未精算に戻すことは可能です。"
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.modalType == "削除"
+                ? _c("p", { staticClass: "note-txt amount-modal-note" }, [
+                    _vm._v(
+                      "※支払いを削除すると元に戻すことはできません。イベントの支払い一覧や合計金額も変化します。"
+                    )
+                  ])
+                : _vm._e()
+            ])
+          ]
+        },
+        proxy: true
+      },
+      {
+        key: "button",
+        fn: function() {
+          return [
+            _c("form-button", {
+              attrs: {
+                value: _vm.modalType + "する",
+                type:
+                  _vm.modalType == "精算" || _vm.modalType == "未精算"
+                    ? "accept"
+                    : "deny"
+              },
+              on: { send: _vm.execute }
+            }),
             _vm._v(" "),
-            _vm.modalType == "精算"
-              ? _c("p", { staticClass: "note-txt amount-modal-note" }, [
-                  _vm._v(
-                    "※支払いを精算すると、参加者全員の支払額に精算額÷参加人数の金額が加算されます。イベントの合計金額は変わりません。一度精算済にした支払いを未精算に戻すことは可能です。"
-                  )
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.modalType == "削除"
-              ? _c("p", { staticClass: "note-txt amount-modal-note" }, [
-                  _vm._v(
-                    "※支払いを削除すると元に戻すことはできません。イベントの支払い一覧や合計金額も変化します。"
-                  )
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "amount-modal-button-container" },
-              [
-                _c("form-button", {
-                  attrs: {
-                    value: _vm.modalType + "する",
-                    type:
-                      _vm.modalType == "精算" || _vm.modalType == "未精算"
-                        ? "accept"
-                        : "deny"
-                  },
-                  on: { send: _vm.execute }
-                }),
-                _vm._v(" "),
-                _c("form-button", {
-                  attrs: { value: "取消", type: "cancel" },
-                  on: { send: _vm.cancel }
-                })
-              ],
-              1
-            )
+            _c("form-button", {
+              attrs: { value: "取消", type: "cancel" },
+              on: { send: _vm.cancel }
+            })
           ]
         },
         proxy: true
@@ -41696,11 +41729,37 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "section",
-    { staticClass: "modal-base", on: { click: _vm.close } },
-    [_c("div", { staticClass: "modal-inner" }, [_vm._t("default")], 2)]
-  )
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _vm.visibility
+      ? _c("section", { staticClass: "modal-base", on: { click: _vm.close } }, [
+          _c(
+            "div",
+            {
+              staticClass: "modal-inner js-slide-up-down",
+              attrs: {
+                id: "modal-inner",
+                "data-visibility": _vm.visibility === true ? "true" : "false"
+              }
+            },
+            [
+              _c(
+                "div",
+                { staticClass: "modal-inner-content" },
+                [_vm._t("content")],
+                2
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "modal-inner-button" },
+                [_vm._t("button")],
+                2
+              )
+            ]
+          )
+        ])
+      : _vm._e()
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -41724,24 +41783,15 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("transition", { attrs: { name: "slide" } }, [
-    _c(
-      "section",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.visibility,
-            expression: "visibility"
-          }
-        ],
-        staticClass: "option-window"
-      },
-      [_vm._t("default")],
-      2
-    )
-  ])
+  return _c(
+    "section",
+    {
+      staticClass: "option-window js-slide-up-down",
+      attrs: { "data-visibility": _vm.visibility }
+    },
+    [_vm._t("default")],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -41887,66 +41937,67 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "section",
-    { staticClass: "modal-base ratio-modal", on: { click: _vm.close } },
-    [
-      _c(
-        "div",
-        {
-          staticClass: "modal-inner ratio-modal-inner",
-          on: {
-            click: function($event) {
-              $event.stopPropagation()
-            }
-          }
-        },
-        [
-          _c(
-            "ul",
-            _vm._l(_vm.participants, function(participant) {
-              return _c(
-                "li",
-                { key: participant.line_id },
-                [
-                  _c("profile-block", {
-                    attrs: { user: participant, iconSize: "30" }
-                  }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group ratio-form-block" }, [
-                    _c("p", { staticClass: "small-txt ratio-form-text" }, [
-                      _vm._v("現在の比率：")
-                    ]),
+  return _c("modal-base", {
+    attrs: { visibility: _vm.visibility },
+    on: { close: _vm.close },
+    scopedSlots: _vm._u([
+      {
+        key: "content",
+        fn: function() {
+          return [
+            _c(
+              "ul",
+              _vm._l(_vm.participants, function(participant) {
+                return _c(
+                  "li",
+                  { key: participant.line_id },
+                  [
+                    _c("profile-block", {
+                      attrs: { user: participant, iconSize: "30" }
+                    }),
                     _vm._v(" "),
-                    _c("input", {
-                      ref: "ratio-" + participant.line_id,
-                      refInFor: true,
-                      staticClass: "form-control ratio-form-input",
-                      attrs: { type: "number", step: "0.01" },
-                      domProps: { value: participant.pivot.ratio }
-                    })
-                  ])
-                ],
-                1
-              )
+                    _c("div", { staticClass: "form-group ratio-form-block" }, [
+                      _c("p", { staticClass: "small-txt ratio-form-text" }, [
+                        _vm._v("現在の比率：")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        ref: "ratio-" + participant.line_id,
+                        refInFor: true,
+                        staticClass: "form-control ratio-form-input",
+                        attrs: { type: "number", step: "0.01" },
+                        domProps: { value: participant.pivot.ratio }
+                      })
+                    ])
+                  ],
+                  1
+                )
+              }),
+              0
+            )
+          ]
+        },
+        proxy: true
+      },
+      {
+        key: "button",
+        fn: function() {
+          return [
+            _c("form-button", {
+              attrs: { value: "保存", type: "accept" },
+              on: { send: _vm.send }
             }),
-            0
-          ),
-          _vm._v(" "),
-          _c("form-button", {
-            attrs: { value: "保存", type: "accept" },
-            on: { send: _vm.send }
-          }),
-          _vm._v(" "),
-          _c("form-button", {
-            attrs: { value: "取消", type: "deny" },
-            on: { send: _vm.cancel }
-          })
-        ],
-        1
-      )
-    ]
-  )
+            _vm._v(" "),
+            _c("form-button", {
+              attrs: { value: "取消", type: "deny" },
+              on: { send: _vm.cancel }
+            })
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
 }
 var staticRenderFns = []
 render._withStripped = true

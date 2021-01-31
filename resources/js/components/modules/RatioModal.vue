@@ -1,6 +1,6 @@
 <template>
-    <section class="modal-base ratio-modal" @click="close">
-        <div class="modal-inner ratio-modal-inner" @click.stop>
+    <modal-base @close="close" :visibility="visibility">
+        <template v-slot:content>
             <ul>
                 <li v-for="participant in participants" :key="participant.line_id">
                     <profile-block :user="participant" iconSize="30"></profile-block>
@@ -16,20 +16,24 @@
                     </div>
                 </li>
             </ul>
+        </template>
+        <template v-slot:button>
             <form-button value="保存" type="accept" @send="send"></form-button>
             <form-button value="取消" type="deny" @send="cancel"></form-button>
-        </div>
-    </section>
+        </template>
+    </modal-base>
 </template>
 
 <script>
 import FormButton from './FormButton';
+import ModalBase from './ModalBase'
 import ProfileBlock from './ProfileBlock'
 
 export default {
-    props: ['participants'],
+    props: ['participants', 'visibility'],
     components: {
         FormButton,
+        ModalBase,
         ProfileBlock
     },
     data(){

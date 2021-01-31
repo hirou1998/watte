@@ -1,13 +1,11 @@
 <template>
-    <transition name="slide">
-        <section class="option-window" v-show="visibility">
-            <slot></slot>
-        </section>
-    </transition>
+    <section class="option-window js-slide-up-down" :data-visibility="visibility">
+        <slot></slot>
+    </section>
 </template>
 
 <script>
 export default {
-    props: ['visibility']
+    props: ['visibility'],
 }
 </script>

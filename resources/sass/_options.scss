@@ -2,9 +2,8 @@
     position: absolute;
     width: 96%;
     bottom: 0;
-    left: 50%;
+    left: 2%;
     z-index: 1;
-    transform: translate(-50%, 0);
     padding-bottom: 1vh;
 }
 .option-block{
@@ -27,11 +26,4 @@
 }
 .fade-enter, .fade-leave-to{
     opacity: 0;
-}
-.slide-enter-active, .slide-leave-active{
-    transform: translate(-50%, 0);
-    transition: transform .3s;
-}
-.slide-enter, .slide-leave-to{
-    transform: translate(-50%, 100%);
 }

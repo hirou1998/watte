@@ -17,7 +17,7 @@
                 ></participant>
             </ul>
             <ratio-modal
-                v-show="modalVisibility"
+                :visibility="modalVisibility"
                 :participants="participants"
                 @save="changeRatio"
                 @close="modalVisibility = false"
@@ -52,7 +52,7 @@ export default {
                 picture_url: ''
             },
             modalVisibility: false,
-            isLoading: false,
+            isLoading: true,
             isApiLoading: false,
             participants: {},
         }
@@ -143,7 +143,6 @@ export default {
         })
         .then(() => {
             this.checkAccess();
-            //this.getParticipants();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, allowAccessIfWithGroupIdMixin]

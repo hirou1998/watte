@@ -11539,16 +11539,6 @@ a:hover {
   width: 1.2rem;
 }
 
-.amount-modal-inner {
-  display: flex;
-  flex-direction: column;
-  height: 75%;
-  width: 80%;
-  margin: 0 auto;
-  justify-content: center;
-  align-items: flex-start;
-}
-
 .amount-modal-block {
   display: flex;
   align-items: center;
@@ -11572,20 +11562,6 @@ a:hover {
 
 .amount-modal-confirm {
   margin-top: 5vh;
-}
-
-.amount-modal-button-container {
-  display: flex;
-  position: absolute;
-  width: 80%;
-  left: 50%;
-  bottom: 5%;
-  transform: translate(-50%, 0);
-  justify-content: space-between;
-}
-
-.amount-modal-button-container button {
-  margin: 0 0.5rem;
 }
 
 .setting-container {
@@ -11733,25 +11709,25 @@ a:hover {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: #eee;
-  opacity: 0.5;
+  background-color: #000;
+  opacity: 0.3;
   top: 0;
   left: 0;
 }
 
 .modal-inner {
   position: absolute;
-  width: 80%;
-  height: 80%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 100%;
+  min-height: 60%;
+  bottom: 0;
+  left: 0;
   background-color: #fff;
   z-index: 1;
-  border-radius: 5px;
+  border-radius: 10px 10px 0 0;
   padding: 2vw;
   overflow-y: scroll;
-  border: solid 1px #353535;
+  opacity: 0;
+  transform: translate(0, 100vh);
 }
 
 .modal-inner::before {
@@ -11767,6 +11743,125 @@ a:hover {
   left: 0;
   background-size: 50%;
   z-index: -1;
+}
+
+.modal-inner-content {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  height: 70%;
+  overflow-y: scroll;
+  margin: 0 auto;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -60%);
+}
+
+.modal-inner-button {
+  display: flex;
+  position: absolute;
+  width: 80%;
+  left: 50%;
+  bottom: 5%;
+  transform: translate(-50%, 0);
+  justify-content: space-between;
+}
+
+.modal-inner-button button {
+  margin: 0 0.5rem;
+}
+
+.js-slide-up-down[data-visibility=true] {
+  -webkit-animation: slideUp 0.2s linear 0s 1 forwards;
+  animation: slideUp 0.2s linear 0s 1 forwards;
+}
+
+.js-slide-up-down[data-visibility=false] {
+  -webkit-animation: slideDown 0.2s linear 0s 1 forwards;
+  animation: slideDown 0.2s linear 0s 1 forwards;
+}
+
+@-webkit-keyframes slideUp {
+  0% {
+    display: none;
+    opacity: 0;
+    transform: translate(0, 100vh);
+  }
+
+  1% {
+    display: block;
+    opacity: 1;
+    transform: translate(0, 100vh);
+  }
+
+  100% {
+    display: block;
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    display: none;
+    opacity: 0;
+    transform: translate(0, 100vh);
+  }
+
+  1% {
+    display: block;
+    opacity: 1;
+    transform: translate(0, 100vh);
+  }
+
+  100% {
+    display: block;
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@-webkit-keyframes slideDown {
+  0% {
+    display: block;
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  99% {
+    display: block;
+    opacity: 1;
+    transform: translate(0, 100vh);
+  }
+
+  100% {
+    display: none;
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    display: block;
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  99% {
+    display: block;
+    opacity: 1;
+    transform: translate(0, 100vh);
+  }
+
+  100% {
+    display: none;
+    opacity: 0;
+    transform: translate(0, 0);
+  }
 }
 
 .api-loading {
@@ -11994,9 +12089,8 @@ a:hover {
   position: absolute;
   width: 96%;
   bottom: 0;
-  left: 50%;
+  left: 2%;
   z-index: 1;
-  transform: translate(-50%, 0);
   padding-bottom: 1vh;
 }
 
@@ -12024,16 +12118,5 @@ a:hover {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
-}
-
-.slide-enter-active,
-.slide-leave-active {
-  transform: translate(-50%, 0);
-  transition: transform 0.3s;
-}
-
-.slide-enter,
-.slide-leave-to {
-  transform: translate(-50%, 100%);
 }
 

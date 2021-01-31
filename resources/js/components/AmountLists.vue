@@ -37,7 +37,6 @@
         </article>
         <loading v-if="isLoading"></loading>
         <amount-item-option-window 
-            v-show="menuModalVisibility"
             :visibility="menuModalVisibility"
             :target="targetAmount"
             @close="menuModalVisibility = false"
@@ -46,11 +45,11 @@
             @unarchive="showConfirmModal"
         ></amount-item-option-window>
         <amount-menu-modal
-            v-if="modalVisibility"
             @close="modalVisibility = false"
             @execute="executeAction"
             :modal-type="modalType"
             :target="targetAmount"
+            :visibility="modalVisibility"
         ></amount-menu-modal>
     </section>
 </template>
@@ -74,9 +73,11 @@ export default {
         AmountTab,
         Loading
     },
-    props: ['amounts', 'each', 'event', 'participants'],
+    props: ['event', 'participants'],
     data: function(){
         return{
+            amounts: undefined,
+            each: undefined,
             tabList: [
                 {
                     id: 0,
@@ -163,7 +164,8 @@ export default {
                         }
                     }
                 });
-                this.sortArray(this.amounts)
+                this.sortArray(this.amounts, 'created_at', -1)
+                this.sortArray(this.amounts, 'archive_flg', 1)
                 this.targetAmount = {}
             })
             .catch(err => {
@@ -206,6 +208,16 @@ export default {
                 this.unarchiveAmount()
             }
         },
+        getAmountsData(){
+            window.axios.get(`/api/amount/lists/${this.event.id}`)
+            .then(({data}) => {
+                this.amounts = data.amount_lists;
+                this.each = data.each;
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        },
         saveEditAmount(){
 
         },
@@ -235,10 +247,10 @@ export default {
             this.menuModalVisibility = true;
             this.targetAmount = amount;
         },
-        sortArray(targetArray){
+        sortArray(targetArray, key, order){
             targetArray.sort((a, b) => {
-                if(a.archive_flg < b.archive_flg) return -1;
-                if(a.archive_flg > b.archive_flg) return 1;
+                if(a[key] < b[key]) return -1 * order;
+                if(a[key] > b[key]) return 1 * order;
                 return 0;
             })
         },
@@ -246,11 +258,12 @@ export default {
             this.archiveRelatedAction('unarchive')
         }
     },
-    mounted(){
+    created(){
         window.liff.init({
             liffId: this.liff
         })
         .then((data) => {
+            this.getAmountsData();
             //this.checkAccess();
         })
     },

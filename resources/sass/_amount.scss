@@ -144,15 +144,6 @@
         width: 1.2rem;
     }
 }
-.amount-modal-inner{
-    display: flex;
-    flex-direction: column;
-    height: 75%;
-    width: 80%;
-    margin: 0 auto;
-    justify-content: center;
-    align-items: flex-start;
-}
 .amount-modal-block{
     display: flex;
     align-items: center;
@@ -173,17 +164,4 @@
 }
 .amount-modal-confirm{
     margin-top: 5vh;
-}
-.amount-modal-button-container{
-    display: flex;
-    position: absolute;
-    width: 80%;
-    left: 50%;
-    bottom: 5%;
-    transform: translate(-50%, 0);
-    justify-content: space-between;
-
-    button{
-        margin: 0 .5rem;
-    }
 }

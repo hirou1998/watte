@@ -34,7 +34,7 @@ export default {
     props: ['liff', 'event'],
     data(){
         return{
-            isLoading: false
+            isLoading: true
         }
     },
     computed: {
@@ -75,7 +75,7 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            //this.checkAccess();
+            this.checkAccess();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]
