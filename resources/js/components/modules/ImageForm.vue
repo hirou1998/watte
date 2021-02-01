@@ -1,16 +1,16 @@
 <template>
     <div class="form-group">
         <p class="normal-txt">イベント画像</p>
-        <div class="">
+        <div class="image-form-block">
+            <img :src="previewUrl" class="image-form-preview">
             <input 
                 @change="imageUploaded"
                 type="file" 
                 name="image" 
                 accept="image/png, image/jpeg" 
-                class="form-control"
+                class="form-control image-form-control"
             >
         </div>
-        <img :src="picture.preview" class="image-form-preview">
     </div>
 </template>
 
@@ -24,6 +24,16 @@ export default {
         return {
             image: '',
             preview: '',
+            isSetImage: false
+        }
+    },
+    computed: {
+        previewUrl(){
+            if(this.picture !== ""){
+                return this.picture;
+            }else{
+                return '/images/logo.png';
+            }
         }
     },
     methods: {

@@ -39,5 +39,4 @@ Route::put('/ratio/update/{event}', 'RatioController@update');
 Route::delete('/amount/delete/{amount}', 'AmountController@delete');
 Route::put('/amount/archive/{amount}', 'AmountController@archive');
 Route::put('/amount/unarchive/{amount}', 'AmountController@unarchive');
-
-Route::get('/event/test', 'EventController@getEventImage');
+Route::get('/event/edit/{event}', 'EventController@editpage');

@@ -9,9 +9,8 @@
                         <input type="text" class="form-control" v-model="eventName" placeholder="例：〇〇旅行、〇〇飲み会">
                     </div>
                     <image-form 
-                        :picture="eventImage"
+                        :picture="preview"
                         @uploaded="changeImage"
-                        ref="image-form"
                     ></image-form>
                     <toggle-block 
                         v-model="isNotificationOn" 
@@ -58,10 +57,8 @@ export default {
             userInfo: {},
             groupId: '',
             eventName: '',
-            eventImage: {
-                preview: '',
-                file: ''
-            },
+            preview: '',
+            file: '',
             registerd: {},
             infoModalVisibility: false,
             isLoading: true,
@@ -102,13 +99,13 @@ export default {
             ])
         },
         changeImage(data){
-            this.eventImage.preview = data.preview
-            this.eventImage.file = data.file
+            this.preview = data.preview
+            this.file = data.file
         },
         send(){
             let params = new FormData()
             let notification = this.isNotificationOn ? 1 :0;
-            params.append('file', this.eventImage.file)
+            params.append('file', this.file)
             params.append('event_name', this.eventName)
             params.append('group_id', this.groupId)
             params.append('creator_id', this.userInfo.userId)

@@ -31,6 +31,7 @@ Vue.component('amount-item-option-window', require('./components/modules/AmountI
 Vue.component('info-block', require('./components/modules/InfoBlock.vue').default);
 Vue.component('info-modal', require('./components/modules/InfoModal.vue').default);
 Vue.component('image-form', require('./components/modules/ImageForm.vue').default);
+Vue.component('event-edit', require('./components/EventEdit.vue').default);
 
 axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="user-token"]').getAttribute('content');
 

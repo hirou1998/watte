@@ -59,7 +59,7 @@ export default {
         return{
             amount: '',
             note: '',
-            isLoading: false,
+            isLoading: true,
             isPrivate: false,
             partner: [
                 {
@@ -185,7 +185,7 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            //this.checkAccess();
+            this.checkAccess();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]

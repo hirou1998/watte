@@ -28,11 +28,26 @@ class EventController extends Controller
         $this->deploy_url = config('app.deploy_url');
     }
 
+    /**
+     * 割り勘開始ページ
+     */
     public function index(Request $request)
     {
         return view('index', [
             'liff' => $this->liff,
             'deploy_url' => $this->deploy_url
+        ]);
+    }
+
+    /**
+     * イベント情報編集ページ
+     */
+    public function editpage(Event $event)
+    {
+        return view('event', [
+            'liff' => $this->liff,
+            'deploy_url' => $this->deploy_url,
+            'event_id' => $event->id
         ]);
     }
 
@@ -134,14 +149,5 @@ class EventController extends Controller
             ];
             return $returnObj;
         }
-    }
-
-    public function getEventImage(Event $event)
-    {
-        $item = $event->where('id', 'adffe700-0f69-4a7b-8898-f61439be1782')->get()->first();
-
-        $image = $item->file_path;
-        $deploy_url = config('app.deploy_url');
-        return $deploy_url . '/images/logo.png';
     }
 }

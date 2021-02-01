@@ -89,7 +89,7 @@ export default {
                 }
             ],
             activeTab: 0,
-            isLoading: false,
+            isLoading: true,
             targetAmount: {},
             modalVisibility: false,
             menuModalVisibility: false,
@@ -272,7 +272,7 @@ export default {
         })
         .then((data) => {
             this.getAmountsData();
-            //this.checkAccess();
+            this.checkAccess();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]
