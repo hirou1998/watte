@@ -13,6 +13,7 @@
         "autoprefixer": "^10.1.0",
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
+        "browser-image-compression": "^1.0.14",
         "cross-env": "^7.0",
         "jquery": "^3.2",
         "laravel-mix": "^5.0.1",

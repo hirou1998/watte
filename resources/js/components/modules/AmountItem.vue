@@ -20,7 +20,8 @@
             </div>
             <p class="small-txt amount-register-date">登録日時：{{dateParser(amount.created_at)}}</p>
         </section>
-        <hamburger-button 
+        <hamburger-button
+            v-if="isPaidByMe"
             :is-clicked="hamburgerButtonClicked"
             @change="changeHamburgerButtonState"
         ></hamburger-button>

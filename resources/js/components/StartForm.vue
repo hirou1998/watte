@@ -8,6 +8,16 @@
                         <p class="normal-txt">何を割り勘しますか？</p>
                         <input type="text" class="form-control" v-model="eventName" placeholder="例：〇〇旅行、〇〇飲み会">
                     </div>
+                    <image-form 
+                        :picture="eventImage"
+                        @uploaded="changeImage"
+                        ref="image-form"
+                    ></image-form>
+                    <toggle-block 
+                        v-model="isNotificationOn" 
+                        text="Watte利用時のトーク通知"
+                        @show="showInfo"
+                    ></toggle-block>
                     <template v-if="eventName !== ''">
                         <form-button value="送信" type="accept" @send="send"></form-button>
                     </template>
@@ -17,20 +27,30 @@
                 <p class="normal-txt text-center" v-if="isRedirectView">リダイレクトします。</p>
             </template>
         </section>
+        <info-modal 
+            :visibility="infoModalVisibility"
+            @close="infoModalVisibility = false"
+        ></info-modal>
         <loading v-if="isLoading"></loading>
     </article>
 </template>
 
 <script>
 import FormButton from './modules/FormButton';
+import InfoModal from './modules/InfoModal';
+import ImageForm from './modules/ImageForm';
 import Loading from './modules/Loading';
+import ToggleBlock from './modules/ToggleBlock.vue'
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIfUserAndGroupIsRegistered from '../mixins/checkIfUserAndGroupIsRegistered'
 
 export default {
     components: {
         FormButton,
-        Loading
+        InfoModal,
+        ImageForm,
+        Loading,
+        ToggleBlock
     },
     props: ['liff', 'deployUrl'],
     data: function(){
@@ -38,8 +58,14 @@ export default {
             userInfo: {},
             groupId: '',
             eventName: '',
+            eventImage: {
+                preview: '',
+                file: ''
+            },
             registerd: {},
+            infoModalVisibility: false,
             isLoading: true,
+            isNotificationOn: true,
             isStartView: false,
             isRedirectView: false,
             otherPath: ['confirm', 'add', 'show', 'setting', 'participants'],
@@ -75,11 +101,23 @@ export default {
                 }
             ])
         },
+        changeImage(data){
+            this.eventImage.preview = data.preview
+            this.eventImage.file = data.file
+        },
         send(){
-            window.axios.post('/create/new/', {
-                event_name: this.eventName,
-                group_id: this.groupId,
-                creator_id: this.userInfo.userId
+            let params = new FormData()
+            let notification = this.isNotificationOn ? 1 :0;
+            params.append('file', this.eventImage.file)
+            params.append('event_name', this.eventName)
+            params.append('group_id', this.groupId)
+            params.append('creator_id', this.userInfo.userId)
+            params.append('notification', notification)
+            window.axios.post('/create/new/', params,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             })
             .then(({data}) => {
                 let text = "イベント: 「" + data.event_name + "」 を作成しました。\n参加しますか？";
@@ -88,17 +126,20 @@ export default {
                 window.liff.closeWindow();
             })
             .catch(e => {
-                this.sendErr();
+                this.sendErr(text);
                 window.liff.closeWindow();
             })
         },
-        sendErr(){
+        sendErr(text){
             window.liff.sendMessages([
                 {
                     type: 'text',
-                    text: 'エラーが発生しました'
+                    text: '['+ text + ']' + 'エラーが発生しました'
                 }
             ])
+        },
+        showInfo(){
+            this.infoModalVisibility = true;
         }
     },
     mounted(){

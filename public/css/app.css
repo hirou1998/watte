@@ -11365,6 +11365,10 @@ a:hover {
   font-size: 1.4rem;
 }
 
+.image-form-preview {
+  max-width: 75%;
+}
+
 .amount-item {
   padding: 1rem 1.5rem;
   background-color: #fff;
@@ -11949,12 +11953,16 @@ a:hover {
 
 .toggle-block {
   display: flex;
+  justify-content: space-between;
   margin: 2vh auto 1vh;
 }
 
 .toggle-block-txt {
   margin-bottom: 0;
   margin-right: 1rem;
+  display: flex;
+  align-items: center;
+  line-height: 1;
 }
 
 .toggle-button {
@@ -11969,7 +11977,7 @@ a:hover {
 .toggle-button__switch {
   position: absolute;
   top: 0;
-  left: 0;
+  left: -50px;
   width: 50px;
   height: 25px;
   background-color: #fff;
@@ -12118,5 +12126,26 @@ a:hover {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.info-btn {
+  background: #fff;
+  border-radius: 50%;
+  width: 15px;
+  height: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: solid 1px #3D92A4;
+  color: #3D92A4;
+  margin-left: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.info-picture {
+  max-width: 80%;
+  display: block;
+  margin: 0 auto 1rem;
 }
 

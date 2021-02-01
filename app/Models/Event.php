@@ -9,7 +9,7 @@ class Event extends UuidModel
 {
     use HasFactory;
 
-    protected $fillable = ['event_name', 'creator_id', 'group_id'];
+    protected $fillable = ['event_name', 'creator_id', 'group_id', 'notification', 'file_name', 'file_path'];
 
     public function line_friends()
     {

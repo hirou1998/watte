@@ -29,7 +29,7 @@
                 </template>
                 <button class="btn btn-success amount-user-add-button" @click="addPertner" v-if="enableToAddPartner">+支払い相手を追加する</button>
             </section>
-            <form-button value="追加" type="accept" @send="add"></form-button>
+            <form-button v-if="isFilled" value="追加" type="accept" @send="add"></form-button>
         </article>
         <loading v-if="isLoading"></loading>
     </section>
@@ -57,9 +57,9 @@ export default {
     props: ['event', 'liff', 'participants'],
     data: function(){
         return{
-            amount: 0,
+            amount: '',
             note: '',
-            isLoading: true,
+            isLoading: false,
             isPrivate: false,
             partner: [
                 {
@@ -71,6 +71,13 @@ export default {
         }
     },
     computed: {
+        isFilled(){
+            if(this.ValidateNumber(this.amount) && this.note !== '' && this.note.match(/\S/g)){
+                return true
+            }else{
+                return false
+            }
+        },
         partnerLists(){
             let partnerList = this.participants.filter(participant => participant.line_id !== this.userInfo.userId);
             return partnerList;
@@ -85,8 +92,17 @@ export default {
     },
     methods: {
         add(){
-            this.isParticipated();
             let formItem;
+            let isNumber = this.ValidateNumber(this.amount)
+            if(!this.isFilled){
+                alert('未入力の項目があります。')
+                return
+            }
+            if(!isNumber){
+                alert('金額には数字以外を入力しないでください。')
+                return
+            }
+
             if(this.isPrivate){
                 formItem = {
                     userId: this.userInfo.userId,
@@ -105,26 +121,11 @@ export default {
             }
             window.axios.post(`/amounts/add/${this.event.id}`, formItem)
             .then(({data}) => {
-                let returnText;
-                let payer = this.participants.find(participant => participant.line_id == data.friend_id);
-                let payerName = payer.display_name;
-                if(data.private){
-                    returnText = "【個人】イベント: " + this.event.event_name + "\n" + data.amount + "円（" + data.note + "）\n" + "支払い者: " + payerName + "\nを追加しました。";
+                if(this.event.notification){
+                    this.sendMessage(data)
                 }else{
-                    returnText = "【全体】イベント: " + this.event.event_name + "\n" + data.amount + "円（" + data.note + "）\n" + "支払い者: " + payerName + "\nを追加しました。";
-                }
-                window.liff.sendMessages([
-                    {
-                        type: 'text',
-                        text: returnText
-                    }
-                ])
-                .then(() => {
                     window.liff.closeWindow();
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
+                }
             })
             .catch(err => {
                 alert(err)
@@ -152,13 +153,39 @@ export default {
                 location.href = `https://liff.line.me/1655325455-B5Zjk37g/confirm?type=confirm&id=${this.event.id}&join=yes&group=${this.groupId}`;
             }
         },
+        sendMessage(data){
+            let returnText;
+            let payer = this.participants.find(participant => participant.line_id == data.friend_id);
+            let payerName = payer.display_name;
+            if(data.private){
+                returnText = "【個人】イベント: " + this.event.event_name + "\n" + data.amount + "円（" + data.note + "）\n" + "支払い者: " + payerName + "\nを追加しました。";
+            }else{
+                returnText = "【全体】イベント: " + this.event.event_name + "\n" + data.amount + "円（" + data.note + "）\n" + "支払い者: " + payerName + "\nを追加しました。";
+            }
+            window.liff.sendMessages([
+                {
+                    type: 'text',
+                    text: returnText
+                }
+            ])
+            .then(() => {
+                window.liff.closeWindow();
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        },
+        ValidateNumber(value){
+            let numberValue = value.replace(/\D/g, '');
+            return numberValue !== '' ? true : false;
+        }
     },
-    async created(){
+    created(){
         window.liff.init({
             liffId: this.liff
         })
         .then(() => {
-            this.checkAccess();
+            //this.checkAccess();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]

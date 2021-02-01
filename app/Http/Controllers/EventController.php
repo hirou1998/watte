@@ -7,6 +7,8 @@ use App\Models\Event;
 use App\Models\Group;
 use App\Models\LineFriend;
 use App\Services\Line\Event\AskJoinService;
+use Illuminate\Support\Facades\Storage;
+use Image;
 
 class EventController extends Controller
 {
@@ -44,13 +46,33 @@ class EventController extends Controller
         $event_name = $request->event_name;
         $group_id = $request->group_id;
         $creator_id = $request->creator_id;
+        $notification = $request->notification;
 
         $group = Group::where('group_id', $group_id)->get()->first();
 
-        $new_event = $group->events()->create([
-            'event_name' => $event_name,
-            'creator_id' => $creator_id
-        ]);
+        if($request->file){
+            $image_original_name = $request->file->getClientOriginalName();
+            $image_name = time() . '_' . $image_original_name . '.jpg';
+            $path = 'public/' . $image_name;
+
+            $img = Image::make($request->file);
+            Storage::disk('local')->put($path, $img->encode());
+            $url = asset('storage/images/' . $image_name);
+
+            $new_event = $group->events()->create([
+                'event_name' => $event_name,
+                'creator_id' => $creator_id,
+                'notification' => $notification,
+                'file_name' => $image_name,
+                'file_path' => 'storage/' . $image_name
+            ]);
+        }else{
+            $new_event = $group->events()->create([
+                'event_name' => $event_name,
+                'creator_id' => $creator_id,
+                'notification' => $notification,
+            ]);
+        }
 
         return $new_event;
     }
@@ -112,5 +134,14 @@ class EventController extends Controller
             ];
             return $returnObj;
         }
+    }
+
+    public function getEventImage(Event $event)
+    {
+        $item = $event->where('id', 'adffe700-0f69-4a7b-8898-f61439be1782')->get()->first();
+
+        $image = $item->file_path;
+        $deploy_url = config('app.deploy_url');
+        return $deploy_url . '/images/logo.png';
     }
 }

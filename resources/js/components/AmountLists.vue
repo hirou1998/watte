@@ -128,14 +128,17 @@ export default {
             let url
             let archive_flg_state
             let formula
+            let action
             if(type === 'archive'){
                 url = `/amount/archive/${this.targetAmount.id}`
                 archive_flg_state = 1
                 formula = 1
+                action = '精算'
             }else if(type === 'unarchive'){
                 url = `/amount/unarchive/${this.targetAmount.id}`
                 archive_flg_state = 0
                 formula = -1
+                action = '未精算'
             }
             
             window.axios.put(url)
@@ -166,6 +169,9 @@ export default {
                 });
                 this.sortArray(this.amounts, 'created_at', -1)
                 this.sortArray(this.amounts, 'archive_flg', 1)
+                if(this.event.notification){
+                    this.sendMessage(action)
+                }
                 this.targetAmount = {}
             })
             .catch(err => {
@@ -189,8 +195,9 @@ export default {
                         return item
                     }
                 })
-                let messageText = "イベント: " + this.event.event_name + "\n" + this.targetAmount.amount + "円（" + this.targetAmount.note + "）\n" + "支払い者: " + this.targetAmount.line_friend.display_name + "\nを精算済にしました。";
-                this.sendMessage(messageText)
+                if(this.event.notification){
+                    this.sendMessage('削除')
+                }
                 this.targetAmount = {}
             })
             .catch(err => {
@@ -221,11 +228,12 @@ export default {
         saveEditAmount(){
 
         },
-        sendMessage(text){
+        sendMessage(action){
+            let messageText = "イベント: " + this.event.event_name + "\n" + this.targetAmount.amount + "円（" + this.targetAmount.note + "）\n" + "支払い者: " + this.targetAmount.line_friend.display_name + "\nを" + action + "しました。";
             window.liff.sendMessages([
                 {
                     type: 'text',
-                    text: text
+                    text: messageText
                 }
             ])
             .then(() => {
