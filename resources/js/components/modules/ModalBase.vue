@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
         <section class="modal-base" @click="close" v-if="visibility">
-            <div id="modal-inner" class="modal-inner js-slide-up-down" :data-visibility="visibility === true ? 'true' : 'false'">
+            <div id="modal-inner" class="modal-inner js-slide-up-down" :data-visibility="visibility === true ? 'true' : 'false'" @click.stop>
                 <div class="modal-inner-content">
                     <slot name="content"></slot>
                 </div>

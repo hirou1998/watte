@@ -72,7 +72,6 @@ class EventController extends Controller
 
             $img = Image::make($request->file);
             Storage::disk('local')->put($path, $img->encode());
-            $url = asset('storage/images/' . $image_name);
 
             $new_event = $group->events()->create([
                 'event_name' => $event_name,
@@ -90,6 +89,42 @@ class EventController extends Controller
         }
 
         return $new_event;
+    }
+
+    /**
+     * イベント情報編集(PUT)
+     */
+    public function update(Event $event, Request $request)
+    {
+        if(!$request){
+            return false;
+        }
+        if($request->file){
+            $current_image_name = $event->file_name;
+            //元の画像を削除
+            Storage::disk('local')->delete('public/'. $current_image_name);
+
+            //新しい画像を保存
+            $image_original_name = $request->file->getClientOriginalName();
+            $image_name = time() . '_' . $image_original_name . '.jpg';
+            $path = 'public/' . $image_name;
+
+            $img = Image::make($request->file);
+            Storage::disk('local')->put($path, $img->encode());
+
+            $event->update([
+                'event_name' => $request->event_name,
+                'notification' => $request->notification,
+                'file_name' => $image_name,
+                'file_path' => 'storage/' . $image_name
+            ]);
+        }else{
+            $event->update([
+                'event_name' => $request->event_name,
+                'notification' => $request->notification,
+            ]);
+        }
+        return $event;
     }
 
     /**

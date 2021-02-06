@@ -33,7 +33,7 @@ Vue.component('info-modal', require('./components/modules/InfoModal.vue').defaul
 Vue.component('image-form', require('./components/modules/ImageForm.vue').default);
 Vue.component('event-edit', require('./components/EventEdit.vue').default);
 
-axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="user-token"]').getAttribute('content');
+axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="line-id"]').getAttribute('content');
 
 const app = new Vue({
     el: '#app',

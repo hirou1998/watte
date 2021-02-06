@@ -42,7 +42,7 @@ export default {
             return `https://liff.line.me/1655325455-B5Zjk37g/participants/${this.event.id}?group=${this.groupId}`;
         },
         eventEditUrl(){
-            return `https://liff.line.me/1655325455-B5Zjk37g/event/edit/${this.event.id}?group=${this.groupId}`;
+            return `https://liff.line.me/1655325455-B5Zjk37g/edit/${this.event.id}?group=${this.groupId}`;
         }
     },
     methods: {

@@ -1928,6 +1928,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
 /* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
 /* harmony import */ var _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/ToggleBlock.vue */ "./resources/js/components/modules/ToggleBlock.vue");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
+/* harmony import */ var _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../mixins/formValidatorMixin */ "./resources/js/mixins/formValidatorMixin.js");
 //
 //
 //
@@ -1965,6 +1967,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
 
 
 
@@ -1998,7 +2002,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     isFilled: function isFilled() {
-      if (this.ValidateNumber(this.amount) && this.note !== '' && this.note.match(/\S/g)) {
+      if (this.ValidateNumber(this.amount) && this.isTextFilled(this.note)) {
         return true;
       } else {
         return false;
@@ -2063,7 +2067,7 @@ __webpack_require__.r(__webpack_exports__);
           window.liff.closeWindow();
         }
       })["catch"](function (err) {
-        alert(err);
+        _this2.handleErr(err.response.status);
       });
     },
     addPertner: function addPertner() {
@@ -2094,6 +2098,8 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     sendMessage: function sendMessage(data) {
+      var _this4 = this;
+
       var returnText;
       var payer = this.participants.find(function (participant) {
         return participant.line_id == data.friend_id;
@@ -2112,24 +2118,20 @@ __webpack_require__.r(__webpack_exports__);
       }]).then(function () {
         window.liff.closeWindow();
       })["catch"](function (err) {
-        console.log(err);
+        _this4.handleErr(err.response.status);
       });
-    },
-    ValidateNumber: function ValidateNumber(value) {
-      var numberValue = value.replace(/\D/g, '');
-      return numberValue !== '' ? true : false;
     }
   },
   created: function created() {
-    var _this4 = this;
+    var _this5 = this;
 
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this4.checkAccess();
+      _this5.checkAccess();
     });
   },
-  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_6__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_9__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_8__["default"]]
 });
 
 /***/ }),
@@ -2148,9 +2150,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_AmountItemOptionWindow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/AmountItemOptionWindow */ "./resources/js/components/modules/AmountItemOptionWindow.vue");
 /* harmony import */ var _modules_AmountMenuModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/AmountMenuModal */ "./resources/js/components/modules/AmountMenuModal.vue");
 /* harmony import */ var _modules_AmountTab__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/AmountTab */ "./resources/js/components/modules/AmountTab.vue");
-/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
-/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
-/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
+/* harmony import */ var _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/ApiLoading */ "./resources/js/components/modules/ApiLoading.vue");
+/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
+/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2213,6 +2217,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+
+
 
 
 
@@ -2228,7 +2235,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     AmountItemOptionWindow: _modules_AmountItemOptionWindow__WEBPACK_IMPORTED_MODULE_2__["default"],
     AmountMenuModal: _modules_AmountMenuModal__WEBPACK_IMPORTED_MODULE_3__["default"],
     AmountTab: _modules_AmountTab__WEBPACK_IMPORTED_MODULE_4__["default"],
-    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_5__["default"]
+    ApiLoading: _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_5__["default"],
+    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_6__["default"]
   },
   props: ['event', 'participants'],
   data: function data() {
@@ -2243,6 +2251,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         value: 'ユーザーごと'
       }],
       activeTab: 0,
+      isApiLoading: true,
       isLoading: true,
       targetAmount: {},
       modalVisibility: false,
@@ -2281,6 +2290,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     archiveRelatedAction: function archiveRelatedAction(type) {
       var _this = this;
 
+      this.isApiLoading = true;
       var url;
       var archive_flg_state;
       var formula;
@@ -2290,16 +2300,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         url = "/amount/archive/".concat(this.targetAmount.id);
         archive_flg_state = 1;
         formula = 1;
-        action = '精算';
+        action = '精算済に';
       } else if (type === 'unarchive') {
         url = "/amount/unarchive/".concat(this.targetAmount.id);
         archive_flg_state = 0;
         formula = -1;
-        action = '未精算';
+        action = '未精算に';
       }
 
-      window.axios.put(url).then(function (_ref) {
-        var data = _ref.data;
+      window.axios.put(url).then(function () {
         var archivedAmountDivided = Math.ceil(_this.targetAmount.amount / _this.participants.length);
         _this.amounts = _this.amounts.map(function (amount) {
           if (amount.id === _this.targetAmount.id) {
@@ -2331,6 +2340,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
 
         _this.targetAmount = {};
+        _this.modalVisibility = false;
+        _this.isApiLoading = false;
       })["catch"](function (err) {
         alert(err);
       });
@@ -2341,6 +2352,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     deleteAmount: function deleteAmount() {
       var _this2 = this;
 
+      this.isApiLoading = true;
       window.axios["delete"]("/amount/delete/".concat(this.targetAmount.id)).then(function () {
         _this2.amounts = _this2.amounts.filter(function (amount) {
           return amount.id !== _this2.targetAmount.id;
@@ -2360,6 +2372,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
 
         _this2.targetAmount = {};
+        _this2.isApiLoading = false;
       })["catch"](function (err) {
         alert(err);
       });
@@ -2378,23 +2391,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     getAmountsData: function getAmountsData() {
       var _this3 = this;
 
-      window.axios.get("/api/amount/lists/".concat(this.event.id)).then(function (_ref2) {
-        var data = _ref2.data;
+      window.axios.get("/api/amount/lists/".concat(this.event.id)).then(function (_ref) {
+        var data = _ref.data;
         _this3.amounts = data.amount_lists;
         _this3.each = data.each;
+        _this3.isApiLoading = false;
       })["catch"](function (err) {
-        console.log(err);
+        _this3.handleErr(err.response.status);
       });
+    },
+    hideLoading: function hideLoading() {
+      this.isLoading = false;
+      this.getAmountsData();
     },
     saveEditAmount: function saveEditAmount() {},
     sendMessage: function sendMessage(action) {
+      var _this4 = this;
+
       var messageText = "イベント: " + this.event.event_name + "\n" + this.targetAmount.amount + "円（" + this.targetAmount.note + "）\n" + "支払い者: " + this.targetAmount.line_friend.display_name + "\nを" + action + "しました。";
       window.liff.sendMessages([{
         type: 'text',
         text: messageText
-      }]).then(function () {//window.liff.closeWindow();
-      })["catch"](function (err) {
-        alert(err);
+      }]).then(function () {})["catch"](function (err) {
+        _this4.handleErr(err.response.status);
       });
     },
     selectTab: function selectTab(tab) {
@@ -2421,17 +2440,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   created: function created() {
-    var _this4 = this;
+    var _this5 = this;
 
     window.liff.init({
       liffId: this.liff
-    }).then(function (data) {
-      _this4.getAmountsData();
-
-      _this4.checkAccess();
+    }).then(function () {
+      _this5.checkAccess();
     });
   },
-  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_7__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_7__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_8__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_9__["default"]]
 });
 
 /***/ }),
@@ -2450,6 +2467,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
 /* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
 /* harmony import */ var _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/allowAccessIfWithGroupIdMixin */ "./resources/js/mixins/allowAccessIfWithGroupIdMixin.js");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
 //
 //
 //
@@ -2468,6 +2486,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -2486,6 +2505,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     send: function send() {
+      var _this = this;
+
       window.axios.post("/confirm/register/".concat(this.event.id), {
         userId: this.userInfo.userId,
         join: this.join
@@ -2497,29 +2518,23 @@ __webpack_require__.r(__webpack_exports__);
         }]).then(function () {
           window.liff.closeWindow();
         })["catch"](function (err) {
-          console.log(err);
+          _this.handleErr(err.response.status);
         });
       })["catch"](function (err) {
-        if (err.response) {
-          var _errText = 'エラーが発生しました。[' + err.response.message + ']';
-        } else {
-          var _errText2 = '予期せぬエラーが発生しました。';
-        }
-
-        alert(errText);
+        _this.handleErr(err.response.status);
       });
     }
   },
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this.checkAccess();
+      _this2.checkAccess();
     });
   },
-  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_2__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_3__["default"], _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_4__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_2__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_3__["default"], _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_5__["default"]]
 });
 
 /***/ }),
@@ -2534,11 +2549,22 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/ApiLoading */ "./resources/js/components/modules/ApiLoading.vue");
-/* harmony import */ var _modules_ImageForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/ImageForm */ "./resources/js/components/modules/ImageForm.vue");
-/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
-/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
-/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
-/* harmony import */ var _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mixins/allowAccessIfWithGroupIdMixin */ "./resources/js/mixins/allowAccessIfWithGroupIdMixin.js");
+/* harmony import */ var _modules_FormButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/FormButton */ "./resources/js/components/modules/FormButton.vue");
+/* harmony import */ var _modules_ImageForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/ImageForm */ "./resources/js/components/modules/ImageForm.vue");
+/* harmony import */ var _modules_InfoModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/InfoModal */ "./resources/js/components/modules/InfoModal.vue");
+/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
+/* harmony import */ var _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/ToggleBlock.vue */ "./resources/js/components/modules/ToggleBlock.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
+/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
+/* harmony import */ var _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../mixins/allowAccessIfWithGroupIdMixin */ "./resources/js/mixins/allowAccessIfWithGroupIdMixin.js");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
+/* harmony import */ var _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../mixins/formValidatorMixin */ "./resources/js/mixins/formValidatorMixin.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2556,6 +2582,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
 
 
 
@@ -2566,49 +2612,119 @@ __webpack_require__.r(__webpack_exports__);
   props: ['liff', 'deployUrl', 'eventId'],
   components: {
     ApiLoading: _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_0__["default"],
-    ImageForm: _modules_ImageForm__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_2__["default"]
+    FormButton: _modules_FormButton__WEBPACK_IMPORTED_MODULE_1__["default"],
+    ImageForm: _modules_ImageForm__WEBPACK_IMPORTED_MODULE_2__["default"],
+    InfoModal: _modules_InfoModal__WEBPACK_IMPORTED_MODULE_3__["default"],
+    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_4__["default"],
+    ToggleBlock: _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
   data: function data() {
     return {
       event: {},
-      isLoading: true
+      editingData: {
+        event_name: null,
+        file_path: null,
+        file: null,
+        notification: null
+      },
+      isApiLoading: true,
+      isLoading: false,
+      infoModalVisibility: false
     };
   },
   computed: {
     url: function url() {
-      if (this.event.file_path) {
-        return '/' + this.event.file_path;
+      if (this.editingData.file_path) {
+        if (this.editingData.file_path.match(/^storage.*/)) {
+          return '/' + this.editingData.file_path;
+        } else {
+          return this.editingData.file_path;
+        }
       } else {
         return '';
       }
     }
   },
   methods: {
-    changeImage: function changeImage() {},
+    cancel: function cancel() {
+      this.editingData = _objectSpread(_objectSpread({}, this.event), {}, {
+        file: null
+      });
+    },
+    changeImage: function changeImage(data) {
+      this.editingData.file_path = data.preview;
+      this.editingData.file = data.file;
+    },
     getEventInfo: function getEventInfo() {
       var _this = this;
 
       axios.get("/api/event/".concat(this.eventId)).then(function (_ref) {
         var data = _ref.data;
         _this.event = data;
+
+        _this.setEditingData();
+
+        _this.isApiLoading = false;
       })["catch"](function (err) {
-        console.log(err);
+        _this.handleErr(err.response.status);
+      });
+    },
+    hideLoading: function hideLoading() {
+      this.isLoading = false;
+      this.getEventInfo();
+    },
+    setEditingData: function setEditingData() {
+      this.editingData.event_name = this.event.event_name;
+      this.editingData.file_path = this.event.file_path;
+      this.editingData.notification = this.event.notification;
+    },
+    showInfo: function showInfo() {
+      this.infoModalVisibility = true;
+    },
+    send: function send() {
+      var _this2 = this;
+
+      if (!this.isTextFilled(this.editingData.event_name)) {
+        alert('イベント名が空欄です。');
+        return;
+      }
+
+      this.isApiLoading = true;
+      var sendData = new FormData();
+      var notification = this.editingData.notification ? 1 : 0;
+      sendData.append('event_name', this.editingData.event_name);
+
+      if (this.editingData.file) {
+        sendData.append('file', this.editingData.file);
+      }
+
+      sendData.append('notification', notification);
+      window.axios.post("/event/edit/".concat(this.eventId), sendData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'X-HTTP-Method-Override': 'PUT'
+        }
+      }).then(function (_ref2) {
+        var data = _ref2.data;
+        _this2.isApiLoading = false;
+      })["catch"](function (err) {
+        _this2.handleErr(err.response.status);
       });
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this3 = this;
 
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this2.getEventInfo();
+      _this3.hideLoading(); //this.checkAccess();
 
-      _this2.checkAccess();
+    })["catch"](function (err) {
+      alert('データの取得に失敗しました');
     });
   },
-  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_3__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_5__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_7__["default"], _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_8__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_9__["default"], _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_10__["default"]]
 });
 
 /***/ }),
@@ -2629,6 +2745,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
 /* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
 /* harmony import */ var _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/allowAccessIfWithGroupIdMixin */ "./resources/js/mixins/allowAccessIfWithGroupIdMixin.js");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2672,6 +2789,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['event', 'liff'],
   components: {
@@ -2688,7 +2806,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       },
       modalVisibility: false,
       isLoading: true,
-      isApiLoading: false,
+      isApiLoading: true,
       participants: {}
     };
   },
@@ -2730,9 +2848,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       window.axios.get("/api/participants/".concat(this.event.id)).then(function (_ref2) {
         var data = _ref2.data;
+        _this2.isApiLoading = false;
         _this2.participants = data;
       })["catch"](function (err) {
-        alert("404: Not Found\nデータが見つかりませんでした。");
+        _this2.handleErr(err.response.status);
       });
     },
     hideLoading: function hideLoading() {
@@ -2769,7 +2888,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           event: this.event.id
         }).then(function (_ref3) {
           var data = _ref3.data;
-        })["catch"](function (err) {});
+        })["catch"](function (err) {
+          _this3.handleErr(err.response.status);
+        });
       }
     },
     showModal: function showModal() {
@@ -2785,7 +2906,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       _this4.checkAccess();
     });
   },
-  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_6__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_7__["default"]]
 });
 
 /***/ }),
@@ -2846,7 +2967,7 @@ __webpack_require__.r(__webpack_exports__);
       return "https://liff.line.me/1655325455-B5Zjk37g/participants/".concat(this.event.id, "?group=").concat(this.groupId);
     },
     eventEditUrl: function eventEditUrl() {
-      return "https://liff.line.me/1655325455-B5Zjk37g/event/edit/".concat(this.event.id, "?group=").concat(this.groupId);
+      return "https://liff.line.me/1655325455-B5Zjk37g/edit/".concat(this.event.id, "?group=").concat(this.groupId);
     }
   },
   methods: {
@@ -2902,6 +3023,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/ToggleBlock.vue */ "./resources/js/components/modules/ToggleBlock.vue");
 /* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
 /* harmony import */ var _mixins_checkIfUserAndGroupIsRegistered__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/checkIfUserAndGroupIsRegistered */ "./resources/js/mixins/checkIfUserAndGroupIsRegistered.js");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
 //
 //
 //
@@ -2938,6 +3060,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -2967,7 +3090,7 @@ __webpack_require__.r(__webpack_exports__);
       isNotificationOn: true,
       isStartView: false,
       isRedirectView: false,
-      otherPath: ['confirm', 'add', 'show', 'setting', 'participants'],
+      otherPath: ['confirm', 'add', 'show', 'setting', 'participants', 'edit'],
       session: {
         line_id: '',
         group_id: ''
@@ -3021,17 +3144,9 @@ __webpack_require__.r(__webpack_exports__);
         _this.askJoin(text, eventId);
 
         window.liff.closeWindow();
-      })["catch"](function (e) {
-        _this.sendErr(text);
-
-        window.liff.closeWindow();
+      })["catch"](function (err) {
+        _this.handleErr(err.response.status);
       });
-    },
-    sendErr: function sendErr(text) {
-      window.liff.sendMessages([{
-        type: 'text',
-        text: '[' + text + ']' + 'エラーが発生しました'
-      }]);
     },
     showInfo: function showInfo() {
       this.infoModalVisibility = true;
@@ -3065,7 +3180,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     });
   },
-  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_checkIfUserAndGroupIsRegistered__WEBPACK_IMPORTED_MODULE_6__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_checkIfUserAndGroupIsRegistered__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_7__["default"]]
 });
 
 /***/ }),
@@ -4084,6 +4199,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _FormButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormButton */ "./resources/js/components/modules/FormButton.vue");
 /* harmony import */ var _ModalBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ModalBase */ "./resources/js/components/modules/ModalBase.vue");
 /* harmony import */ var _ProfileBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ProfileBlock */ "./resources/js/components/modules/ProfileBlock.vue");
+/* harmony import */ var _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../mixins/formValidatorMixin */ "./resources/js/mixins/formValidatorMixin.js");
 //
 //
 //
@@ -4110,6 +4226,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -4144,6 +4261,8 @@ __webpack_require__.r(__webpack_exports__);
       this.formItem = [];
       var invalid = false;
       this.participants.forEach(function (participant) {
+        console.log(_this2.$refs["ratio-".concat(participant.line_id)][0].value);
+
         var ratioValue = _this2.validateDecimal(_this2.$refs["ratio-".concat(participant.line_id)][0].value);
 
         if (ratioValue) {
@@ -4167,12 +4286,9 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.close();
-    },
-    validateDecimal: function validateDecimal(value) {
-      var result = value.match(/^([0-9]+)(\.[0-9]{0,2})?/);
-      return result ? Number(result[0]) : false;
     }
-  }
+  },
+  mixins: [_mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_3__["default"]]
 });
 
 /***/ }),
@@ -40865,7 +40981,9 @@ var render = function() {
           },
           execute: _vm.executeAction
         }
-      })
+      }),
+      _vm._v(" "),
+      _vm.isApiLoading ? _c("api-loading") : _vm._e()
     ],
     1
   )
@@ -40982,51 +41100,107 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("section", { staticClass: "section-inner" }, [
-    !_vm.isLoading
-      ? _c(
-          "article",
-          [
-            _c("h1", { staticClass: "amount-show-title txt-big" }, [
-              _vm._v(_vm._s(_vm.event.event_name))
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("p", { staticClass: "normal-txt" }, [_vm._v("イベント名")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.event.event_name,
-                    expression: "event.event_name"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text" },
-                domProps: { value: _vm.event.event_name },
+  return _c(
+    "section",
+    { staticClass: "section-inner" },
+    [
+      !_vm.isLoading
+        ? _c("article", [
+            _c(
+              "form",
+              {
+                staticClass: "w-100",
                 on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.event, "event_name", $event.target.value)
+                  submit: function($event) {
+                    $event.preventDefault()
                   }
                 }
-              })
-            ]),
-            _vm._v(" "),
-            _c("image-form", {
-              attrs: { picture: _vm.url },
-              on: { uploaded: _vm.changeImage }
-            }),
-            _vm._v("\n        " + _vm._s(_vm.event) + "\n    ")
-          ],
-          1
-        )
-      : _vm._e()
-  ])
+              },
+              [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("p", { staticClass: "normal-txt" }, [
+                    _vm._v("イベント名")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.editingData.event_name,
+                        expression: "editingData.event_name"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", required: "" },
+                    domProps: { value: _vm.editingData.event_name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.editingData,
+                          "event_name",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("image-form", {
+                  attrs: { picture: _vm.url },
+                  on: { uploaded: _vm.changeImage }
+                }),
+                _vm._v(" "),
+                _c("toggle-block", {
+                  attrs: { text: "Watte利用時のトーク通知" },
+                  on: { show: _vm.showInfo },
+                  model: {
+                    value: _vm.editingData.notification,
+                    callback: function($$v) {
+                      _vm.$set(_vm.editingData, "notification", $$v)
+                    },
+                    expression: "editingData.notification"
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {},
+                  [
+                    _c("form-button", {
+                      attrs: { value: "保存", type: "accept" },
+                      on: { send: _vm.send }
+                    }),
+                    _vm._v(" "),
+                    _c("form-button", {
+                      attrs: { value: "取消", type: "deny" },
+                      on: { send: _vm.cancel }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("info-modal", {
+        attrs: { visibility: _vm.infoModalVisibility },
+        on: {
+          close: function($event) {
+            _vm.infoModalVisibility = false
+          }
+        }
+      }),
+      _vm._v(" "),
+      _vm.isApiLoading ? _c("api-loading") : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -42401,6 +42575,11 @@ var render = function() {
               attrs: {
                 id: "modal-inner",
                 "data-visibility": _vm.visibility === true ? "true" : "false"
+              },
+              on: {
+                click: function($event) {
+                  $event.stopPropagation()
+                }
               }
             },
             [
@@ -54916,7 +55095,7 @@ Vue.component('info-block', __webpack_require__(/*! ./components/modules/InfoBlo
 Vue.component('info-modal', __webpack_require__(/*! ./components/modules/InfoModal.vue */ "./resources/js/components/modules/InfoModal.vue")["default"]);
 Vue.component('image-form', __webpack_require__(/*! ./components/modules/ImageForm.vue */ "./resources/js/components/modules/ImageForm.vue")["default"]);
 Vue.component('event-edit', __webpack_require__(/*! ./components/EventEdit.vue */ "./resources/js/components/EventEdit.vue")["default"]);
-axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="user-token"]').getAttribute('content');
+axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="line-id"]').getAttribute('content');
 var app = new Vue({
   el: '#app'
 });
@@ -57039,10 +57218,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var context = window.liff.getContext();
 
       if (context.type === 'none') {
-        //正規ルートはcontextがnone
+        //contextがnoneの時はパラメータを確認する
         var param = location.search;
         var paramObj = this.makeObjectFromSearchParam(param);
         var paramGroupId = paramObj['group'];
+
+        if (!paramGroupId) {
+          alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
+          location.href = "".concat(this.deployUrl, "/err/forbidden");
+          window.liff.closeWindow();
+        }
+
         this.groupId = paramGroupId;
       } else {
         if (context.type === 'group') {
@@ -57364,7 +57550,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context3.next = 2;
                 return axios.post('/auth/event-group', {
                   'groupId': _this3.groupId,
-                  'eventId': _this3.event.id,
+                  'eventId': _this3.event.id || _this3.eventId,
                   'lineId': _this3.userInfo.userId
                 }).then(function () {
                   _this3.hideLoading();
@@ -57387,6 +57573,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee3);
       }))();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/mixins/formValidatorMixin.js":
+/*!***************************************************!*\
+  !*** ./resources/js/mixins/formValidatorMixin.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    isTextFilled: function isTextFilled(field) {
+      return field !== '' && field.match(/\S/g) ? true : false;
+    },
+    ValidateNumber: function ValidateNumber(field) {
+      var numberValue = field.replace(/\D/g, '');
+      return numberValue !== '' ? true : false;
+    },
+    validateDecimal: function validateDecimal(value) {
+      var result = value.match(/^([0-9]+)(\.[0-9]{0,2})?/);
+      return result ? Number(result[0]) : false;
     }
   }
 });
@@ -57420,6 +57633,42 @@ __webpack_require__.r(__webpack_exports__);
     },
     makeNumberDoubleDigits: function makeNumberDoubleDigits(num) {
       return String(num).length === 1 ? '0' + num : num;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/mixins/handleErrMinxin.js":
+/*!************************************************!*\
+  !*** ./resources/js/mixins/handleErrMinxin.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    handleErr: function handleErr(status) {
+      if (status === 401) {
+        alert("401: Unauthorized\nアクセス権限がありません。");
+        location.href = "".concat(this.deployUrl, "/err/unauthorized");
+      } else if (status === 403) {
+        alert("403: Forbidden\nアクセスが拒否されました。");
+        location.href = "".concat(this.deployUrl, "/err/fobidden");
+      } else if (status === 404) {
+        alert("404: Not Found\nデータが見つかりませんでした。");
+        location.href = "".concat(this.deployUrl, "/err/notfound");
+      } else if (status === 500) {
+        alert("500: Server Error\nデータベースに接続できません。");
+        location.href = "".concat(this.deployUrl, "/err/servererror");
+      } else {
+        alert("予期せぬエラーが発生しました。");
+        location.href = "".concat(this.deployUrl, "/err/servererror");
+      }
+
+      window.liff.closeWindow(); //lineからのアクセス対策
     }
   }
 });

@@ -28,6 +28,7 @@
 import FormButton from './FormButton';
 import ModalBase from './ModalBase'
 import ProfileBlock from './ProfileBlock'
+import formValidatorMixin from '../../mixins/formValidatorMixin'
 
 export default {
     props: ['participants', 'visibility'],
@@ -58,6 +59,7 @@ export default {
             this.formItem = [];
             let invalid = false;
             this.participants.forEach(participant => {
+                console.log(this.$refs[`ratio-${participant.line_id}`][0].value)
                 let ratioValue = this.validateDecimal(this.$refs[`ratio-${participant.line_id}`][0].value);
                 if(ratioValue){
                     let sendItem = {
@@ -78,10 +80,7 @@ export default {
             }
             this.close()
         },
-        validateDecimal(value){
-            let result = value.match(/^(\d+)(\.\d{0,2})?/u);
-            return result ? Number(result[0]) : false;
-        },
-    }
+    },
+    mixins: [formValidatorMixin]
 }
 </script>

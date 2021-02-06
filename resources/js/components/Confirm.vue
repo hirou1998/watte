@@ -22,6 +22,7 @@ import Loading from './modules/Loading';
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
 import allowAccessIfWithGroupIdMixin from '../mixins/allowAccessIfWithGroupIdMixin'
+import handleErrMinxin from '../mixins/handleErrMinxin'
 
 export default {
   components: { FormButton, Loading },
@@ -48,16 +49,11 @@ export default {
                     window.liff.closeWindow();
                 })
                 .catch((err) => {
-                    console.log(err);
+                    this.handleErr(err.response.status)
                 })
             })
             .catch(err => {
-                if(err.response){
-                    let errText = 'エラーが発生しました。[' + err.response.message + ']';
-                }else{
-                    let errText = '予期せぬエラーが発生しました。';
-                }
-                alert(errText);
+                this.handleErr(err.response.status)
             })
         }
     },
@@ -69,6 +65,6 @@ export default {
             this.checkAccess();
         })
     },
-    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, allowAccessIfWithGroupIdMixin]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, allowAccessIfWithGroupIdMixin, handleErrMinxin]
 }
 </script>

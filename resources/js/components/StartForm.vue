@@ -42,6 +42,7 @@ import Loading from './modules/Loading';
 import ToggleBlock from './modules/ToggleBlock.vue'
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIfUserAndGroupIsRegistered from '../mixins/checkIfUserAndGroupIsRegistered'
+import handleErrMinxin from '../mixins/handleErrMinxin'
 
 export default {
     components: {
@@ -65,7 +66,7 @@ export default {
             isNotificationOn: true,
             isStartView: false,
             isRedirectView: false,
-            otherPath: ['confirm', 'add', 'show', 'setting', 'participants'],
+            otherPath: ['confirm', 'add', 'show', 'setting', 'participants', 'edit'],
             session: {
                 line_id: '',
                 group_id: ''
@@ -122,18 +123,9 @@ export default {
                 this.askJoin(text, eventId);
                 window.liff.closeWindow();
             })
-            .catch(e => {
-                this.sendErr(text);
-                window.liff.closeWindow();
+            .catch(err => {
+                this.handleErr(err.response.status)
             })
-        },
-        sendErr(text){
-            window.liff.sendMessages([
-                {
-                    type: 'text',
-                    text: '['+ text + ']' + 'エラーが発生しました'
-                }
-            ])
         },
         showInfo(){
             this.infoModalVisibility = true;
@@ -144,7 +136,6 @@ export default {
             liffId: this.liff
         })
         .then((data) => {
-
             let param = location.search;
             
             if(param){
@@ -164,6 +155,6 @@ export default {
             }
         })
     },
-    mixins: [checkAccessMixin, checkIfUserAndGroupIsRegistered]
+    mixins: [checkAccessMixin, checkIfUserAndGroupIsRegistered, handleErrMinxin]
 }
 </script>

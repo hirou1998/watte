@@ -12,7 +12,7 @@ class ParitipantController extends Controller
     {        
         $userToken = $request->bearerToken();
 
-        if($userToken && $userToken == session()->get('_token')){
+        if($userToken && $userToken == session()->get('line_id')){
             $participants = $event->line_friends()->orderBy('created_at', 'asc')->get();
 
             if($participants->isEmpty()){

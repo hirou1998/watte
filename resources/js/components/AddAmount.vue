@@ -44,6 +44,8 @@ import FormButton from './modules/FormButton'
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
 import ToggleBlock from './modules/ToggleBlock.vue'
+import handleErrMinxin from '../mixins/handleErrMinxin'
+import formValidatorMixin from '../mixins/formValidatorMixin'
 
 export default {
     components: {
@@ -72,7 +74,7 @@ export default {
     },
     computed: {
         isFilled(){
-            if(this.ValidateNumber(this.amount) && this.note !== '' && this.note.match(/\S/g)){
+            if(this.ValidateNumber(this.amount) && this.isTextFilled(this.note)){
                 return true
             }else{
                 return false
@@ -128,7 +130,7 @@ export default {
                 }
             })
             .catch(err => {
-                alert(err)
+                this.handleErr(err.response.status)
             })
         },
         addPertner(){
@@ -172,13 +174,9 @@ export default {
                 window.liff.closeWindow();
             })
             .catch((err) => {
-                console.log(err);
+                this.handleErr(err.response.status)
             })
         },
-        ValidateNumber(value){
-            let numberValue = value.replace(/\D/g, '');
-            return numberValue !== '' ? true : false;
-        }
     },
     created(){
         window.liff.init({
@@ -188,6 +186,6 @@ export default {
             this.checkAccess();
         })
     },
-    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, formValidatorMixin, handleErrMinxin]
 }
 </script>

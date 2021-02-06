@@ -51,6 +51,7 @@
             :target="targetAmount"
             :visibility="modalVisibility"
         ></amount-menu-modal>
+        <api-loading v-if="isApiLoading"></api-loading>
     </section>
 </template>
 
@@ -60,9 +61,11 @@ import AmountItem from './modules/AmountItem'
 import AmountItemOptionWindow from './modules/AmountItemOptionWindow'
 import AmountMenuModal from './modules/AmountMenuModal'
 import AmountTab from './modules/AmountTab'
+import ApiLoading from './modules/ApiLoading'
 import Loading from './modules/Loading'
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
+import handleErrMinxin from '../mixins/handleErrMinxin'
 
 export default {
     components: {
@@ -71,6 +74,7 @@ export default {
         AmountItemOptionWindow,
         AmountMenuModal,
         AmountTab,
+        ApiLoading,
         Loading
     },
     props: ['event', 'participants'],
@@ -89,6 +93,7 @@ export default {
                 }
             ],
             activeTab: 0,
+            isApiLoading: true,
             isLoading: true,
             targetAmount: {},
             modalVisibility: false,
@@ -125,6 +130,7 @@ export default {
     },
     methods: {
         archiveRelatedAction(type){
+            this.isApiLoading = true;
             let url
             let archive_flg_state
             let formula
@@ -133,16 +139,16 @@ export default {
                 url = `/amount/archive/${this.targetAmount.id}`
                 archive_flg_state = 1
                 formula = 1
-                action = '精算'
+                action = '精算済に'
             }else if(type === 'unarchive'){
                 url = `/amount/unarchive/${this.targetAmount.id}`
                 archive_flg_state = 0
                 formula = -1
-                action = '未精算'
+                action = '未精算に'
             }
             
             window.axios.put(url)
-            .then(({data}) => {
+            .then(() => {
                 let archivedAmountDivided = Math.ceil(this.targetAmount.amount / this.participants.length)
                 this.amounts = this.amounts.map(amount => {
                     if(amount.id === this.targetAmount.id){
@@ -173,6 +179,8 @@ export default {
                     this.sendMessage(action)
                 }
                 this.targetAmount = {}
+                this.modalVisibility = false;
+                this.isApiLoading = false;
             })
             .catch(err => {
                 alert(err)
@@ -182,6 +190,7 @@ export default {
             this.archiveRelatedAction('archive')
         },
         deleteAmount(){
+            this.isApiLoading = true;
             window.axios.delete(`/amount/delete/${this.targetAmount.id}`)
             .then(() => {
                 this.amounts = this.amounts.filter(amount => amount.id !== this.targetAmount.id);
@@ -199,6 +208,7 @@ export default {
                     this.sendMessage('削除')
                 }
                 this.targetAmount = {}
+                this.isApiLoading = false;
             })
             .catch(err => {
                 alert(err)
@@ -220,10 +230,15 @@ export default {
             .then(({data}) => {
                 this.amounts = data.amount_lists;
                 this.each = data.each;
+                this.isApiLoading = false;
             })
             .catch(err => {
-                console.log(err)
+                this.handleErr(err.response.status)
             })
+        },
+        hideLoading(){
+            this.isLoading = false
+            this.getAmountsData();
         },
         saveEditAmount(){
 
@@ -237,10 +252,10 @@ export default {
                 }
             ])
             .then(() => {
-                //window.liff.closeWindow();
+                
             })
             .catch((err) => {
-                alert(err)
+                this.handleErr(err.response.status)
             })
         },
         selectTab(tab){
@@ -270,11 +285,10 @@ export default {
         window.liff.init({
             liffId: this.liff
         })
-        .then((data) => {
-            this.getAmountsData();
+        .then(() => {
             this.checkAccess();
         })
     },
-    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, handleErrMinxin]
 }
 </script>

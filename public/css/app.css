@@ -11910,8 +11910,13 @@ a:hover {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: #3D92A4;
-  opacity: 0.1;
+  background-color: #fff;
+  opacity: 0.75;
+}
+
+.api-loading > div {
+  z-index: 1;
+  position: relative;
 }
 
 .api-loading-block {

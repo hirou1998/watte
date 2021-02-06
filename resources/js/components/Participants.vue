@@ -36,6 +36,7 @@ import RatioModal from './modules/RatioModal'
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
 import allowAccessIfWithGroupIdMixin from '../mixins/allowAccessIfWithGroupIdMixin'
+import handleErrMinxin from '../mixins/handleErrMinxin'
 
 export default {
     props: ['event', 'liff'],
@@ -53,7 +54,7 @@ export default {
             },
             modalVisibility: false,
             isLoading: true,
-            isApiLoading: false,
+            isApiLoading: true,
             participants: {},
         }
     },
@@ -87,10 +88,11 @@ export default {
         getParticipants(){
             window.axios.get(`/api/participants/${this.event.id}`)
             .then(({data}) => {
+                this.isApiLoading = false
                 this.participants = data;
             })
             .catch(err => {
-                alert("404: Not Found\nデータが見つかりませんでした。");
+                this.handleErr(err.response.status)
             })
         },
         hideLoading(){
@@ -129,7 +131,7 @@ export default {
                     
                 })
                 .catch((err) => {
-
+                    this.handleErr(err.response.status)
                 })
             }
         },
@@ -145,6 +147,6 @@ export default {
             this.checkAccess();
         })
     },
-    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, allowAccessIfWithGroupIdMixin]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, allowAccessIfWithGroupIdMixin, handleErrMinxin]
 }
 </script>

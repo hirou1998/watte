@@ -21,6 +21,9 @@ Route::get('/err/forbidden', function(){
 Route::get('/err/servererr', function(){
     abort(500, 'Server Error');
 })->name('servererror');
+Route::get('/err/notfound', function(){
+    abort(404, 'Not Found');
+})->name('notfound');
 
 Route::post('/auth/user-and-group', 'Auth\LineFriendGroupController@index');
 Route::post('/auth/event-group', 'Auth\EventGroupController@index');
@@ -39,4 +42,5 @@ Route::put('/ratio/update/{event}', 'RatioController@update');
 Route::delete('/amount/delete/{amount}', 'AmountController@delete');
 Route::put('/amount/archive/{amount}', 'AmountController@archive');
 Route::put('/amount/unarchive/{amount}', 'AmountController@unarchive');
-Route::get('/event/edit/{event}', 'EventController@editpage');
+Route::get('/edit/{event}', 'EventController@editpage');
+Route::put('/event/edit/{event}', 'EventController@update');
