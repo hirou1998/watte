@@ -61,22 +61,10 @@ class AmountController extends Controller
     {
         $participants = $event->line_friends;
 
-        $amount_lists = $event
-                            ->amounts()
-                            ->with('line_friend')
-                            ->orderBy('archive_flg', 'asc')
-                            ->orderBy('created_at', 'desc')
-                            ->with('deals')
-                            ->get();
-
-        $eachUserData = Amount::getEachUserAmount($event->id);
-
         return view(
             'amounts', 
             [
-                'amount_lists' => $amount_lists, 
                 'event' => $event, 
-                'each' => json_encode($eachUserData),
                 'participants' => $participants, 
                 'liff' => $this->liff, 
                 'deploy_url' => $this->deploy_url

@@ -5,9 +5,7 @@
 @endsection
 
 @section('content')
-    <amount-lists 
-        :amounts="{{$amount_lists}}" 
-        :each="{{$each}}"
+    <amount-lists
         :participants="{{$participants}}"
         liff="{{$liff}}" 
         deploy-url="{{$deploy_url}}" 

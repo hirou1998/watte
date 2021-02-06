@@ -28,8 +28,12 @@ Vue.component('modal-base', require('./components/modules/ModalBase.vue').defaul
 Vue.component('amount-menu-modal', require('./components/modules/AmountMenuModal.vue').default);
 Vue.component('option-window', require('./components/modules/OptionWindow.vue').default);
 Vue.component('amount-item-option-window', require('./components/modules/AmountItemOptionWindow.vue').default);
+Vue.component('info-block', require('./components/modules/InfoBlock.vue').default);
+Vue.component('info-modal', require('./components/modules/InfoModal.vue').default);
+Vue.component('image-form', require('./components/modules/ImageForm.vue').default);
+Vue.component('event-edit', require('./components/EventEdit.vue').default);
 
-axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="user-token"]').getAttribute('content');
+axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="line-id"]').getAttribute('content');
 
 const app = new Vue({
     el: '#app',

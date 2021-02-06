@@ -2,10 +2,15 @@ export default{
     methods: {
         getGroupId(){
             let context = window.liff.getContext()
-            if(context.type === 'none'){ //正規ルートはcontextがnone
+            if(context.type === 'none'){ //contextがnoneの時はパラメータを確認する
                 let param = location.search;
                 let paramObj = this.makeObjectFromSearchParam(param)
                 let paramGroupId = paramObj['group'];
+                if(!paramGroupId){
+                    alert('403: Forbiddend\nWatteを利用されるグループトーク内でアクセスしてください。');
+                    location.href = `${this.deployUrl}/err/forbidden`;
+                    window.liff.closeWindow();
+                }
                 this.groupId = paramGroupId;
             }else{
                 if(context.type === 'group'){

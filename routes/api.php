@@ -16,3 +16,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/participants/{event}', 'Api\ParitipantController@index')->name('api.participants');
 Route::post('/line/callback', 'Api\LineBotController@callback')->name('line.callback');
+Route::get('/amount/lists/{event}', 'Api\AmountController@lists')->name('api.amounts');
+Route::get('/event/{event}', 'Api\EventController@index')->name('api.event');

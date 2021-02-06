@@ -37,7 +37,6 @@
         </article>
         <loading v-if="isLoading"></loading>
         <amount-item-option-window 
-            v-show="menuModalVisibility"
             :visibility="menuModalVisibility"
             :target="targetAmount"
             @close="menuModalVisibility = false"
@@ -46,12 +45,13 @@
             @unarchive="showConfirmModal"
         ></amount-item-option-window>
         <amount-menu-modal
-            v-if="modalVisibility"
             @close="modalVisibility = false"
             @execute="executeAction"
             :modal-type="modalType"
             :target="targetAmount"
+            :visibility="modalVisibility"
         ></amount-menu-modal>
+        <api-loading v-if="isApiLoading"></api-loading>
     </section>
 </template>
 
@@ -61,9 +61,11 @@ import AmountItem from './modules/AmountItem'
 import AmountItemOptionWindow from './modules/AmountItemOptionWindow'
 import AmountMenuModal from './modules/AmountMenuModal'
 import AmountTab from './modules/AmountTab'
+import ApiLoading from './modules/ApiLoading'
 import Loading from './modules/Loading'
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
+import handleErrMinxin from '../mixins/handleErrMinxin'
 
 export default {
     components: {
@@ -72,11 +74,14 @@ export default {
         AmountItemOptionWindow,
         AmountMenuModal,
         AmountTab,
+        ApiLoading,
         Loading
     },
-    props: ['amounts', 'each', 'event', 'participants'],
+    props: ['event', 'participants'],
     data: function(){
         return{
+            amounts: undefined,
+            each: undefined,
             tabList: [
                 {
                     id: 0,
@@ -88,7 +93,8 @@ export default {
                 }
             ],
             activeTab: 0,
-            isLoading: false,
+            isApiLoading: true,
+            isLoading: true,
             targetAmount: {},
             modalVisibility: false,
             menuModalVisibility: false,
@@ -124,21 +130,25 @@ export default {
     },
     methods: {
         archiveRelatedAction(type){
+            this.isApiLoading = true;
             let url
             let archive_flg_state
             let formula
+            let action
             if(type === 'archive'){
                 url = `/amount/archive/${this.targetAmount.id}`
                 archive_flg_state = 1
                 formula = 1
+                action = '精算済に'
             }else if(type === 'unarchive'){
                 url = `/amount/unarchive/${this.targetAmount.id}`
                 archive_flg_state = 0
                 formula = -1
+                action = '未精算に'
             }
             
             window.axios.put(url)
-            .then(({data}) => {
+            .then(() => {
                 let archivedAmountDivided = Math.ceil(this.targetAmount.amount / this.participants.length)
                 this.amounts = this.amounts.map(amount => {
                     if(amount.id === this.targetAmount.id){
@@ -163,8 +173,14 @@ export default {
                         }
                     }
                 });
-                this.sortArray(this.amounts)
+                this.sortArray(this.amounts, 'created_at', -1)
+                this.sortArray(this.amounts, 'archive_flg', 1)
+                if(this.event.notification){
+                    this.sendMessage(action)
+                }
                 this.targetAmount = {}
+                this.modalVisibility = false;
+                this.isApiLoading = false;
             })
             .catch(err => {
                 alert(err)
@@ -174,6 +190,7 @@ export default {
             this.archiveRelatedAction('archive')
         },
         deleteAmount(){
+            this.isApiLoading = true;
             window.axios.delete(`/amount/delete/${this.targetAmount.id}`)
             .then(() => {
                 this.amounts = this.amounts.filter(amount => amount.id !== this.targetAmount.id);
@@ -187,9 +204,11 @@ export default {
                         return item
                     }
                 })
-                let messageText = "イベント: " + this.event.event_name + "\n" + this.targetAmount.amount + "円（" + this.targetAmount.note + "）\n" + "支払い者: " + this.targetAmount.line_friend.display_name + "\nを精算済にしました。";
-                this.sendMessage(messageText)
+                if(this.event.notification){
+                    this.sendMessage('削除')
+                }
                 this.targetAmount = {}
+                this.isApiLoading = false;
             })
             .catch(err => {
                 alert(err)
@@ -206,21 +225,37 @@ export default {
                 this.unarchiveAmount()
             }
         },
+        getAmountsData(){
+            window.axios.get(`/api/amount/lists/${this.event.id}`)
+            .then(({data}) => {
+                this.amounts = data.amount_lists;
+                this.each = data.each;
+                this.isApiLoading = false;
+            })
+            .catch(err => {
+                this.handleErr(err.response.status)
+            })
+        },
+        hideLoading(){
+            this.isLoading = false
+            this.getAmountsData();
+        },
         saveEditAmount(){
 
         },
-        sendMessage(text){
+        sendMessage(action){
+            let messageText = "イベント: " + this.event.event_name + "\n" + this.targetAmount.amount + "円（" + this.targetAmount.note + "）\n" + "支払い者: " + this.targetAmount.line_friend.display_name + "\nを" + action + "しました。";
             window.liff.sendMessages([
                 {
                     type: 'text',
-                    text: text
+                    text: messageText
                 }
             ])
             .then(() => {
-                //window.liff.closeWindow();
+                
             })
             .catch((err) => {
-                alert(err)
+                this.handleErr(err.response.status)
             })
         },
         selectTab(tab){
@@ -235,10 +270,10 @@ export default {
             this.menuModalVisibility = true;
             this.targetAmount = amount;
         },
-        sortArray(targetArray){
+        sortArray(targetArray, key, order){
             targetArray.sort((a, b) => {
-                if(a.archive_flg < b.archive_flg) return -1;
-                if(a.archive_flg > b.archive_flg) return 1;
+                if(a[key] < b[key]) return -1 * order;
+                if(a[key] > b[key]) return 1 * order;
                 return 0;
             })
         },
@@ -246,14 +281,14 @@ export default {
             this.archiveRelatedAction('unarchive')
         }
     },
-    mounted(){
+    created(){
         window.liff.init({
             liffId: this.liff
         })
-        .then((data) => {
-            //this.checkAccess();
+        .then(() => {
+            this.checkAccess();
         })
     },
-    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, handleErrMinxin]
 }
 </script>

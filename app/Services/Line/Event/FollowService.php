@@ -54,7 +54,8 @@ class FollowService
                 LineFriend::create([
                     'line_id' => $line_id,
                     'display_name' => $display_name,
-                    'picture_url' => $picture_url
+                    'picture_url' => $picture_url,
+                    'password' => null,
                 ]);
 
                 //logger($display_name . '-' . $line_id);

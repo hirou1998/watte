@@ -7,6 +7,8 @@ use App\Models\Event;
 use App\Models\Group;
 use App\Models\LineFriend;
 use App\Services\Line\Event\AskJoinService;
+use Illuminate\Support\Facades\Storage;
+use Image;
 
 class EventController extends Controller
 {
@@ -26,11 +28,26 @@ class EventController extends Controller
         $this->deploy_url = config('app.deploy_url');
     }
 
+    /**
+     * 割り勘開始ページ
+     */
     public function index(Request $request)
     {
         return view('index', [
             'liff' => $this->liff,
             'deploy_url' => $this->deploy_url
+        ]);
+    }
+
+    /**
+     * イベント情報編集ページ
+     */
+    public function editpage(Event $event)
+    {
+        return view('event', [
+            'liff' => $this->liff,
+            'deploy_url' => $this->deploy_url,
+            'event_id' => $event->id
         ]);
     }
 
@@ -44,15 +61,70 @@ class EventController extends Controller
         $event_name = $request->event_name;
         $group_id = $request->group_id;
         $creator_id = $request->creator_id;
+        $notification = $request->notification;
 
         $group = Group::where('group_id', $group_id)->get()->first();
 
-        $new_event = $group->events()->create([
-            'event_name' => $event_name,
-            'creator_id' => $creator_id
-        ]);
+        if($request->file){
+            $image_original_name = $request->file->getClientOriginalName();
+            $image_name = time() . '_' . $image_original_name . '.jpg';
+            $path = 'public/' . $image_name;
+
+            $img = Image::make($request->file);
+            Storage::disk('local')->put($path, $img->encode());
+
+            $new_event = $group->events()->create([
+                'event_name' => $event_name,
+                'creator_id' => $creator_id,
+                'notification' => $notification,
+                'file_name' => $image_name,
+                'file_path' => 'storage/' . $image_name
+            ]);
+        }else{
+            $new_event = $group->events()->create([
+                'event_name' => $event_name,
+                'creator_id' => $creator_id,
+                'notification' => $notification,
+            ]);
+        }
 
         return $new_event;
+    }
+
+    /**
+     * イベント情報編集(PUT)
+     */
+    public function update(Event $event, Request $request)
+    {
+        if(!$request){
+            return false;
+        }
+        if($request->file){
+            $current_image_name = $event->file_name;
+            //元の画像を削除
+            Storage::disk('local')->delete('public/'. $current_image_name);
+
+            //新しい画像を保存
+            $image_original_name = $request->file->getClientOriginalName();
+            $image_name = time() . '_' . $image_original_name . '.jpg';
+            $path = 'public/' . $image_name;
+
+            $img = Image::make($request->file);
+            Storage::disk('local')->put($path, $img->encode());
+
+            $event->update([
+                'event_name' => $request->event_name,
+                'notification' => $request->notification,
+                'file_name' => $image_name,
+                'file_path' => 'storage/' . $image_name
+            ]);
+        }else{
+            $event->update([
+                'event_name' => $request->event_name,
+                'notification' => $request->notification,
+            ]);
+        }
+        return $event;
     }
 
     /**

@@ -15,8 +15,6 @@ class EventGroupController extends Controller
         $event_id = $request->eventId;
         $line_id = $request->lineId;
 
-        logger($group_id . '/' . $event_id . '/' . $line_id);
-
         $result = $this->check($group_id, $event_id);
 
         if($result){

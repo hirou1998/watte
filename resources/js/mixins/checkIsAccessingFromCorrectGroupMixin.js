@@ -38,7 +38,7 @@ export default{
         async checkIsGroupIdCorrect(){
             await axios.post('/auth/event-group', {
                     'groupId': this.groupId,
-                    'eventId': this.event.id,
+                    'eventId': this.event.id || this.eventId,
                     'lineId': this.userInfo.userId,
                 })
                 .then(() => {

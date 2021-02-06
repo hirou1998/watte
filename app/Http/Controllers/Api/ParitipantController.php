@@ -9,10 +9,10 @@ use App\Models\Event;
 class ParitipantController extends Controller
 {
     public function index(Event $event, Request $request)
-    {
+    {        
         $userToken = $request->bearerToken();
 
-        if($userToken && $userToken == session()->get('_token')){
+        if($userToken && $userToken == session()->get('line_id')){
             $participants = $event->line_friends()->orderBy('created_at', 'asc')->get();
 
             if($participants->isEmpty()){

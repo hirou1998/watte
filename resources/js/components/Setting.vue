@@ -7,7 +7,7 @@
                 </div>
                 <p class="normal-txt text-center setting-menu-text">参加者確認<br>割り勘比率変更</p>
             </a>
-            <a :href="participantsUrl" class="setting-menu" role="button">
+            <a :href="eventEditUrl" class="setting-menu" role="button">
                 <div class="setting-menu-icon">
                     <img src="/images/event.png" alt="">
                 </div>
@@ -34,12 +34,15 @@ export default {
     props: ['liff', 'event'],
     data(){
         return{
-            isLoading: false
+            isLoading: true
         }
     },
     computed: {
         participantsUrl(){
             return `https://liff.line.me/1655325455-B5Zjk37g/participants/${this.event.id}?group=${this.groupId}`;
+        },
+        eventEditUrl(){
+            return `https://liff.line.me/1655325455-B5Zjk37g/edit/${this.event.id}?group=${this.groupId}`;
         }
     },
     methods: {
@@ -75,7 +78,7 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            //this.checkAccess();
+            this.checkAccess();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]

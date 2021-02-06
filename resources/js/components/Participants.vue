@@ -17,7 +17,7 @@
                 ></participant>
             </ul>
             <ratio-modal
-                v-show="modalVisibility"
+                :visibility="modalVisibility"
                 :participants="participants"
                 @save="changeRatio"
                 @close="modalVisibility = false"
@@ -36,6 +36,7 @@ import RatioModal from './modules/RatioModal'
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
 import allowAccessIfWithGroupIdMixin from '../mixins/allowAccessIfWithGroupIdMixin'
+import handleErrMinxin from '../mixins/handleErrMinxin'
 
 export default {
     props: ['event', 'liff'],
@@ -52,8 +53,8 @@ export default {
                 picture_url: ''
             },
             modalVisibility: false,
-            isLoading: false,
-            isApiLoading: false,
+            isLoading: true,
+            isApiLoading: true,
             participants: {},
         }
     },
@@ -87,10 +88,11 @@ export default {
         getParticipants(){
             window.axios.get(`/api/participants/${this.event.id}`)
             .then(({data}) => {
+                this.isApiLoading = false
                 this.participants = data;
             })
             .catch(err => {
-                alert("404: Not Found\nデータが見つかりませんでした。");
+                this.handleErr(err.response.status)
             })
         },
         hideLoading(){
@@ -129,7 +131,7 @@ export default {
                     
                 })
                 .catch((err) => {
-
+                    this.handleErr(err.response.status)
                 })
             }
         },
@@ -143,9 +145,8 @@ export default {
         })
         .then(() => {
             this.checkAccess();
-            //this.getParticipants();
         })
     },
-    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, allowAccessIfWithGroupIdMixin]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, allowAccessIfWithGroupIdMixin, handleErrMinxin]
 }
 </script>
