@@ -1,5 +1,12 @@
 <template>
     <section class="section-inner">
+        <notification
+            v-for="(action, index) in doneAction"
+            :key="index"
+            :action="action.text" 
+            :visibility="action.notificationVisibility"
+            @close="action.notificationVisibility = false"
+        ></notification>
         <article v-if="!isLoading">
             <form @submit.prevent class="w-100">
                 <div class="form-group">
@@ -17,8 +24,8 @@
                 >
                 </toggle-block>
                 <div class="">
-                    <form-button value="保存" type="accept" @send="send"></form-button>
-                    <form-button value="取消" type="deny" @send="cancel"></form-button>
+                    <form-button value="保存" type="accept" @send="send" v-if="isChanged"></form-button>
+                    <form-button value="取消" type="deny" @send="cancel" v-if="isChanged"></form-button>
                 </div>
             </form>
         </article>
@@ -35,13 +42,14 @@ import ApiLoading from './modules/ApiLoading'
 import FormButton from './modules/FormButton';
 import ImageForm from './modules/ImageForm';
 import InfoModal from './modules/InfoModal';
-import Loading from './modules/Loading'
-import ToggleBlock from './modules/ToggleBlock.vue'
-import checkAccessMixin from '../mixins/checkAccessMixin'
-import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
-import allowAccessIfWithGroupIdMixin from '../mixins/allowAccessIfWithGroupIdMixin'
-import handleErrMinxin from '../mixins/handleErrMinxin'
-import formValidatorMixin from '../mixins/formValidatorMixin'
+import Loading from './modules/Loading';
+import Notification from './modules/Notification';
+import ToggleBlock from './modules/ToggleBlock.vue';
+import checkAccessMixin from '../mixins/checkAccessMixin';
+import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin';
+import allowAccessIfWithGroupIdMixin from '../mixins/allowAccessIfWithGroupIdMixin';
+import handleErrMinxin from '../mixins/handleErrMinxin';
+import formValidatorMixin from '../mixins/formValidatorMixin';
 
 export default {
     props: ['liff', 'deployUrl', 'eventId'],
@@ -51,10 +59,12 @@ export default {
         ImageForm,
         InfoModal,
         Loading,
+        Notification,
         ToggleBlock
     },
     data(){
         return {
+            doneAction: [],
             event: {},
             editingData: {
                 event_name: null,
@@ -64,10 +74,17 @@ export default {
             },
             isApiLoading: true,
             isLoading: false,
-            infoModalVisibility: false
+            infoModalVisibility: false,
         }
     },
     computed: {
+        isChanged(){
+            if(this.event.event_name !== this.editingData.event_name || this.editingData.file || this.event.notification !== this.editingData.notification){
+                return true;
+            }else{
+                return false;
+            }
+        },
         url(){
             if(this.editingData.file_path){
                 if(this.editingData.file_path.match(/^storage.*/)){
@@ -91,7 +108,10 @@ export default {
         getEventInfo(){
             axios.get(`/api/event/${this.eventId}`)
             .then(({data}) => {
-                this.event = data;
+                this.event = {
+                    ...data,
+                    notification: data.notification == '0' ? false : true
+                };
                 this.setEditingData();
                 this.isApiLoading = false
             })
@@ -106,7 +126,8 @@ export default {
         setEditingData(){
             this.editingData.event_name = this.event.event_name;
             this.editingData.file_path = this.event.file_path;
-            this.editingData.notification = this.event.notification;
+            this.editingData.notification = this.event.notification == '0' ? false : true;
+            this.editingData.file = null
         },
         showInfo(){
             this.infoModalVisibility = true;
@@ -132,7 +153,17 @@ export default {
                 }
             })
             .then(({data}) => {
+                this.event = {
+                    ...data,
+                    notification: data.notification == '0' ? false : true
+                };
+                this.setEditingData();
                 this.isApiLoading = false;
+                this.doneAction.push({text: '編集を保存', notificationVisibility: true})
+                let doneActionNumber = this.doneAction.length - 1;
+                setTimeout(() => {
+                    this.$set(this.doneAction, doneActionNumber, {notificationVisibility: false})
+                }, 2000)
             })
             .catch(err => {
                 this.handleErr(err.response.status)

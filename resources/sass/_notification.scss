@@ -1,0 +1,39 @@
+.notification{
+    &-container{
+        display: flex;
+        align-items: center;
+        width: 100%;
+        border-radius: 5px;
+        background: $main-color;
+        padding: 5px;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+    &-block{
+        color: #fff;
+        display: flex;
+        align-items: center;
+    }
+    &-icon{
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $main-color;
+        font-size: 1.6rem;
+        margin-right: 1rem;
+    }
+    &-text{
+        margin: 0;
+        font-size: 1.6rem;
+    }
+    &-close{
+        font-size: 2rem;
+        line-height: 1;
+        color: #fff;
+    }
+}

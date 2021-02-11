@@ -32,6 +32,7 @@ Vue.component('info-block', require('./components/modules/InfoBlock.vue').defaul
 Vue.component('info-modal', require('./components/modules/InfoModal.vue').default);
 Vue.component('image-form', require('./components/modules/ImageForm.vue').default);
 Vue.component('event-edit', require('./components/EventEdit.vue').default);
+Vue.component('notification', require('./components/modules/Notification.vue').default);
 
 axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="line-id"]').getAttribute('content');
 
