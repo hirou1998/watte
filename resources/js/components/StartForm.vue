@@ -111,7 +111,7 @@ export default {
             params.append('group_id', this.groupId)
             params.append('creator_id', this.userInfo.userId)
             params.append('notification', notification)
-            window.axios.post('/create/new/', params,
+            window.axios.post('/create/new', params,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data'
