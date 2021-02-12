@@ -58,7 +58,6 @@ class EventController extends Controller
      */
     public function create(Event $event, Request $request)
     {
-        logger('craete!');
         $event_name = $request->event_name;
         $group_id = $request->group_id;
         $creator_id = $request->creator_id;
