@@ -208,6 +208,7 @@ export default {
                     this.sendMessage('削除')
                 }
                 this.targetAmount = {}
+                this.modalVisibility = false;
                 this.isApiLoading = false;
             })
             .catch(err => {

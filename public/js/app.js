@@ -2372,6 +2372,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
 
         _this2.targetAmount = {};
+        _this2.modalVisibility = false;
         _this2.isApiLoading = false;
       })["catch"](function (err) {
         alert(err);
