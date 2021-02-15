@@ -2343,7 +2343,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this.modalVisibility = false;
         _this.isApiLoading = false;
       })["catch"](function (err) {
-        alert(err);
+        _this.handleErr(err.response.status);
       });
     },
     archiveAmount: function archiveAmount() {
@@ -2375,7 +2375,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this2.modalVisibility = false;
         _this2.isApiLoading = false;
       })["catch"](function (err) {
-        alert(err);
+        _this2.handleErr(err.response.status);
       });
     },
     executeAction: function executeAction(type) {

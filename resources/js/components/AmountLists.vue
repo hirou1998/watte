@@ -183,7 +183,7 @@ export default {
                 this.isApiLoading = false;
             })
             .catch(err => {
-                alert(err)
+                this.handleErr(err.response.status)
             })
         },
         archiveAmount(){
@@ -212,7 +212,7 @@ export default {
                 this.isApiLoading = false;
             })
             .catch(err => {
-                alert(err)
+                this.handleErr(err.response.status)
             })
         },
         executeAction(type){
