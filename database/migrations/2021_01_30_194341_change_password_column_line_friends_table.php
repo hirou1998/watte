@@ -13,9 +13,11 @@ class ChangePasswordColumnLineFriendsTable extends Migration
      */
     public function up()
     {
-        Schema::table('line_friends', function (Blueprint $table) {
-            $table->dropColumn('password');
-        });
+        if (Schema::hasColumn('line_friends', 'password')) {
+            Schema::table('line_friends', function (Blueprint $table) {
+                $table->dropColumn('password');
+            });  
+        }
     }
 
     /**
