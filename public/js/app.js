@@ -1923,13 +1923,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_AmountUserForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/AmountUserForm */ "./resources/js/components/modules/AmountUserForm.vue");
 /* harmony import */ var _modules_AmountNumberForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/AmountNumberForm */ "./resources/js/components/modules/AmountNumberForm.vue");
 /* harmony import */ var _modules_AmountNoteForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/AmountNoteForm */ "./resources/js/components/modules/AmountNoteForm.vue");
-/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
-/* harmony import */ var _modules_FormButton__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/FormButton */ "./resources/js/components/modules/FormButton.vue");
-/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
-/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
-/* harmony import */ var _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/ToggleBlock.vue */ "./resources/js/components/modules/ToggleBlock.vue");
-/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
-/* harmony import */ var _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../mixins/formValidatorMixin */ "./resources/js/mixins/formValidatorMixin.js");
+/* harmony import */ var _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/ApiLoading */ "./resources/js/components/modules/ApiLoading.vue");
+/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
+/* harmony import */ var _modules_FormButton__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/FormButton */ "./resources/js/components/modules/FormButton.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
+/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
+/* harmony import */ var _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/ToggleBlock.vue */ "./resources/js/components/modules/ToggleBlock.vue");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
+/* harmony import */ var _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../mixins/formValidatorMixin */ "./resources/js/mixins/formValidatorMixin.js");
 //
 //
 //
@@ -1967,6 +1968,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 
 
 
@@ -1982,9 +1985,10 @@ __webpack_require__.r(__webpack_exports__);
     AmountUserForm: _modules_AmountUserForm__WEBPACK_IMPORTED_MODULE_0__["default"],
     AmountNumberForm: _modules_AmountNumberForm__WEBPACK_IMPORTED_MODULE_1__["default"],
     AmountNoteForm: _modules_AmountNoteForm__WEBPACK_IMPORTED_MODULE_2__["default"],
-    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_3__["default"],
-    FormButton: _modules_FormButton__WEBPACK_IMPORTED_MODULE_4__["default"],
-    ToggleBlock: _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
+    ApiLoading: _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_3__["default"],
+    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_4__["default"],
+    FormButton: _modules_FormButton__WEBPACK_IMPORTED_MODULE_5__["default"],
+    ToggleBlock: _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
   },
   props: ['event', 'liff', 'participants'],
   data: function data() {
@@ -1992,6 +1996,7 @@ __webpack_require__.r(__webpack_exports__);
       amount: '',
       note: '',
       isLoading: true,
+      isApiLoading: false,
       isPrivate: false,
       partner: [{
         user: {
@@ -2028,16 +2033,19 @@ __webpack_require__.r(__webpack_exports__);
     add: function add() {
       var _this2 = this;
 
+      this.isApiLoading = true;
       var formItem;
       var isNumber = this.ValidateNumber(this.amount);
 
       if (!this.isFilled) {
         alert('未入力の項目があります。');
+        this.isApiLoading = false;
         return;
       }
 
       if (!isNumber) {
         alert('金額には数字以外を入力しないでください。');
+        this.isApiLoading = false;
         return;
       }
 
@@ -2066,6 +2074,8 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           window.liff.closeWindow();
         }
+
+        _this2.isApiLoading = false;
       })["catch"](function (err) {
         _this2.handleErr(err.response.status);
       });
@@ -2131,7 +2141,7 @@ __webpack_require__.r(__webpack_exports__);
       _this5.checkAccess();
     });
   },
-  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_9__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_8__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_7__["default"], _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_10__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_9__["default"]]
 });
 
 /***/ }),
@@ -40897,7 +40907,9 @@ var render = function() {
           )
         : _vm._e(),
       _vm._v(" "),
-      _vm.isLoading ? _c("loading") : _vm._e()
+      _vm.isLoading ? _c("loading") : _vm._e(),
+      _vm._v(" "),
+      _vm.isApiLoading ? _c("api-loading") : _vm._e()
     ],
     1
   )

@@ -32,6 +32,7 @@
             <form-button v-if="isFilled" value="追加" type="accept" @send="add"></form-button>
         </article>
         <loading v-if="isLoading"></loading>
+        <api-loading v-if="isApiLoading"></api-loading>
     </section>
 </template>
 
@@ -39,6 +40,7 @@
 import AmountUserForm from './modules/AmountUserForm'
 import AmountNumberForm from './modules/AmountNumberForm'
 import AmountNoteForm from './modules/AmountNoteForm'
+import ApiLoading from './modules/ApiLoading'
 import Loading from './modules/Loading'
 import FormButton from './modules/FormButton'
 import checkAccessMixin from '../mixins/checkAccessMixin'
@@ -52,6 +54,7 @@ export default {
         AmountUserForm,
         AmountNumberForm,
         AmountNoteForm,
+        ApiLoading,
         Loading,
         FormButton,
         ToggleBlock
@@ -62,6 +65,7 @@ export default {
             amount: '',
             note: '',
             isLoading: true,
+            isApiLoading: false,
             isPrivate: false,
             partner: [
                 {
@@ -94,14 +98,17 @@ export default {
     },
     methods: {
         add(){
+            this.isApiLoading = true;
             let formItem;
             let isNumber = this.ValidateNumber(this.amount)
             if(!this.isFilled){
                 alert('未入力の項目があります。')
+                this.isApiLoading = false;
                 return
             }
             if(!isNumber){
                 alert('金額には数字以外を入力しないでください。')
+                this.isApiLoading = false;
                 return
             }
 
@@ -128,6 +135,7 @@ export default {
                 }else{
                     window.liff.closeWindow();
                 }
+                this.isApiLoading = false;
             })
             .catch(err => {
                 this.handleErr(err.response.status)
