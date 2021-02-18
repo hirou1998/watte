@@ -44,3 +44,4 @@ Route::put('/amount/archive/{amount}', 'AmountController@archive');
 Route::put('/amount/unarchive/{amount}', 'AmountController@unarchive');
 Route::get('/edit/{event}', 'EventController@editpage');
 Route::put('/event/edit/{event}', 'EventController@update');
+Route::put('/amount/edit/{amount}', 'AmountController@update');

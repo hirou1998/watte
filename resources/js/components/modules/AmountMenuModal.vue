@@ -3,20 +3,20 @@
         <template v-slot:content>
             <div class="amount-modal-inner">
                 <div class="amount-modal-block">
-                    <p class="amount-modal-block--title">支払い者:</p>
-                    <p class="amount-modal-block--content">{{target.line_friend.display_name}}</p>
+                    <p class="amount-modal-block--title normal-txt">支払い者:</p>
+                    <p class="amount-modal-block--content normal-txt">{{target.line_friend.display_name}}</p>
                 </div>
                 <div class="amount-modal-block">
-                    <p class="amount-modal-block--title">金額:</p>
-                    <p class="amount-modal-block--content">{{target.amount}} 円</p>
+                    <p class="amount-modal-block--title normal-txt">金額:</p>
+                    <p class="amount-modal-block--content normal-txt">{{target.amount}} 円</p>
                 </div>
                 <div class="amount-modal-block">
-                    <p class="amount-modal-block--title">内容:</p>
-                    <p class="amount-modal-block--content">{{target.note}}</p>
+                    <p class="amount-modal-block--title normal-txt">内容:</p>
+                    <p class="amount-modal-block--content normal-txt">{{target.note}}</p>
                 </div>
                 <div class="amount-modal-block">
-                    <p class="amount-modal-block--title">登録日時:</p>
-                    <p class="amount-modal-block--content">{{dateParser(target.created_at)}}</p>
+                    <p class="amount-modal-block--title normal-txt">登録日時:</p>
+                    <p class="amount-modal-block--content normal-txt">{{dateParser(target.created_at)}}</p>
                 </div>
                 <p class="small-txt amount-modal-confirm">を<span class="normal-txt red-txt">{{modalType}}</span>してもいいですか？</p>
                 <p class="note-txt amount-modal-note" v-if="modalType == '精算'">※支払いを精算すると、参加者全員の支払額に精算額÷参加人数の金額が加算されます。イベントの合計金額は変わりません。一度精算済にした支払いを未精算に戻すことは可能です。</p>

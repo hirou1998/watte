@@ -42,6 +42,7 @@
             @close="menuModalVisibility = false"
             @archive="showConfirmModal"
             @delete="showConfirmModal"
+            @edit="showEditForm"
             @unarchive="showConfirmModal"
         ></amount-item-option-window>
         <amount-menu-modal
@@ -51,6 +52,14 @@
             :target="targetAmount"
             :visibility="modalVisibility"
         ></amount-menu-modal>
+        <amount-edit-modal
+            @change="changeTargetAmount"
+            @close="editModalVisibility = false"
+            @execute="saveEditAmount"
+            :modal-type="modalType"
+            :target="targetAmount"
+            :visibility="editModalVisibility"
+        ></amount-edit-modal>
         <api-loading v-if="isApiLoading"></api-loading>
     </section>
 </template>
@@ -59,6 +68,7 @@
 import AmountEachMember from './modules/AmountEachMember'
 import AmountItem from './modules/AmountItem'
 import AmountItemOptionWindow from './modules/AmountItemOptionWindow'
+import AmountEditModal from './modules/AmountEditModal'
 import AmountMenuModal from './modules/AmountMenuModal'
 import AmountTab from './modules/AmountTab'
 import ApiLoading from './modules/ApiLoading'
@@ -72,6 +82,7 @@ export default {
         AmountEachMember,
         AmountItem,
         AmountItemOptionWindow,
+        AmountEditModal,
         AmountMenuModal,
         AmountTab,
         ApiLoading,
@@ -97,6 +108,7 @@ export default {
             isLoading: true,
             targetAmount: {},
             modalVisibility: false,
+            editModalVisibility: false,
             menuModalVisibility: false,
             modalType: '',
         }
@@ -189,6 +201,9 @@ export default {
         archiveAmount(){
             this.archiveRelatedAction('archive')
         },
+        changeTargetAmount(newValue){
+            this.targetAmount = newValue
+        },
         deleteAmount(){
             this.isApiLoading = true;
             window.axios.delete(`/amount/delete/${this.targetAmount.id}`)
@@ -242,7 +257,29 @@ export default {
             this.getAmountsData();
         },
         saveEditAmount(){
-
+            this.isApiLoading = true;
+            window.axios.put(`/amount/edit/${this.targetAmount.id}`, {
+                amount: this.targetAmount.amount,
+                note: this.targetAmount.note
+            })
+            .then(() => {
+                this.amounts = this.amounts.map(amount => {
+                    if(amount.id === this.targetAmount.id){
+                        return this.targetAmount
+                    }else{
+                        return amount
+                    }
+                })
+                if(this.event.notification){
+                    this.sendMessage('変更')
+                }
+                this.targetAmount = {}
+                this.editModalVisibility = false;
+                this.isApiLoading = false;
+            })
+            .catch(err => {
+                this.handleErr(err.response.status)
+            })
         },
         sendMessage(action){
             let messageText = "イベント: " + this.event.event_name + "\n" + this.targetAmount.amount + "円（" + this.targetAmount.note + "）\n" + "支払い者: " + this.targetAmount.line_friend.display_name + "\nを" + action + "しました。";
@@ -267,6 +304,11 @@ export default {
             this.modalVisibility = true;
             this.menuModalVisibility = false;
         },
+        showEditForm(type){
+            this.modalType = type;
+            this.editModalVisibility = true;
+            this.menuModalVisibility = false;
+        },
         showMenuModal(amount){
             this.menuModalVisibility = true;
             this.targetAmount = amount;
@@ -287,7 +329,8 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            this.checkAccess();
+            //this.checkAccess();
+            this.hideLoading();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, handleErrMinxin]

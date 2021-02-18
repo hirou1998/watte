@@ -31,10 +31,12 @@
             @close="infoModalVisibility = false"
         ></info-modal>
         <loading v-if="isLoading"></loading>
+        <api-loading v-if="isApiLoading"></api-loading>
     </article>
 </template>
 
 <script>
+import ApiLoading from './modules/ApiLoading'
 import FormButton from './modules/FormButton';
 import InfoModal from './modules/InfoModal';
 import ImageForm from './modules/ImageForm';
@@ -63,6 +65,7 @@ export default {
             registerd: {},
             infoModalVisibility: false,
             isLoading: true,
+            isApiLoading: false,
             isNotificationOn: true,
             isStartView: false,
             isRedirectView: false,
@@ -104,6 +107,7 @@ export default {
             this.file = data.file
         },
         send(){
+            this.isApiLoading = true;
             let params = new FormData()
             let notification = this.isNotificationOn ? 1 :0;
             params.append('file', this.file)
@@ -120,6 +124,7 @@ export default {
             .then(({data}) => {
                 let text = "イベント: 「" + data.event_name + "」 を作成しました。\n参加しますか？";
                 let eventId = data.id;
+                this.isApiLoading = false;
                 this.askJoin(text, eventId);
                 window.liff.closeWindow();
             })

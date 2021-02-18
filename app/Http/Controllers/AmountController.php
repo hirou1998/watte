@@ -79,6 +79,15 @@ class AmountController extends Controller
         return response()->json([]);
     }
 
+    public function update(Amount $amount, Request $request)
+    {
+        $amount->update([
+            'amount' => $request->amount,
+            'note' => $request->note
+        ]);
+        return $amount;
+    }
+
     public function archive(Amount $amount)
     {
         $amount->update(['archive_flg' => true]);
