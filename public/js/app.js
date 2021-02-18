@@ -3533,7 +3533,6 @@ __webpack_require__.r(__webpack_exports__);
       return String(this.amount.amount).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
     },
     isPaidByMe: function isPaidByMe() {
-      return true;
       return this.amount.line_friend.line_id == this.user.userId ? true : false;
     }
   },

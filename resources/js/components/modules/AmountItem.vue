@@ -54,7 +54,6 @@ export default {
             return String(this.amount.amount).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
         },
         isPaidByMe(){
-            return true;
             return this.amount.line_friend.line_id == this.user.userId ? true : false;
         }
     },
