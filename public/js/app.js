@@ -2503,8 +2503,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      //this.checkAccess();
-      _this6.hideLoading();
+      _this6.checkAccess(); //this.hideLoading();
+
     });
   },
   mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_8__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_9__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_10__["default"]]
