@@ -316,7 +316,7 @@ export default {
         hideLoading(){
             this.isLoading = false
             this.getAmountsData();
-            this.getTransactions();
+            //this.getTransactions();
         },
         saveEditAmount(){
             this.isApiLoading = true;
