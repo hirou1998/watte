@@ -1969,6 +1969,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2026,6 +2030,13 @@ __webpack_require__.r(__webpack_exports__);
         return true;
       } else {
         return false;
+      }
+    },
+    previewUrl: function previewUrl() {
+      if (this.event.file_path) {
+        return '/' + this.event.file_path;
+      } else {
+        return '/images/logo.png';
       }
     }
   },
@@ -2092,8 +2103,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     hideLoading: function hideLoading() {
-      this.isLoading = false;
-      this.isParticipated();
+      this.isLoading = false; //this.isParticipated();
     },
     isParticipated: function isParticipated() {
       var _this3 = this;
@@ -2138,7 +2148,8 @@ __webpack_require__.r(__webpack_exports__);
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this5.checkAccess();
+      _this5.hideLoading(); //this.checkAccess();
+
     });
   },
   mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_7__["default"], _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_10__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_9__["default"]]
@@ -2158,14 +2169,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_AmountEachMember__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/AmountEachMember */ "./resources/js/components/modules/AmountEachMember.vue");
 /* harmony import */ var _modules_AmountItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/AmountItem */ "./resources/js/components/modules/AmountItem.vue");
 /* harmony import */ var _modules_AmountItemOptionWindow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/AmountItemOptionWindow */ "./resources/js/components/modules/AmountItemOptionWindow.vue");
-/* harmony import */ var _modules_AmountEditModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/AmountEditModal */ "./resources/js/components/modules/AmountEditModal.vue");
-/* harmony import */ var _modules_AmountMenuModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/AmountMenuModal */ "./resources/js/components/modules/AmountMenuModal.vue");
-/* harmony import */ var _modules_AmountTab__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/AmountTab */ "./resources/js/components/modules/AmountTab.vue");
-/* harmony import */ var _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/ApiLoading */ "./resources/js/components/modules/ApiLoading.vue");
-/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
-/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
-/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
-/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
+/* harmony import */ var _modules_AmountEachOptionWindow__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/AmountEachOptionWindow */ "./resources/js/components/modules/AmountEachOptionWindow.vue");
+/* harmony import */ var _modules_AmountEditModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/AmountEditModal */ "./resources/js/components/modules/AmountEditModal.vue");
+/* harmony import */ var _modules_AmountConfirmModal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/AmountConfirmModal */ "./resources/js/components/modules/AmountConfirmModal.vue");
+/* harmony import */ var _modules_AmountEachPaymentModal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/AmountEachPaymentModal */ "./resources/js/components/modules/AmountEachPaymentModal.vue");
+/* harmony import */ var _modules_AmountTab__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/AmountTab */ "./resources/js/components/modules/AmountTab.vue");
+/* harmony import */ var _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/ApiLoading */ "./resources/js/components/modules/ApiLoading.vue");
+/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
+/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2238,6 +2251,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 
@@ -2254,11 +2284,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     AmountEachMember: _modules_AmountEachMember__WEBPACK_IMPORTED_MODULE_0__["default"],
     AmountItem: _modules_AmountItem__WEBPACK_IMPORTED_MODULE_1__["default"],
     AmountItemOptionWindow: _modules_AmountItemOptionWindow__WEBPACK_IMPORTED_MODULE_2__["default"],
-    AmountEditModal: _modules_AmountEditModal__WEBPACK_IMPORTED_MODULE_3__["default"],
-    AmountMenuModal: _modules_AmountMenuModal__WEBPACK_IMPORTED_MODULE_4__["default"],
-    AmountTab: _modules_AmountTab__WEBPACK_IMPORTED_MODULE_5__["default"],
-    ApiLoading: _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_6__["default"],
-    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_7__["default"]
+    AmountEachOptionWindow: _modules_AmountEachOptionWindow__WEBPACK_IMPORTED_MODULE_3__["default"],
+    AmountEditModal: _modules_AmountEditModal__WEBPACK_IMPORTED_MODULE_4__["default"],
+    AmountConfirmModal: _modules_AmountConfirmModal__WEBPACK_IMPORTED_MODULE_5__["default"],
+    AmountEachPaymentModal: _modules_AmountEachPaymentModal__WEBPACK_IMPORTED_MODULE_6__["default"],
+    AmountTab: _modules_AmountTab__WEBPACK_IMPORTED_MODULE_7__["default"],
+    ApiLoading: _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_8__["default"],
+    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_9__["default"]
   },
   props: ['event', 'participants'],
   data: function data() {
@@ -2276,10 +2308,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       isApiLoading: true,
       isLoading: true,
       targetAmount: {},
+      targetUserInfo: {},
       modalVisibility: false,
       editModalVisibility: false,
       menuModalVisibility: false,
-      modalType: ''
+      eachMenuModalVisibility: false,
+      eachModalVisibility: false,
+      modalType: {
+        amountItem: '',
+        each: ''
+      }
     };
   },
   computed: {
@@ -2472,19 +2510,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     selectTab: function selectTab(tab) {
       this.activeTab = tab;
     },
+    settlePayment: function settlePayment(data) {
+      alert('settle');
+      console.log(data);
+      this.eachModalVisibility = false;
+    },
     showConfirmModal: function showConfirmModal(type) {
-      this.modalType = type;
+      this.modalType.amountItem = type;
       this.modalVisibility = true;
       this.menuModalVisibility = false;
     },
     showEditForm: function showEditForm(type) {
-      this.modalType = type;
+      this.modalType.amountItem = type;
       this.editModalVisibility = true;
       this.menuModalVisibility = false;
     },
     showMenuModal: function showMenuModal(amount) {
       this.menuModalVisibility = true;
       this.targetAmount = amount;
+    },
+    showEachMenuModal: function showEachMenuModal(each) {
+      this.eachMenuModalVisibility = true;
+      this.targetUserInfo = each;
+    },
+    showPaymentModal: function showPaymentModal(type) {
+      this.modalType.each = type;
+      this.eachModalVisibility = true;
+      this.eachMenuModalVisibility = false;
     },
     sortArray: function sortArray(targetArray, key, order) {
       targetArray.sort(function (a, b) {
@@ -2503,11 +2555,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this6.checkAccess(); //this.hideLoading();
-
+      //this.checkAccess();
+      _this6.hideLoading();
     });
   },
-  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_8__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_9__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_10__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_10__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_11__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_12__["default"]]
 });
 
 /***/ }),
@@ -3289,6 +3341,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountConfirmModal.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/AmountConfirmModal.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FormButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormButton */ "./resources/js/components/modules/FormButton.vue");
+/* harmony import */ var _ModalBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ModalBase */ "./resources/js/components/modules/ModalBase.vue");
+/* harmony import */ var _mixins_formatDateTimeMixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixins/formatDateTimeMixin */ "./resources/js/mixins/formatDateTimeMixin.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    FormButton: _FormButton__WEBPACK_IMPORTED_MODULE_0__["default"],
+    ModalBase: _ModalBase__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  props: ['modalType', 'target', 'visibility'],
+  methods: {
+    cancel: function cancel() {
+      this.close();
+    },
+    close: function close() {
+      this.$emit('close');
+    },
+    execute: function execute() {
+      this.$emit('execute', this.modalType);
+    }
+  },
+  mixins: [_mixins_formatDateTimeMixin__WEBPACK_IMPORTED_MODULE_2__["default"]]
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountEachMember.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/AmountEachMember.vue?vue&type=script&lang=js& ***!
@@ -3298,8 +3419,15 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ProfileBlock */ "./resources/js/components/modules/ProfileBlock.vue");
-/* harmony import */ var _RatioBlock__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RatioBlock */ "./resources/js/components/modules/RatioBlock.vue");
+/* harmony import */ var _HamburgerButton_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HamburgerButton.vue */ "./resources/js/components/modules/HamburgerButton.vue");
+/* harmony import */ var _ProfileBlock__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ProfileBlock */ "./resources/js/components/modules/ProfileBlock.vue");
+/* harmony import */ var _RatioBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RatioBlock */ "./resources/js/components/modules/RatioBlock.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3322,6 +3450,82 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['each', 'totalAmount', 'totalRatio', 'participants'],
+  components: {
+    HamburgerButton: _HamburgerButton_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_1__["default"],
+    RatioBlock: _RatioBlock__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  computed: {
+    mustPayment: function mustPayment() {
+      return Math.ceil(Number(this.totalAmount) / Number(this.totalRatio) * Number(this.ratio));
+    },
+    gap: function gap() {
+      var calcGap = Number(this.each.sum) - this.mustPayment;
+      return isNaN(calcGap) ? 0 : calcGap;
+    },
+    gapDivided: function gapDivided() {
+      return String(this.gap).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    },
+    isPaidByMe: function isPaidByMe() {
+      return true;
+    },
+    sum: function sum() {
+      return String(this.each.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    },
+    ratio: function ratio() {
+      return this.each.line_friend.pivot.ratio;
+    },
+    times: function times() {
+      return Math.ceil(this.participants.length * this.ratio / this.totalRatio * 100) / 100;
+    }
+  },
+  methods: {
+    changeHamburgerButtonState: function changeHamburgerButtonState() {
+      this.$emit('show', _objectSpread(_objectSpread({}, this.each), {}, {
+        gap: this.gap
+      }));
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountEachOptionWindow.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/AmountEachOptionWindow.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ModalBase__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ModalBase */ "./resources/js/components/modules/ModalBase.vue");
+/* harmony import */ var _OptionWindow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OptionWindow */ "./resources/js/components/modules/OptionWindow.vue");
 //
 //
 //
@@ -3341,32 +3545,159 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['each', 'totalAmount', 'totalRatio', 'participants'],
   components: {
-    ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__["default"],
-    RatioBlock: _RatioBlock__WEBPACK_IMPORTED_MODULE_1__["default"]
+    ModalBase: _ModalBase__WEBPACK_IMPORTED_MODULE_0__["default"],
+    OptionWindow: _OptionWindow__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  computed: {
-    mustPayment: function mustPayment() {
-      return Math.ceil(Number(this.totalAmount) / Number(this.totalRatio) * Number(this.ratio));
+  props: ['visibility', 'target'],
+  data: function data() {
+    return {};
+  },
+  methods: {
+    close: function close() {
+      this.$emit('close');
     },
-    gap: function gap() {
-      var calcGap = Number(this.each.sum) - this.mustPayment;
-      return isNaN(calcGap) ? 0 : calcGap;
+    requestPayment: function requestPayment() {
+      this.$emit('request', 'request');
     },
-    gapDivided: function gapDivided() {
-      return String(this.gap).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
-    },
-    sum: function sum() {
-      return String(this.each.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
-    },
-    ratio: function ratio() {
-      return this.each.line_friend.pivot.ratio;
-    },
-    times: function times() {
-      return Math.ceil(this.participants.length * this.ratio / this.totalRatio * 100) / 100;
+    settlePayment: function settlePayment() {
+      this.$emit('settle', 'settle');
     }
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountEachPaymentModal.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/AmountEachPaymentModal.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AmountUserForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AmountUserForm */ "./resources/js/components/modules/AmountUserForm.vue");
+/* harmony import */ var _AmountNumberForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AmountNumberForm */ "./resources/js/components/modules/AmountNumberForm.vue");
+/* harmony import */ var _FormButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FormButton */ "./resources/js/components/modules/FormButton.vue");
+/* harmony import */ var _ModalBase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModalBase */ "./resources/js/components/modules/ModalBase.vue");
+/* harmony import */ var _mixins_formatDateTimeMixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../mixins/formatDateTimeMixin */ "./resources/js/mixins/formatDateTimeMixin.js");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
+/* harmony import */ var _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../mixins/formValidatorMixin */ "./resources/js/mixins/formValidatorMixin.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    AmountUserForm: _AmountUserForm__WEBPACK_IMPORTED_MODULE_0__["default"],
+    AmountNumberForm: _AmountNumberForm__WEBPACK_IMPORTED_MODULE_1__["default"],
+    FormButton: _FormButton__WEBPACK_IMPORTED_MODULE_2__["default"],
+    ModalBase: _ModalBase__WEBPACK_IMPORTED_MODULE_3__["default"]
+  },
+  props: ['modalType', 'target', 'participants', 'visibility'],
+  data: function data() {
+    return {
+      partner: {},
+      paymentAmount: ''
+    };
+  },
+  computed: {
+    inputTitle: function inputTitle() {
+      if (this.modalType === 'request') {
+        return '誰に割り勘代の支払いをリクエストしますか？';
+      } else if (this.modalType === 'settle') {
+        return '誰に割り勘代を支払いますか？';
+      }
+    },
+    buttonValue: function buttonValue() {
+      if (this.modalType === 'request') {
+        return 'リクエスト';
+      } else if (this.modalType === 'settle') {
+        return '送信';
+      }
+    },
+    availablePartner: function availablePartner() {
+      var _this = this;
+
+      return this.participants.filter(function (participant) {
+        return participant.line_id !== _this.target.line_friend.line_id;
+      });
+    },
+    amountValue: {
+      get: function get() {
+        this.paymentAmount = Math.abs(this.target.gap);
+        return Math.abs(this.target.gap);
+      },
+      set: function set(value) {
+        this.paymentAmount = value;
+      }
+    }
+  },
+  methods: {
+    cancel: function cancel() {
+      this.close();
+    },
+    close: function close() {
+      this.$emit('close');
+    },
+    execute: function execute() {
+      var _this2 = this;
+
+      if (!this.ValidateNumber(this.paymentAmount)) {
+        alert('金額は数字で入力してください');
+        return;
+      } else if (!Object.keys(this.partner).length) {
+        alert('支払い相手、もしくはリクエスト相手を選択してください');
+        return;
+      } else {
+        this.$emit('execute', {
+          fromUser: this.target.line_friend,
+          toUser: this.participants.find(function (participant) {
+            return participant.line_id === _this2.partner.userId;
+          }),
+          amount: this.paymentAmount,
+          type: this.modalType
+        });
+      }
+    }
+  },
+  mixins: [_mixins_formatDateTimeMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_5__["default"]]
 });
 
 /***/ }),
@@ -3629,75 +3960,6 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('unarchive', '未精算');
     }
   }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountMenuModal.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/AmountMenuModal.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _FormButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormButton */ "./resources/js/components/modules/FormButton.vue");
-/* harmony import */ var _ModalBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ModalBase */ "./resources/js/components/modules/ModalBase.vue");
-/* harmony import */ var _mixins_formatDateTimeMixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixins/formatDateTimeMixin */ "./resources/js/mixins/formatDateTimeMixin.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    FormButton: _FormButton__WEBPACK_IMPORTED_MODULE_0__["default"],
-    ModalBase: _ModalBase__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  props: ['modalType', 'target', 'visibility'],
-  methods: {
-    cancel: function cancel() {
-      this.close();
-    },
-    close: function close() {
-      this.$emit('close');
-    },
-    execute: function execute() {
-      this.$emit('execute', this.modalType);
-    }
-  },
-  mixins: [_mixins_formatDateTimeMixin__WEBPACK_IMPORTED_MODULE_2__["default"]]
 });
 
 /***/ }),
@@ -41180,7 +41442,8 @@ var render = function() {
                       "total-amount": _vm.sum,
                       "total-ratio": _vm.totalRatio,
                       participants: _vm.participants
-                    }
+                    },
+                    on: { show: _vm.showEachMenuModal }
                   })
                 })
               ],
@@ -41207,9 +41470,20 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c("amount-menu-modal", {
+      _c("amount-each-option-window", {
+        attrs: { visibility: _vm.eachMenuModalVisibility },
+        on: {
+          close: function($event) {
+            _vm.eachMenuModalVisibility = false
+          },
+          request: _vm.showPaymentModal,
+          settle: _vm.showPaymentModal
+        }
+      }),
+      _vm._v(" "),
+      _c("amount-confirm-modal", {
         attrs: {
-          "modal-type": _vm.modalType,
+          "modal-type": _vm.modalType.amountItem,
           target: _vm.targetAmount,
           visibility: _vm.modalVisibility
         },
@@ -41221,9 +41495,24 @@ var render = function() {
         }
       }),
       _vm._v(" "),
+      _c("amount-each-payment-modal", {
+        attrs: {
+          "modal-type": _vm.modalType.each,
+          target: _vm.targetUserInfo,
+          participants: _vm.participants,
+          visibility: _vm.eachModalVisibility
+        },
+        on: {
+          close: function($event) {
+            _vm.eachModalVisibility = false
+          },
+          execute: _vm.settlePayment
+        }
+      }),
+      _vm._v(" "),
       _c("amount-edit-modal", {
         attrs: {
-          "modal-type": _vm.modalType,
+          "modal-type": _vm.modalType.amountItem,
           target: _vm.targetAmount,
           visibility: _vm.editModalVisibility
         },
@@ -41837,6 +42126,147 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountConfirmModal.vue?vue&type=template&id=d93f6810&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/AmountConfirmModal.vue?vue&type=template&id=d93f6810& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("modal-base", {
+    attrs: { visibility: _vm.visibility },
+    on: { close: _vm.close },
+    scopedSlots: _vm._u([
+      {
+        key: "content",
+        fn: function() {
+          return [
+            _c("div", { staticClass: "amount-modal-inner" }, [
+              _c("div", { staticClass: "amount-modal-block" }, [
+                _c(
+                  "p",
+                  { staticClass: "amount-modal-block--title normal-txt" },
+                  [_vm._v("支払い者:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "p",
+                  { staticClass: "amount-modal-block--content normal-txt" },
+                  [_vm._v(_vm._s(_vm.target.line_friend.display_name))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "amount-modal-block" }, [
+                _c(
+                  "p",
+                  { staticClass: "amount-modal-block--title normal-txt" },
+                  [_vm._v("金額:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "p",
+                  { staticClass: "amount-modal-block--content normal-txt" },
+                  [_vm._v(_vm._s(_vm.target.amount) + " 円")]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "amount-modal-block" }, [
+                _c(
+                  "p",
+                  { staticClass: "amount-modal-block--title normal-txt" },
+                  [_vm._v("内容:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "p",
+                  { staticClass: "amount-modal-block--content normal-txt" },
+                  [_vm._v(_vm._s(_vm.target.note))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "amount-modal-block" }, [
+                _c(
+                  "p",
+                  { staticClass: "amount-modal-block--title normal-txt" },
+                  [_vm._v("登録日時:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "p",
+                  { staticClass: "amount-modal-block--content normal-txt" },
+                  [_vm._v(_vm._s(_vm.dateParser(_vm.target.created_at)))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "small-txt amount-modal-confirm" }, [
+                _vm._v("を"),
+                _c("span", { staticClass: "normal-txt red-txt" }, [
+                  _vm._v(_vm._s(_vm.modalType))
+                ]),
+                _vm._v("してもいいですか？")
+              ]),
+              _vm._v(" "),
+              _vm.modalType == "精算"
+                ? _c("p", { staticClass: "note-txt amount-modal-note" }, [
+                    _vm._v(
+                      "※支払いを精算すると、参加者全員の支払額に精算額÷参加人数の金額が加算されます。イベントの合計金額は変わりません。一度精算済にした支払いを未精算に戻すことは可能です。"
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.modalType == "削除"
+                ? _c("p", { staticClass: "note-txt amount-modal-note" }, [
+                    _vm._v(
+                      "※支払いを削除すると元に戻すことはできません。イベントの支払い一覧や合計金額も変化します。"
+                    )
+                  ])
+                : _vm._e()
+            ])
+          ]
+        },
+        proxy: true
+      },
+      {
+        key: "button",
+        fn: function() {
+          return [
+            _c("form-button", {
+              attrs: {
+                value: _vm.modalType + "する",
+                type:
+                  _vm.modalType == "精算" || _vm.modalType == "未精算"
+                    ? "accept"
+                    : "deny"
+              },
+              on: { send: _vm.execute }
+            }),
+            _vm._v(" "),
+            _c("form-button", {
+              attrs: { value: "取消", type: "cancel" },
+              on: { send: _vm.cancel }
+            })
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountEachMember.vue?vue&type=template&id=0e57a5e6&":
 /*!***************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/AmountEachMember.vue?vue&type=template&id=0e57a5e6& ***!
@@ -41852,86 +42282,97 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("li", { staticClass: "amount-item" }, [
-    _c(
-      "div",
-      { staticClass: "amount-head-container" },
-      [
-        _c("profile-block", {
-          attrs: { user: _vm.each.line_friend, iconSize: "50" }
-        }),
-        _vm._v(" "),
-        _c(
-          "div",
-          [
-            _c("div", { staticClass: "amount-times" }, [
-              _c("p", { staticClass: "normal-txt mb-0" }, [
-                _vm._v(_vm._s(_vm.times)),
-                _c("span", { staticClass: "txt-smaller" }, [_vm._v("倍")])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("ratio-block", { attrs: { "ratio-num": _vm.ratio } })
-          ],
-          1
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("table", { staticClass: "amount-each-table" }, [
-      _vm._m(0),
+  return _c(
+    "li",
+    { staticClass: "amount-item" },
+    [
+      _c(
+        "div",
+        { staticClass: "amount-head-container" },
+        [
+          _c("profile-block", {
+            attrs: { user: _vm.each.line_friend, iconSize: "50" }
+          }),
+          _vm._v(" "),
+          _c(
+            "div",
+            [
+              _c("div", { staticClass: "amount-times" }, [
+                _c("p", { staticClass: "normal-txt mb-0" }, [
+                  _vm._v(_vm._s(_vm.times)),
+                  _c("span", { staticClass: "txt-smaller" }, [_vm._v("倍")])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("ratio-block", { attrs: { "ratio-num": _vm.ratio } })
+            ],
+            1
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
-      _c("tr", [
-        _c(
-          "td",
-          { staticClass: "normal-txt amount-each-number amount-each-item" },
-          [
-            _vm._v(_vm._s(_vm.sum) + " "),
-            _c("span", { staticClass: "smaller-txt" }, [_vm._v("円")])
-          ]
-        ),
+      _c("table", { staticClass: "amount-each-table" }, [
+        _vm._m(0),
         _vm._v(" "),
-        _c(
-          "td",
-          {
-            staticClass: "normal-txt amount-each-number amount-each-item",
-            attrs: { "data-deficit": [_vm.gap < 0 ? "true" : "false"] }
-          },
-          [
-            _vm._v(_vm._s(_vm.gapDivided) + " "),
-            _c("span", { staticClass: "smaller-txt" }, [_vm._v("円")])
-          ]
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "ul",
-      _vm._l(_vm.each.deals, function(deal) {
-        return _c(
-          "li",
-          { key: deal.partner.line_id },
-          [
-            _c("profile-block", {
-              attrs: { user: deal.partner, iconSize: "20" }
-            }),
-            _vm._v(
-              "\n            " +
-                _vm._s(deal.pay_sum) +
+        _c("tr", [
+          _c(
+            "td",
+            { staticClass: "normal-txt amount-each-number amount-each-item" },
+            [
+              _vm._v(_vm._s(_vm.sum) + " "),
+              _c("span", { staticClass: "smaller-txt" }, [_vm._v("円")])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "td",
+            {
+              staticClass: "normal-txt amount-each-number amount-each-item",
+              attrs: { "data-deficit": [_vm.gap < 0 ? "true" : "false"] }
+            },
+            [
+              _vm._v(_vm._s(_vm.gapDivided) + " "),
+              _c("span", { staticClass: "smaller-txt" }, [_vm._v("円")])
+            ]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "ul",
+        _vm._l(_vm.each.deals, function(deal) {
+          return _c(
+            "li",
+            { key: deal.partner.line_id },
+            [
+              _c("profile-block", {
+                attrs: { user: deal.partner, iconSize: "20" }
+              }),
+              _vm._v(
                 "\n            " +
-                _vm._s(deal.paid_sum) +
-                "\n            " +
-                _vm._s(deal.pay_sum - deal.paid_sum) +
-                "\n        "
-            )
-          ],
-          1
-        )
-      }),
-      0
-    )
-  ])
+                  _vm._s(deal.pay_sum) +
+                  "\n            " +
+                  _vm._s(deal.paid_sum) +
+                  "\n            " +
+                  _vm._s(deal.pay_sum - deal.paid_sum) +
+                  "\n        "
+              )
+            ],
+            1
+          )
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _vm.isPaidByMe
+        ? _c("hamburger-button", {
+            on: { change: _vm.changeHamburgerButtonState }
+          })
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -41949,6 +42390,227 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountEachOptionWindow.vue?vue&type=template&id=37fe5b91&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/AmountEachOptionWindow.vue?vue&type=template&id=37fe5b91& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _vm.visibility
+      ? _c(
+          "section",
+          { staticClass: "modal-base" },
+          [
+            _c("option-window", {
+              attrs: { visibility: _vm.visibility },
+              scopedSlots: _vm._u(
+                [
+                  {
+                    key: "default",
+                    fn: function() {
+                      return [
+                        _c("ul", { staticClass: "option-block" }, [
+                          _c(
+                            "li",
+                            {
+                              staticClass: "option-button",
+                              on: { click: _vm.requestPayment }
+                            },
+                            [_vm._v("割り勘代の支払いリクエスト")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            {
+                              staticClass: "option-button",
+                              on: { click: _vm.settlePayment }
+                            },
+                            [_vm._v("割り勘代を支払う")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "option-block option-button",
+                            attrs: { "data-type": "cancel" },
+                            on: { click: _vm.close }
+                          },
+                          [_vm._v("取消")]
+                        )
+                      ]
+                    },
+                    proxy: true
+                  }
+                ],
+                null,
+                false,
+                4256718212
+              )
+            })
+          ],
+          1
+        )
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountEachPaymentModal.vue?vue&type=template&id=705d9213&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/AmountEachPaymentModal.vue?vue&type=template&id=705d9213& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("modal-base", {
+    attrs: { visibility: _vm.visibility },
+    on: { close: _vm.close },
+    scopedSlots: _vm._u([
+      {
+        key: "content",
+        fn: function() {
+          return [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "each-payment-modal-users each-payment-modal-block",
+                attrs: {
+                  "data-reverse": _vm.modalType === "settle" ? "true" : "false"
+                }
+              },
+              [
+                _c(
+                  "div",
+                  [
+                    _c("amount-user-form", {
+                      attrs: {
+                        participants: _vm.availablePartner,
+                        text: _vm.inputTitle
+                      },
+                      model: {
+                        value: _vm.partner,
+                        callback: function($$v) {
+                          _vm.partner = $$v
+                        },
+                        expression: "partner"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("p", { staticClass: "big-txt" }, [_vm._v("↓")]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "each-payment-modal-owner" },
+                  [
+                    _c("p", { staticClass: "small-txt mr-5" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm.modalType === "request"
+                            ? "支払われ先"
+                            : "支払い人"
+                        )
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("profile-block", {
+                      attrs: { user: _vm.target.line_friend, iconSize: "30" }
+                    })
+                  ],
+                  1
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "each-payment-modal-amount each-payment-modal-block"
+              },
+              [
+                _c("amount-number-form", {
+                  model: {
+                    value: _vm.amountValue,
+                    callback: function($$v) {
+                      _vm.amountValue = $$v
+                    },
+                    expression: "amountValue"
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _vm.modalType == "request"
+              ? _c("p", { staticClass: "note-txt amount-modal-note" }, [
+                  _vm._v("※上記の金額の支払いをリクエストします。")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.modalType == "settle"
+              ? _c("p", { staticClass: "note-txt amount-modal-note" }, [
+                  _vm._v("※上記の金額の支払いを記録します。")
+                ])
+              : _vm._e()
+          ]
+        },
+        proxy: true
+      },
+      {
+        key: "button",
+        fn: function() {
+          return [
+            _c("form-button", {
+              attrs: { value: _vm.buttonValue, type: "accept" },
+              on: { send: _vm.execute }
+            }),
+            _vm._v(" "),
+            _c("form-button", {
+              attrs: { value: "取消", type: "cancel" },
+              on: { send: _vm.cancel }
+            })
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -42293,147 +42955,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountMenuModal.vue?vue&type=template&id=26040e1a&":
-/*!**************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/AmountMenuModal.vue?vue&type=template&id=26040e1a& ***!
-  \**************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("modal-base", {
-    attrs: { visibility: _vm.visibility },
-    on: { close: _vm.close },
-    scopedSlots: _vm._u([
-      {
-        key: "content",
-        fn: function() {
-          return [
-            _c("div", { staticClass: "amount-modal-inner" }, [
-              _c("div", { staticClass: "amount-modal-block" }, [
-                _c(
-                  "p",
-                  { staticClass: "amount-modal-block--title normal-txt" },
-                  [_vm._v("支払い者:")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "p",
-                  { staticClass: "amount-modal-block--content normal-txt" },
-                  [_vm._v(_vm._s(_vm.target.line_friend.display_name))]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "amount-modal-block" }, [
-                _c(
-                  "p",
-                  { staticClass: "amount-modal-block--title normal-txt" },
-                  [_vm._v("金額:")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "p",
-                  { staticClass: "amount-modal-block--content normal-txt" },
-                  [_vm._v(_vm._s(_vm.target.amount) + " 円")]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "amount-modal-block" }, [
-                _c(
-                  "p",
-                  { staticClass: "amount-modal-block--title normal-txt" },
-                  [_vm._v("内容:")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "p",
-                  { staticClass: "amount-modal-block--content normal-txt" },
-                  [_vm._v(_vm._s(_vm.target.note))]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "amount-modal-block" }, [
-                _c(
-                  "p",
-                  { staticClass: "amount-modal-block--title normal-txt" },
-                  [_vm._v("登録日時:")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "p",
-                  { staticClass: "amount-modal-block--content normal-txt" },
-                  [_vm._v(_vm._s(_vm.dateParser(_vm.target.created_at)))]
-                )
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "small-txt amount-modal-confirm" }, [
-                _vm._v("を"),
-                _c("span", { staticClass: "normal-txt red-txt" }, [
-                  _vm._v(_vm._s(_vm.modalType))
-                ]),
-                _vm._v("してもいいですか？")
-              ]),
-              _vm._v(" "),
-              _vm.modalType == "精算"
-                ? _c("p", { staticClass: "note-txt amount-modal-note" }, [
-                    _vm._v(
-                      "※支払いを精算すると、参加者全員の支払額に精算額÷参加人数の金額が加算されます。イベントの合計金額は変わりません。一度精算済にした支払いを未精算に戻すことは可能です。"
-                    )
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.modalType == "削除"
-                ? _c("p", { staticClass: "note-txt amount-modal-note" }, [
-                    _vm._v(
-                      "※支払いを削除すると元に戻すことはできません。イベントの支払い一覧や合計金額も変化します。"
-                    )
-                  ])
-                : _vm._e()
-            ])
-          ]
-        },
-        proxy: true
-      },
-      {
-        key: "button",
-        fn: function() {
-          return [
-            _c("form-button", {
-              attrs: {
-                value: _vm.modalType + "する",
-                type:
-                  _vm.modalType == "精算" || _vm.modalType == "未精算"
-                    ? "accept"
-                    : "deny"
-              },
-              on: { send: _vm.execute }
-            }),
-            _vm._v(" "),
-            _c("form-button", {
-              attrs: { value: "取消", type: "cancel" },
-              on: { send: _vm.cancel }
-            })
-          ]
-        },
-        proxy: true
-      }
-    ])
-  })
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountNoteForm.vue?vue&type=template&id=2cd4a5fe&":
 /*!*************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/AmountNoteForm.vue?vue&type=template&id=2cd4a5fe& ***!
@@ -42450,7 +42971,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "form-group" }, [
-    _c("p", { staticClass: "normal-txt" }, [_vm._v("メモ")]),
+    _c("p", { staticClass: "small-txt form-item-title" }, [_vm._v("メモ")]),
     _vm._v(" "),
     _c("input", {
       directives: [
@@ -42461,7 +42982,7 @@ var render = function() {
           expression: "memo"
         }
       ],
-      staticClass: "form-control",
+      staticClass: "form-control form-item-content",
       attrs: { type: "text", placeholder: "何に払いましたか？" },
       domProps: { value: _vm.memo },
       on: {
@@ -42498,9 +43019,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "form-group" }, [
-    _c("p", { staticClass: "normal-txt" }, [_vm._v("金額")]),
+    _c("p", { staticClass: "small-txt form-item-title" }, [_vm._v("金額")]),
     _vm._v(" "),
-    _c("div", { staticClass: "d-flex amount-number-block" }, [
+    _c("div", { staticClass: "d-flex amount-number-block form-item-content" }, [
       _c("input", {
         directives: [
           {
@@ -42511,7 +43032,7 @@ var render = function() {
           }
         ],
         staticClass: "form-control",
-        attrs: { type: "tel" },
+        attrs: { type: "tel", placeholder: "金額を数字で入力してください" },
         domProps: { value: _vm.number },
         on: {
           input: function($event) {
@@ -42582,7 +43103,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "form-group" }, [
-    _c("p", { staticClass: "normal-txt" }, [_vm._v(_vm._s(_vm.text))]),
+    _c("p", { staticClass: "small-txt form-item-title" }, [
+      _vm._v(_vm._s(_vm.text))
+    ]),
     _vm._v(" "),
     _c(
       "select",
@@ -42595,7 +43118,7 @@ var render = function() {
             expression: "payer.userId"
           }
         ],
-        staticClass: "form-control payer-select",
+        staticClass: "form-control payer-select form-item-content",
         on: {
           change: function($event) {
             var $$selectedVal = Array.prototype.filter
@@ -55524,7 +56047,7 @@ Vue.component('api-loading', __webpack_require__(/*! ./components/modules/ApiLoa
 Vue.component('hamburger-button', __webpack_require__(/*! ./components/modules/HamburgerButton.vue */ "./resources/js/components/modules/HamburgerButton.vue")["default"]);
 Vue.component('amount-itme-menu', __webpack_require__(/*! ./components/modules/AmountItemMenu.vue */ "./resources/js/components/modules/AmountItemMenu.vue")["default"]);
 Vue.component('modal-base', __webpack_require__(/*! ./components/modules/ModalBase.vue */ "./resources/js/components/modules/ModalBase.vue")["default"]);
-Vue.component('amount-menu-modal', __webpack_require__(/*! ./components/modules/AmountMenuModal.vue */ "./resources/js/components/modules/AmountMenuModal.vue")["default"]);
+Vue.component('amount-confirm-modal', __webpack_require__(/*! ./components/modules/AmountConfirmModal.vue */ "./resources/js/components/modules/AmountConfirmModal.vue")["default"]);
 Vue.component('option-window', __webpack_require__(/*! ./components/modules/OptionWindow.vue */ "./resources/js/components/modules/OptionWindow.vue")["default"]);
 Vue.component('amount-item-option-window', __webpack_require__(/*! ./components/modules/AmountItemOptionWindow.vue */ "./resources/js/components/modules/AmountItemOptionWindow.vue")["default"]);
 Vue.component('info-block', __webpack_require__(/*! ./components/modules/InfoBlock.vue */ "./resources/js/components/modules/InfoBlock.vue")["default"]);
@@ -55533,6 +56056,8 @@ Vue.component('image-form', __webpack_require__(/*! ./components/modules/ImageFo
 Vue.component('event-edit', __webpack_require__(/*! ./components/EventEdit.vue */ "./resources/js/components/EventEdit.vue")["default"]);
 Vue.component('notification', __webpack_require__(/*! ./components/modules/Notification.vue */ "./resources/js/components/modules/Notification.vue")["default"]);
 Vue.component('amount-edit-modal', __webpack_require__(/*! ./components/modules/AmountEditModal.vue */ "./resources/js/components/modules/AmountEditModal.vue")["default"]);
+Vue.component('amount-each-option-window', __webpack_require__(/*! ./components/modules/AmountEachOptionWindow.vue */ "./resources/js/components/modules/AmountEachOptionWindow.vue")["default"]);
+Vue.component('amount-each-payment-modal', __webpack_require__(/*! ./components/modules/AmountEachPaymentModal.vue */ "./resources/js/components/modules/AmountEachPaymentModal.vue")["default"]);
 axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="line-id"]').getAttribute('content');
 var app = new Vue({
   el: '#app'
@@ -56068,6 +56593,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/modules/AmountConfirmModal.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/modules/AmountConfirmModal.vue ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AmountConfirmModal_vue_vue_type_template_id_d93f6810___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AmountConfirmModal.vue?vue&type=template&id=d93f6810& */ "./resources/js/components/modules/AmountConfirmModal.vue?vue&type=template&id=d93f6810&");
+/* harmony import */ var _AmountConfirmModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AmountConfirmModal.vue?vue&type=script&lang=js& */ "./resources/js/components/modules/AmountConfirmModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AmountConfirmModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AmountConfirmModal_vue_vue_type_template_id_d93f6810___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AmountConfirmModal_vue_vue_type_template_id_d93f6810___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/modules/AmountConfirmModal.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/AmountConfirmModal.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/modules/AmountConfirmModal.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountConfirmModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./AmountConfirmModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountConfirmModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountConfirmModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/AmountConfirmModal.vue?vue&type=template&id=d93f6810&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/modules/AmountConfirmModal.vue?vue&type=template&id=d93f6810& ***!
+  \***********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountConfirmModal_vue_vue_type_template_id_d93f6810___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./AmountConfirmModal.vue?vue&type=template&id=d93f6810& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountConfirmModal.vue?vue&type=template&id=d93f6810&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountConfirmModal_vue_vue_type_template_id_d93f6810___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountConfirmModal_vue_vue_type_template_id_d93f6810___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/modules/AmountEachMember.vue":
 /*!**************************************************************!*\
   !*** ./resources/js/components/modules/AmountEachMember.vue ***!
@@ -56132,6 +56726,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountEachMember_vue_vue_type_template_id_0e57a5e6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountEachMember_vue_vue_type_template_id_0e57a5e6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/AmountEachOptionWindow.vue":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/modules/AmountEachOptionWindow.vue ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AmountEachOptionWindow_vue_vue_type_template_id_37fe5b91___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AmountEachOptionWindow.vue?vue&type=template&id=37fe5b91& */ "./resources/js/components/modules/AmountEachOptionWindow.vue?vue&type=template&id=37fe5b91&");
+/* harmony import */ var _AmountEachOptionWindow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AmountEachOptionWindow.vue?vue&type=script&lang=js& */ "./resources/js/components/modules/AmountEachOptionWindow.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AmountEachOptionWindow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AmountEachOptionWindow_vue_vue_type_template_id_37fe5b91___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AmountEachOptionWindow_vue_vue_type_template_id_37fe5b91___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/modules/AmountEachOptionWindow.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/AmountEachOptionWindow.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/modules/AmountEachOptionWindow.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountEachOptionWindow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./AmountEachOptionWindow.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountEachOptionWindow.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountEachOptionWindow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/AmountEachOptionWindow.vue?vue&type=template&id=37fe5b91&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/modules/AmountEachOptionWindow.vue?vue&type=template&id=37fe5b91& ***!
+  \***************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountEachOptionWindow_vue_vue_type_template_id_37fe5b91___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./AmountEachOptionWindow.vue?vue&type=template&id=37fe5b91& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountEachOptionWindow.vue?vue&type=template&id=37fe5b91&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountEachOptionWindow_vue_vue_type_template_id_37fe5b91___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountEachOptionWindow_vue_vue_type_template_id_37fe5b91___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/AmountEachPaymentModal.vue":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/modules/AmountEachPaymentModal.vue ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AmountEachPaymentModal_vue_vue_type_template_id_705d9213___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AmountEachPaymentModal.vue?vue&type=template&id=705d9213& */ "./resources/js/components/modules/AmountEachPaymentModal.vue?vue&type=template&id=705d9213&");
+/* harmony import */ var _AmountEachPaymentModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AmountEachPaymentModal.vue?vue&type=script&lang=js& */ "./resources/js/components/modules/AmountEachPaymentModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AmountEachPaymentModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AmountEachPaymentModal_vue_vue_type_template_id_705d9213___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AmountEachPaymentModal_vue_vue_type_template_id_705d9213___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/modules/AmountEachPaymentModal.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/AmountEachPaymentModal.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/modules/AmountEachPaymentModal.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountEachPaymentModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./AmountEachPaymentModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountEachPaymentModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountEachPaymentModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/AmountEachPaymentModal.vue?vue&type=template&id=705d9213&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/modules/AmountEachPaymentModal.vue?vue&type=template&id=705d9213& ***!
+  \***************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountEachPaymentModal_vue_vue_type_template_id_705d9213___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./AmountEachPaymentModal.vue?vue&type=template&id=705d9213& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountEachPaymentModal.vue?vue&type=template&id=705d9213&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountEachPaymentModal_vue_vue_type_template_id_705d9213___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountEachPaymentModal_vue_vue_type_template_id_705d9213___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -56408,75 +57140,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountItemOptionWindow_vue_vue_type_template_id_36a010a3___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountItemOptionWindow_vue_vue_type_template_id_36a010a3___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/js/components/modules/AmountMenuModal.vue":
-/*!*************************************************************!*\
-  !*** ./resources/js/components/modules/AmountMenuModal.vue ***!
-  \*************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _AmountMenuModal_vue_vue_type_template_id_26040e1a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AmountMenuModal.vue?vue&type=template&id=26040e1a& */ "./resources/js/components/modules/AmountMenuModal.vue?vue&type=template&id=26040e1a&");
-/* harmony import */ var _AmountMenuModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AmountMenuModal.vue?vue&type=script&lang=js& */ "./resources/js/components/modules/AmountMenuModal.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _AmountMenuModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _AmountMenuModal_vue_vue_type_template_id_26040e1a___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _AmountMenuModal_vue_vue_type_template_id_26040e1a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/modules/AmountMenuModal.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/modules/AmountMenuModal.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************!*\
-  !*** ./resources/js/components/modules/AmountMenuModal.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountMenuModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./AmountMenuModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountMenuModal.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountMenuModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/modules/AmountMenuModal.vue?vue&type=template&id=26040e1a&":
-/*!********************************************************************************************!*\
-  !*** ./resources/js/components/modules/AmountMenuModal.vue?vue&type=template&id=26040e1a& ***!
-  \********************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountMenuModal_vue_vue_type_template_id_26040e1a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./AmountMenuModal.vue?vue&type=template&id=26040e1a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/AmountMenuModal.vue?vue&type=template&id=26040e1a&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountMenuModal_vue_vue_type_template_id_26040e1a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AmountMenuModal_vue_vue_type_template_id_26040e1a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

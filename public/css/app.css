@@ -11394,6 +11394,20 @@ a:hover {
   left: 0;
 }
 
+.form-group-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.form-item-title {
+  flex: 1;
+}
+
+.form-item-content {
+  flex: 3;
+}
+
 .amount-item {
   padding: 1rem 1.5rem;
   background-color: #fff;
@@ -11591,6 +11605,47 @@ a:hover {
 
 .amount-modal-confirm {
   margin-top: 5vh;
+}
+
+.amount-event-head {
+  height: 200px;
+  margin-bottom: 3rem;
+}
+
+.amount-event-title {
+  position: absolute;
+  width: auto;
+  color: #fff;
+  left: 14%;
+  bottom: 0;
+  display: inline;
+  margin: 0;
+}
+
+.amount-event-img {
+  filter: brightness(0.75);
+}
+
+.each-payment-modal-block {
+  width: 100%;
+}
+
+.each-payment-modal-block:first-child {
+  margin-bottom: 3rem;
+}
+
+.each-payment-modal-users {
+  display: flex;
+  flex-direction: column;
+}
+
+.each-payment-modal-users[data-reverse=true] {
+  flex-direction: column-reverse;
+}
+
+.each-payment-modal-owner {
+  display: flex;
+  align-items: flex-start;
 }
 
 .setting-container {

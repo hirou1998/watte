@@ -50,7 +50,7 @@ class StartService
         //新規イベントスタート
         $start_event_button = $this->generateColumn('新しく割り勘を始める', '開始ボタンを押して割り勘をスタートしましょう', $this->deploy_url . $this->imageUrl, [$start_button, $detail_button, $privacy_button]);
 
-        $events = EventModel::where('group_id', $this->group_id)->orderBy('created_at', 'desc')->get();
+        $events = EventModel::where('group_id', $this->group_id)->orderBy('created_at', 'desc')->limit(5)->get();
 
         foreach($events as $event){
             if($event->file_path){

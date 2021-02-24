@@ -165,3 +165,38 @@
 .amount-modal-confirm{
     margin-top: 5vh;
 }
+.amount-event-head{
+    height: 200px;
+    margin-bottom: 3rem;
+}
+.amount-event-title{
+    position: absolute;
+    width: auto;
+    color: #fff;
+    left: 14%;
+    bottom: 0;
+    display: inline;
+    margin: 0;
+}
+.amount-event-img{
+    filter: brightness(.75);
+}
+.each-payment-modal-block{
+    width: 100%;
+
+    &:first-child{
+        margin-bottom: 3rem;
+    }
+}
+.each-payment-modal-users{
+    display: flex;
+    flex-direction: column;
+
+    &[data-reverse="true"]{
+        flex-direction: column-reverse;
+    }
+}
+.each-payment-modal-owner{
+    display: flex;
+    align-items: flex-start;
+}

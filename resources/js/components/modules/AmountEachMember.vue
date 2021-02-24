@@ -33,16 +33,22 @@
                 {{deal.pay_sum - deal.paid_sum}}
             </li>
         </ul>
+        <hamburger-button
+            v-if="isPaidByMe"
+            @change="changeHamburgerButtonState"
+        ></hamburger-button>
     </li>
 </template>
 
 <script>
+import HamburgerButton from './HamburgerButton.vue';
 import ProfileBlock from './ProfileBlock';
 import RatioBlock from './RatioBlock'
 
 export default {
     props: ['each', 'totalAmount', 'totalRatio', 'participants'],
     components: {
+        HamburgerButton,
         ProfileBlock,
         RatioBlock
     },
@@ -57,6 +63,9 @@ export default {
         gapDivided(){
             return String(this.gap).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
         },
+        isPaidByMe(){
+            return true
+        },
         sum(){
             return String(this.each.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
         },
@@ -65,6 +74,14 @@ export default {
         },
         times(){
             return Math.ceil(this.participants.length * this.ratio / this.totalRatio * 100) / 100;
+        },
+    },
+    methods: {
+        changeHamburgerButtonState(){
+            this.$emit('show', {
+                ...this.each,
+                gap: this.gap
+            });
         },
     }
 }

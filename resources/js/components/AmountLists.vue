@@ -32,6 +32,7 @@
                     :total-ratio="totalRatio"
                     :participants="participants"
                     :key="item.friend_id"
+                    @show="showEachMenuModal"
                 ></amount-each-member>
             </section>
         </article>
@@ -45,18 +46,32 @@
             @edit="showEditForm"
             @unarchive="showConfirmModal"
         ></amount-item-option-window>
-        <amount-menu-modal
+        <amount-each-option-window
+            :visibility="eachMenuModalVisibility"
+            @close="eachMenuModalVisibility = false"
+            @request="showPaymentModal"
+            @settle="showPaymentModal"
+        ></amount-each-option-window>
+        <amount-confirm-modal
             @close="modalVisibility = false"
             @execute="executeAction"
-            :modal-type="modalType"
+            :modal-type="modalType.amountItem"
             :target="targetAmount"
             :visibility="modalVisibility"
-        ></amount-menu-modal>
+        ></amount-confirm-modal>
+        <amount-each-payment-modal
+            @close="eachModalVisibility = false"
+            @execute="settlePayment"
+            :modal-type="modalType.each"
+            :target="targetUserInfo"
+            :participants="participants"
+            :visibility="eachModalVisibility"
+        ></amount-each-payment-modal>
         <amount-edit-modal
             @change="changeTargetAmount"
             @close="editModalVisibility = false"
             @execute="saveEditAmount"
-            :modal-type="modalType"
+            :modal-type="modalType.amountItem"
             :target="targetAmount"
             :visibility="editModalVisibility"
         ></amount-edit-modal>
@@ -68,8 +83,10 @@
 import AmountEachMember from './modules/AmountEachMember'
 import AmountItem from './modules/AmountItem'
 import AmountItemOptionWindow from './modules/AmountItemOptionWindow'
+import AmountEachOptionWindow from './modules/AmountEachOptionWindow'
 import AmountEditModal from './modules/AmountEditModal'
-import AmountMenuModal from './modules/AmountMenuModal'
+import AmountConfirmModal from './modules/AmountConfirmModal'
+import AmountEachPaymentModal from './modules/AmountEachPaymentModal'
 import AmountTab from './modules/AmountTab'
 import ApiLoading from './modules/ApiLoading'
 import Loading from './modules/Loading'
@@ -82,8 +99,10 @@ export default {
         AmountEachMember,
         AmountItem,
         AmountItemOptionWindow,
+        AmountEachOptionWindow,
         AmountEditModal,
-        AmountMenuModal,
+        AmountConfirmModal,
+        AmountEachPaymentModal,
         AmountTab,
         ApiLoading,
         Loading
@@ -107,10 +126,16 @@ export default {
             isApiLoading: true,
             isLoading: true,
             targetAmount: {},
+            targetUserInfo: {},
             modalVisibility: false,
             editModalVisibility: false,
             menuModalVisibility: false,
-            modalType: '',
+            eachMenuModalVisibility: false,
+            eachModalVisibility: false,
+            modalType: {
+                amountItem: '',
+                each: ''
+            },
         }
     },
     computed: {
@@ -299,19 +324,33 @@ export default {
         selectTab(tab){
             this.activeTab = tab
         },
+        settlePayment(data){
+            alert('settle')
+            console.log(data)
+            this.eachModalVisibility = false;
+        },
         showConfirmModal(type){
-            this.modalType = type;
+            this.modalType.amountItem = type;
             this.modalVisibility = true;
             this.menuModalVisibility = false;
         },
         showEditForm(type){
-            this.modalType = type;
+            this.modalType.amountItem = type;
             this.editModalVisibility = true;
             this.menuModalVisibility = false;
         },
         showMenuModal(amount){
             this.menuModalVisibility = true;
             this.targetAmount = amount;
+        },
+        showEachMenuModal(each){
+            this.eachMenuModalVisibility = true;
+            this.targetUserInfo = each
+        },
+        showPaymentModal(type){
+            this.modalType.each = type;
+            this.eachModalVisibility = true;
+            this.eachMenuModalVisibility = false;
         },
         sortArray(targetArray, key, order){
             targetArray.sort((a, b) => {
@@ -329,8 +368,8 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            this.checkAccess();
-            //this.hideLoading();
+            //this.checkAccess();
+            this.hideLoading();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, handleErrMinxin]

@@ -1,8 +1,8 @@
 <template>
     <div class="form-group">
-        <p class="normal-txt">金額</p>
-        <div class="d-flex amount-number-block">
-            <input type="tel" v-model="number" class="form-control">
+        <p class="small-txt form-item-title">金額</p>
+        <div class="d-flex amount-number-block form-item-content">
+            <input type="tel" v-model="number" class="form-control" placeholder="金額を数字で入力してください">
             <p class="small-txt mb-0 ml-2">円</p>
         </div>
     </div>
