@@ -2287,6 +2287,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -2327,7 +2328,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       eachMenuModalVisibility: false,
       eachModalVisibility: false,
       editModalVisibility: false,
-      isApiLoading: false,
+      isApiLoading: true,
       isLoading: false,
       menuModalVisibility: false,
       modalVisibility: false,
@@ -41860,6 +41861,7 @@ var render = function() {
     "section",
     { staticClass: "section-inner" },
     [
+      _vm._v("\n    " + _vm._s(_vm.isLoading) + "\n    "),
       !_vm.isLoading
         ? _c(
             "article",
