@@ -46,7 +46,7 @@ import ProfileBlock from './ProfileBlock';
 import RatioBlock from './RatioBlock'
 
 export default {
-    props: ['each', 'totalAmount', 'totalRatio', 'participants'],
+    props: ['each', 'totalAmount', 'totalRatio', 'participants', 'user'],
     components: {
         HamburgerButton,
         ProfileBlock,

@@ -2287,7 +2287,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 
@@ -3910,7 +3909,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['each', 'totalAmount', 'totalRatio', 'participants'],
+  props: ['each', 'totalAmount', 'totalRatio', 'participants', 'user'],
   components: {
     HamburgerButton: _HamburgerButton_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -41958,9 +41957,7 @@ var render = function() {
                     ]),
                     _vm._v("円)")
                   ]),
-                  _vm._v(
-                    "\n            " + _vm._s(_vm.each) + "\n            "
-                  ),
+                  _vm._v(" "),
                   _vm._l(_vm.each, function(item) {
                     return _c("amount-each-member", {
                       key: item.friend_id,
