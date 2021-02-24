@@ -2504,7 +2504,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       window.axios.get("/api/transactions/".concat(this.event.id)).then(function (_ref2) {
         var data = _ref2.data;
         _this4.transactions = data;
-        _this4.isApiLoading = false;
       });
     },
     hideLoading: function hideLoading() {
