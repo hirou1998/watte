@@ -16,7 +16,7 @@ class TransactonContorller extends Controller
         if($userToken && $userToken == session()->get('line_id')){
             $transactions = $transaction::where('event_id', $event->id)->where('approved', true)->get();
 
-            if($transactions->isEmpty()){
+            if($transaction->isEmpty()){
                 abort(404, 'Not Found');
             }else{
                 return $transactions;
