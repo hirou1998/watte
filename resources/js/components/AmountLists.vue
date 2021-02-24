@@ -32,6 +32,7 @@
             </section>
             <section v-show="activeTab == 1" class="amount-section">
                 <p class="small-txt amount-result-head">1人当たり: <span class="big-txt">{{PaymentPerPersonDivided}}</span> 円 (合計金額: <span class="big-txt"> {{sumDivided}} </span>円)</p>
+                {{each}}
                 <amount-each-member
                     v-for="item in each"
                     :each="item"
