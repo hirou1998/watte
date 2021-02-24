@@ -1,6 +1,5 @@
 <template>
     <section class="section-inner">
-        {{isLoading}}
         <article v-if="!isLoading">
             <notification
                 v-for="(action, index) in doneAction"
@@ -141,7 +140,7 @@ export default {
             eachMenuModalVisibility: false,
             eachModalVisibility: false,
             editModalVisibility: false,
-            isApiLoading: true,
+            isApiLoading: false,
             isLoading: false,
             menuModalVisibility: false,
             modalVisibility: false,
