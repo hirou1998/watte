@@ -36,3 +36,14 @@
     top: 0;
     left: 0;
 }
+.form-group-flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.form-item-title{
+    flex: 1;
+}
+.form-item-content{
+    flex: 3;
+}

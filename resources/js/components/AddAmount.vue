@@ -1,8 +1,12 @@
 <template>
     <section class="section-inner">
         <article v-if="!isLoading">
+            <!-- <div class="image-form-block amount-event-head">
+                <img :src="previewUrl" alt="" class="image-form-preview amount-event-img">
+                <h1 class="amount-show-title txt-big amount-event-title">{{event.event_name}}</h1>
+            </div> -->
             <amount-user-form 
-                v-model="userInfo" 
+                v-model="userInfo"
                 :participants="participants"
                 text="支払い者"
             ></amount-user-form>
@@ -93,6 +97,13 @@ export default {
                 return true
             }else{
                 return false
+            }
+        },
+        previewUrl(){
+            if(this.event.file_path){
+                return '/' + this.event.file_path;
+            }else{
+                return '/images/logo.png';
             }
         }
     },

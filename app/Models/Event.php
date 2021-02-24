@@ -34,4 +34,11 @@ class Event extends UuidModel
             Amount::class,
         );
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(
+            Transaction::class
+        );
+    }
 }

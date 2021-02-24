@@ -1,7 +1,7 @@
 <template>
     <div class="form-group">
-        <p class="normal-txt">{{text}}</p>
-        <select class="form-control payer-select" v-model="payer.userId">
+        <p class="small-txt form-item-title">{{text}}</p>
+        <select class="form-control payer-select form-item-content" v-model="payer.userId">
             <option disabled selected v-if="placeHolder" class="form-placeholder">{{placeHolder}}</option>
             <option :value="participant.line_id" v-for="participant in participants" :key="participant.line_id">{{participant.display_name}}</option>
         </select>

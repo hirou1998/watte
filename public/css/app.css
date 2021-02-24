@@ -11394,10 +11394,24 @@ a:hover {
   left: 0;
 }
 
+.form-group-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.form-item-title {
+  flex: 1;
+}
+
+.form-item-content {
+  flex: 3;
+}
+
 .amount-item {
   padding: 1rem 1.5rem;
   background-color: #fff;
-  width: 96%;
+  width: 100%;
   margin: 0 auto 1rem;
   border-radius: 10px 10px 0 0;
   position: relative;
@@ -11454,7 +11468,7 @@ a:hover {
   position: relative;
   border-radius: 10px;
   background: #fff;
-  width: 94%;
+  width: 100%;
   margin: 0 auto 1rem;
 }
 
@@ -11593,6 +11607,47 @@ a:hover {
   margin-top: 5vh;
 }
 
+.amount-event-head {
+  height: 200px;
+  margin-bottom: 3rem;
+}
+
+.amount-event-title {
+  position: absolute;
+  width: auto;
+  color: #fff;
+  left: 14%;
+  bottom: 0;
+  display: inline;
+  margin: 0;
+}
+
+.amount-event-img {
+  filter: brightness(0.75);
+}
+
+.each-payment-modal-block {
+  width: 100%;
+}
+
+.each-payment-modal-block:first-child {
+  margin-bottom: 3rem;
+}
+
+.each-payment-modal-users {
+  display: flex;
+  flex-direction: column;
+}
+
+.each-payment-modal-users[data-reverse=true] {
+  flex-direction: column-reverse;
+}
+
+.each-payment-modal-owner {
+  display: flex;
+  align-items: flex-start;
+}
+
 .setting-container {
   display: flex;
   flex-wrap: wrap;
@@ -11636,7 +11691,7 @@ a:hover {
 }
 
 .profile-name {
-  margin: 0 0 0 0.8rem;
+  margin: 0 0 0 0.8rem !important;
 }
 
 .participants-head {
@@ -12182,12 +12237,12 @@ a:hover {
 .notification-container {
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 98%;
   border-radius: 5px;
   background: #3D92A4;
   padding: 5px;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin: 0 auto 1rem;
   color: #fff;
 }
 
@@ -12219,5 +12274,30 @@ a:hover {
   font-size: 2rem;
   line-height: 1;
   color: #fff;
+}
+
+.transaction-container {
+  background-color: #fff;
+  padding: 1rem;
+}
+
+.transaction-item {
+  border-bottom: solid 2px #eee;
+  padding: 0.4rem;
+}
+
+.transaction-item-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.transaction-item-left {
+  display: flex;
+  align-items: center;
+}
+
+.transaction-item-text {
+  margin-bottom: 0;
 }
 

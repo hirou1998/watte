@@ -25,7 +25,7 @@ Vue.component('api-loading', require('./components/modules/ApiLoading.vue').defa
 Vue.component('hamburger-button', require('./components/modules/HamburgerButton.vue').default);
 Vue.component('amount-itme-menu', require('./components/modules/AmountItemMenu.vue').default);
 Vue.component('modal-base', require('./components/modules/ModalBase.vue').default);
-Vue.component('amount-menu-modal', require('./components/modules/AmountMenuModal.vue').default);
+Vue.component('amount-confirm-modal', require('./components/modules/AmountConfirmModal.vue').default);
 Vue.component('option-window', require('./components/modules/OptionWindow.vue').default);
 Vue.component('amount-item-option-window', require('./components/modules/AmountItemOptionWindow.vue').default);
 Vue.component('info-block', require('./components/modules/InfoBlock.vue').default);
@@ -34,6 +34,11 @@ Vue.component('image-form', require('./components/modules/ImageForm.vue').defaul
 Vue.component('event-edit', require('./components/EventEdit.vue').default);
 Vue.component('notification', require('./components/modules/Notification.vue').default);
 Vue.component('amount-edit-modal', require('./components/modules/AmountEditModal.vue').default);
+Vue.component('amount-each-option-window', require('./components/modules/AmountEachOptionWindow.vue').default);
+Vue.component('amount-each-payment-modal', require('./components/modules/AmountEachPaymentModal.vue').default);
+Vue.component('request', require('./components/Request.vue').default);
+Vue.component('payment', require('./components/Payment.vue').default);
+Vue.component('transaction-item', require('./components/modules/TransactionItem.vue').default);
 
 axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="line-id"]').getAttribute('content');
 
