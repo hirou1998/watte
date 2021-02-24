@@ -1,7 +1,7 @@
 <template>
     <div class="form-group">
-        <p class="normal-txt">メモ</p>
-        <input type="text" v-model="memo" class="form-control" placeholder="何に払いましたか？">
+        <p class="small-txt form-item-title">メモ</p>
+        <input type="text" v-model="memo" class="form-control form-item-content" placeholder="何に払いましたか？">
     </div>
 </template>
 

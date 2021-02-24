@@ -49,7 +49,7 @@ export default {
             this.$emit('close');
         },
         execute(){
-            this.$emit('execute', this.modalType);
+            this.$emit('execute', {type: this.modalType});
         }
     },
     mixins: [FormatDateTimeMixin]
