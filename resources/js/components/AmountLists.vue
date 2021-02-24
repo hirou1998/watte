@@ -39,6 +39,7 @@
                     :total-ratio="totalRatio"
                     :participants="participants"
                     :key="item.friend_id"
+                    :user="userInfo"
                     @show="showEachMenuModal"
                 ></amount-each-member>
                 <article>

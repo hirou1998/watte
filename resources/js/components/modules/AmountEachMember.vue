@@ -64,7 +64,7 @@ export default {
             return String(this.gap).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
         },
         isPaidByMe(){
-            return true
+            return this.each.line_friend.line_id == this.user.userId ? true : false;
         },
         sum(){
             return String(this.each.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');

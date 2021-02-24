@@ -2286,6 +2286,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -3926,7 +3927,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return String(this.gap).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
     },
     isPaidByMe: function isPaidByMe() {
-      return true;
+      return this.each.line_friend.line_id == this.user.userId ? true : false;
     },
     sum: function sum() {
       return String(this.each.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
@@ -41964,7 +41965,8 @@ var render = function() {
                         each: item,
                         "total-amount": _vm.sum,
                         "total-ratio": _vm.totalRatio,
-                        participants: _vm.participants
+                        participants: _vm.participants,
+                        user: _vm.userInfo
                       },
                       on: { show: _vm.showEachMenuModal }
                     })
