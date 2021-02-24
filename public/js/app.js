@@ -2509,7 +2509,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     hideLoading: function hideLoading() {
       this.isLoading = false;
-      this.getAmountsData(); //this.getTransactions();
+      this.getAmountsData();
+      this.getTransactions();
     },
     saveEditAmount: function saveEditAmount() {
       var _this5 = this;
