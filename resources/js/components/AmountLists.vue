@@ -141,7 +141,7 @@ export default {
             eachModalVisibility: false,
             editModalVisibility: false,
             isApiLoading: false,
-            isLoading: false,
+            isLoading: true,
             menuModalVisibility: false,
             modalVisibility: false,
             modalType: {
