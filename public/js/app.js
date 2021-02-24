@@ -2631,11 +2631,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           actions: [{
             type: 'uri',
             label: '承認',
-            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment?event_id=".concat(_this9.event.id, "&amount=").concat(data.amount, "&type=accept")
+            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment/".concat(data.id, "?type=accept")
           }, {
             type: 'uri',
             label: '拒否',
-            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment?event_id=".concat(_this9.event.id, "&amount=").concat(data.amount, "&type=deny")
+            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment/".concat(data.id, "?type=deny")
           }]
         };
 
