@@ -46,6 +46,7 @@ export default {
     },
     data(){
         return{
+            event: {},
             isApiLoading: false
         }
     },
@@ -102,6 +103,7 @@ export default {
         },
     },
     mounted(){
+        this.event = this.transaction.event;
         window.liff.init({
             liffId: this.liff
         })

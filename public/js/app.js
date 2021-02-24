@@ -3266,6 +3266,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      event: {},
       isApiLoading: false
     };
   },
@@ -3332,6 +3333,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this5 = this;
 
+    this.event = this.transaction.event;
     window.liff.init({
       liffId: this.liff
     }).then(function () {
