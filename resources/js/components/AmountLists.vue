@@ -435,12 +435,12 @@ export default {
                         {
                             type: 'uri',
                             label: '承認',
-                            uri: `https://liff.line.me/1655325455-B5Zjk37g/payment${data.id}?type=accept`
+                            uri: `https://liff.line.me/1655325455-B5Zjk37g/payment?event_id=${this.event.id}&amount=${data.amount}&type=accept`
                         },
                         {
                             type: 'uri',
                             label: '拒否',
-                            uri: `https://liff.line.me/1655325455-B5Zjk37g/payment${data.id}?type=deny`
+                            uri: `https://liff.line.me/1655325455-B5Zjk37g/payment?event_id=${this.event.id}&amount=${data.amount}&type=deny`
                         }
                     ]
                 };
