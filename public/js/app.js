@@ -2327,7 +2327,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       eachMenuModalVisibility: false,
       eachModalVisibility: false,
       editModalVisibility: false,
-      isApiLoading: true,
+      isApiLoading: false,
       isLoading: true,
       menuModalVisibility: false,
       modalVisibility: false,
@@ -2494,8 +2494,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this3.amounts = data.amount_lists;
         _this3.each = data.each;
         _this3.isApiLoading = false;
-      })["catch"](function (err) {
-        _this3.handleErr(err.response.status);
       });
     },
     getTransactions: function getTransactions() {

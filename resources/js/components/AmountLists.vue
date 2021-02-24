@@ -140,7 +140,7 @@ export default {
             eachMenuModalVisibility: false,
             eachModalVisibility: false,
             editModalVisibility: false,
-            isApiLoading: true,
+            isApiLoading: false,
             isLoading: true,
             menuModalVisibility: false,
             modalVisibility: false,
@@ -301,9 +301,6 @@ export default {
                 this.amounts = data.amount_lists;
                 this.each = data.each;
                 this.isApiLoading = false;
-            })
-            .catch(err => {
-                this.handleErr(err.response.status)
             })
         },
         getTransactions(){
