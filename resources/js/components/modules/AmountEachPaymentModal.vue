@@ -96,9 +96,18 @@ export default {
                 alert('支払い相手、もしくはリクエスト相手を選択してください');
                 return
             }else{
+                let fromUser;
+                let toUser;
+                if(this.modalType === 'request'){
+                    fromUser = this.participants.find(participant => participant.line_id === this.partner.userId);
+                    toUser = this.target.line_friend
+                }else if(this.modalType === 'settle'){
+                    toUser = this.participants.find(participant => participant.line_id === this.partner.userId);
+                    fromUser = this.target.line_friend
+                }
                 this.$emit('execute', {
-                    fromUser: this.target.line_friend,
-                    toUser: this.participants.find(participant => participant.line_id === this.partner.userId),
+                    fromUser: fromUser,
+                    toUser: toUser,
                     amount: this.paymentAmount,
                     type: this.modalType
                 });

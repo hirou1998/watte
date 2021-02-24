@@ -1,6 +1,13 @@
 <template>
-    <section>
+    <section class="section-inner">
         <article v-if="!isLoading">
+            <notification
+                v-for="(action, index) in doneAction"
+                :key="index"
+                :action="action.text" 
+                :visibility="action.notificationVisibility"
+                @close="action.notificationVisibility = false"
+            ></notification>
             <h1 class="amount-show-title txt-big">{{event.event_name}}</h1>
             <ul class="amount-tab-container" :data-selected="activeTab">
                 <amount-tab
@@ -34,6 +41,17 @@
                     :key="item.friend_id"
                     @show="showEachMenuModal"
                 ></amount-each-member>
+                <article>
+                    <p class="normal-txt">割り勘代の支払い履歴</p>
+                    <ul class="transaction-container">
+                        <transaction-item
+                            v-for="transaction in transactions"
+                            :key="transaction.id"
+                            :transaction="transaction"
+                            :participants="participants"
+                        ></transaction-item>
+                    </ul>
+                </article>
             </section>
         </article>
         <loading v-if="isLoading"></loading>
@@ -61,7 +79,7 @@
         ></amount-confirm-modal>
         <amount-each-payment-modal
             @close="eachModalVisibility = false"
-            @execute="settlePayment"
+            @execute="executeAction"
             :modal-type="modalType.each"
             :target="targetUserInfo"
             :participants="participants"
@@ -90,6 +108,8 @@ import AmountEachPaymentModal from './modules/AmountEachPaymentModal'
 import AmountTab from './modules/AmountTab'
 import ApiLoading from './modules/ApiLoading'
 import Loading from './modules/Loading'
+import TransactionItem from './modules/TransactionItem'
+import Notification from './modules/Notification'
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
 import handleErrMinxin from '../mixins/handleErrMinxin'
@@ -105,13 +125,30 @@ export default {
         AmountEachPaymentModal,
         AmountTab,
         ApiLoading,
-        Loading
+        Loading,
+        TransactionItem,
+        Notification
     },
     props: ['event', 'participants'],
     data: function(){
         return{
             amounts: undefined,
+            activeTab: 0,
+            doneAction: [],
             each: undefined,
+            eachMenuModalVisibility: false,
+            eachModalVisibility: false,
+            editModalVisibility: false,
+            isApiLoading: true,
+            isLoading: true,
+            menuModalVisibility: false,
+            modalVisibility: false,
+            modalType: {
+                amountItem: '',
+                each: ''
+            },
+            targetAmount: {},
+            targetUserInfo: {},
             tabList: [
                 {
                     id: 0,
@@ -122,20 +159,7 @@ export default {
                     value: 'ユーザーごと'
                 }
             ],
-            activeTab: 0,
-            isApiLoading: true,
-            isLoading: true,
-            targetAmount: {},
-            targetUserInfo: {},
-            modalVisibility: false,
-            editModalVisibility: false,
-            menuModalVisibility: false,
-            eachMenuModalVisibility: false,
-            eachModalVisibility: false,
-            modalType: {
-                amountItem: '',
-                each: ''
-            },
+            transactions: undefined
         }
     },
     computed: {
@@ -213,7 +237,8 @@ export default {
                 this.sortArray(this.amounts, 'created_at', -1)
                 this.sortArray(this.amounts, 'archive_flg', 1)
                 if(this.event.notification){
-                    this.sendMessage(action)
+                    let messageText = "イベント: " + this.event.event_name + "\n" + this.targetAmount.amount + "円（" + this.targetAmount.note + "）\n" + "支払い者: " + this.targetAmount.line_friend.display_name + "\nを" + action + "しました。";
+                    this.sendMessage(messageText)
                 }
                 this.targetAmount = {}
                 this.modalVisibility = false;
@@ -245,7 +270,8 @@ export default {
                     }
                 })
                 if(this.event.notification){
-                    this.sendMessage('削除')
+                    let messageText = "イベント: " + this.event.event_name + "\n" + this.targetAmount.amount + "円（" + this.targetAmount.note + "）\n" + "支払い者: " + this.targetAmount.line_friend.display_name + "\nを" + '削除' + "しました。";
+                    this.sendMessage(messageText)
                 }
                 this.targetAmount = {}
                 this.modalVisibility = false;
@@ -255,15 +281,17 @@ export default {
                 this.handleErr(err.response.status)
             })
         },
-        executeAction(type){
-            if(type === '精算'){
+        executeAction(data){
+            if(data.type === '精算'){
                 this.archiveAmount()
-            }else if(type === '削除'){
+            }else if(data.type === '削除'){
                 this.deleteAmount()
-            }else if(type === '編集'){
-                this.saveEditAmount()
-            }else if(type === '未精算'){
+            }else if(data.type === '未精算'){
                 this.unarchiveAmount()
+            }else if(data.type == 'request'){
+                this.sendPaymentRequest(data)
+            }else if(data.type == 'settle'){
+                this.settlePayment(data)
             }
         },
         getAmountsData(){
@@ -277,9 +305,16 @@ export default {
                 this.handleErr(err.response.status)
             })
         },
+        getTransactions(){
+            window.axios.get(`/api/transactions/${this.event.id}`)
+            .then(({data}) => {
+                this.transactions = data;
+            })
+        },
         hideLoading(){
             this.isLoading = false
             this.getAmountsData();
+            this.getTransactions();
         },
         saveEditAmount(){
             this.isApiLoading = true;
@@ -296,7 +331,8 @@ export default {
                     }
                 })
                 if(this.event.notification){
-                    this.sendMessage('変更')
+                    let messageText = "イベント: " + this.event.event_name + "\n" + this.targetAmount.amount + "円（" + this.targetAmount.note + "）\n" + "支払い者: " + this.targetAmount.line_friend.display_name + "\nを" + '編集' + "しました。";
+                    this.sendMessage(messageText)
                 }
                 this.targetAmount = {}
                 this.editModalVisibility = false;
@@ -306,12 +342,11 @@ export default {
                 this.handleErr(err.response.status)
             })
         },
-        sendMessage(action){
-            let messageText = "イベント: " + this.event.event_name + "\n" + this.targetAmount.amount + "円（" + this.targetAmount.note + "）\n" + "支払い者: " + this.targetAmount.line_friend.display_name + "\nを" + action + "しました。";
+        sendMessage(message){
             window.liff.sendMessages([
                 {
                     type: 'text',
-                    text: messageText
+                    text: message
                 }
             ])
             .then(() => {
@@ -321,12 +356,106 @@ export default {
                 this.handleErr(err.response.status)
             })
         },
+        sendButtonMessage(altText, template){
+            window.liff.sendMessages([
+                {
+                    type: 'template',
+                    altText: altText,
+                    template: template
+                }
+            ])
+            .then(() => {
+            })
+            .catch((err) => {
+                this.handleErr(err.response.status)
+            })
+        },
         selectTab(tab){
             this.activeTab = tab
         },
-        settlePayment(data){
-            alert('settle')
-            console.log(data)
+        sendPaymentRequest(sentData){
+            this.isApiLoading = true;
+            window.axios.post(`/transaction/add/${this.event.id}`, {
+                from_user: sentData.fromUser.line_id,
+                to_user: sentData.toUser.line_id,
+                amount: sentData.amount,
+                type: sentData.type
+            })
+            .then(({data}) => {
+                console.log(data)
+                let altText;
+                let template;
+                altText = '支払いリクエスト';
+                template = {
+                    type: 'confirm',
+                    text: sentData.fromUser.display_name + "さんが" + sentData.toUser.display_name + "さんに\n" + data.amount + "円\nの支払いリクエストを送信しました。",
+                    actions: [
+                        {
+                            type: 'uri',
+                            label: '支払い済みにする',
+                            uri: `https://liff.line.me/1655325455-B5Zjk37g/request/${data.id}?type=accept`
+                        },
+                        {
+                            type: 'uri',
+                            label: '支払いを拒否する',
+                            uri: `https://liff.line.me/1655325455-B5Zjk37g/request${data.id}?type=deny`
+                        }
+                    ]
+                };
+                this.sendButtonMessage(altText, template)
+                this.doneAction.push({text: 'リクエストを送信', notificationVisibility: true});
+                setTimeout(() => {
+                    this.$set(this.doneAction, doneActionNumber, {notificationVisibility: false})
+                }, 2000)
+                this.isApiLoading = false;
+            })
+            .catch((err) => {
+                this.handleErr(err.response.status)
+            })
+            this.eachModalVisibility = false;
+        },
+        settlePayment(sentData){
+            this.isApiLoading = true;
+            window.axios.post(`/transaction/add/${this.event.id}`, {
+                from_user: sentData.fromUser.line_id,
+                to_user: sentData.toUser.line_id,
+                amount: sentData.amount,
+                type: sentData.type
+            })
+            .then(({data}) => {
+                let altText;
+                let template;
+
+                altText = '支払い';
+                template = {
+                    type: 'confirm',
+                    text: sentData.fromUser.display_name + 'さんが' + sentData.toUser.display_name + 'さんに\n' + data.amount + "円\nを支払いました。",
+                    actions: [
+                        {
+                            type: 'uri',
+                            label: '承認',
+                            uri: `https://liff.line.me/1655325455-B5Zjk37g/payment?event_id=${this.event.id}&amount=${data.amount}&type=accept`
+                        },
+                        {
+                            type: 'uri',
+                            label: '拒否',
+                            uri: `https://liff.line.me/1655325455-B5Zjk37g/payment?event_id=${this.event.id}&amount=${data.amount}&type=deny`
+                        }
+                    ]
+                };
+ 
+                this.sendButtonMessage(altText, template)
+
+                this.doneAction.push({text: '支払いを送信', notificationVisibility: true})
+                let doneActionNumber = this.doneAction.length - 1;
+                setTimeout(() => {
+                    this.$set(this.doneAction, doneActionNumber, {notificationVisibility: false})
+                }, 2000)
+                this.isApiLoading = false;
+            })
+            .catch((err) => {
+                this.handleErr(err.response.status)
+            })
             this.eachModalVisibility = false;
         },
         showConfirmModal(type){
@@ -368,8 +497,7 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            //this.checkAccess();
-            this.hideLoading();
+            this.checkAccess();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, handleErrMinxin]

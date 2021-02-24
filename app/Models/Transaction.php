@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends UuidModel
 {
     use HasFactory;
-    protected $fillable = ['from_user', 'to_user', 'amount'];
+    protected $fillable = ['event_id', 'from_user', 'to_user', 'amount', 'type', 'sent', 'approved'];
+    protected $with = ['event'];
 
     public function event()
     {

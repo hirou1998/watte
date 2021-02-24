@@ -15,9 +15,13 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id');
+            $table->uuid('event_id');
             $table->uuid('from_user');
             $table->uuid('to_user');
             $table->integer('amount');
+            $table->enum('type', ['request', 'settle']);
+            $table->boolean('sent');
+            $table->boolean('approved');
             $table->timestamps();
         });
     }

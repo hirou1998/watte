@@ -2,12 +2,12 @@
     &-container{
         display: flex;
         align-items: center;
-        width: 100%;
+        width: 98%;
         border-radius: 5px;
         background: $main-color;
         padding: 5px;
         justify-content: space-between;
-        margin-bottom: 1rem;
+        margin: 0 auto 1rem;
         color: #fff;
     }
     &-block{

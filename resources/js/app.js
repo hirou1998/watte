@@ -36,6 +36,9 @@ Vue.component('notification', require('./components/modules/Notification.vue').d
 Vue.component('amount-edit-modal', require('./components/modules/AmountEditModal.vue').default);
 Vue.component('amount-each-option-window', require('./components/modules/AmountEachOptionWindow.vue').default);
 Vue.component('amount-each-payment-modal', require('./components/modules/AmountEachPaymentModal.vue').default);
+Vue.component('request', require('./components/Request.vue').default);
+Vue.component('payment', require('./components/Payment.vue').default);
+Vue.component('transaction-item', require('./components/modules/TransactionItem.vue').default);
 
 axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="line-id"]').getAttribute('content');
 

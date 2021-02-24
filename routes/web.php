@@ -45,3 +45,8 @@ Route::put('/amount/unarchive/{amount}', 'AmountController@unarchive');
 Route::get('/edit/{event}', 'EventController@editpage');
 Route::put('/event/edit/{event}', 'EventController@update');
 Route::put('/amount/edit/{amount}', 'AmountController@update');
+Route::post('/transaction/add/{event}', 'TransactionController@create');
+Route::get('/request/{transaction}', 'TransactionController@request');
+Route::put('/sent/{transaction}', 'TransactionController@changeTransactionToSent');
+Route::get('/payment/{transaction}', 'TransactionController@payment');
+Route::put('/approve/{transaction}', 'TransactionController@changeTransactionToApproved');

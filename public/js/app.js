@@ -2103,7 +2103,8 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     hideLoading: function hideLoading() {
-      this.isLoading = false; //this.isParticipated();
+      this.isLoading = false;
+      this.isParticipated();
     },
     isParticipated: function isParticipated() {
       var _this3 = this;
@@ -2148,8 +2149,7 @@ __webpack_require__.r(__webpack_exports__);
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this5.hideLoading(); //this.checkAccess();
-
+      _this5.checkAccess();
     });
   },
   mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_7__["default"], _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_10__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_9__["default"]]
@@ -2176,9 +2176,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_AmountTab__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/AmountTab */ "./resources/js/components/modules/AmountTab.vue");
 /* harmony import */ var _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/ApiLoading */ "./resources/js/components/modules/ApiLoading.vue");
 /* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
-/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
-/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
-/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
+/* harmony import */ var _modules_TransactionItem__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/TransactionItem */ "./resources/js/components/modules/TransactionItem.vue");
+/* harmony import */ var _modules_Notification__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/Notification */ "./resources/js/components/modules/Notification.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
+/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2266,6 +2268,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 
@@ -2290,13 +2312,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     AmountEachPaymentModal: _modules_AmountEachPaymentModal__WEBPACK_IMPORTED_MODULE_6__["default"],
     AmountTab: _modules_AmountTab__WEBPACK_IMPORTED_MODULE_7__["default"],
     ApiLoading: _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_8__["default"],
-    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_9__["default"]
+    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_9__["default"],
+    TransactionItem: _modules_TransactionItem__WEBPACK_IMPORTED_MODULE_10__["default"],
+    Notification: _modules_Notification__WEBPACK_IMPORTED_MODULE_11__["default"]
   },
   props: ['event', 'participants'],
   data: function data() {
     return {
       amounts: undefined,
+      activeTab: 0,
+      doneAction: [],
       each: undefined,
+      eachMenuModalVisibility: false,
+      eachModalVisibility: false,
+      editModalVisibility: false,
+      isApiLoading: true,
+      isLoading: true,
+      menuModalVisibility: false,
+      modalVisibility: false,
+      modalType: {
+        amountItem: '',
+        each: ''
+      },
+      targetAmount: {},
+      targetUserInfo: {},
       tabList: [{
         id: 0,
         value: '支払いごと'
@@ -2304,20 +2343,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         id: 1,
         value: 'ユーザーごと'
       }],
-      activeTab: 0,
-      isApiLoading: true,
-      isLoading: true,
-      targetAmount: {},
-      targetUserInfo: {},
-      modalVisibility: false,
-      editModalVisibility: false,
-      menuModalVisibility: false,
-      eachMenuModalVisibility: false,
-      eachModalVisibility: false,
-      modalType: {
-        amountItem: '',
-        each: ''
-      }
+      transactions: undefined
     };
   },
   computed: {
@@ -2397,7 +2423,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this.sortArray(_this.amounts, 'archive_flg', 1);
 
         if (_this.event.notification) {
-          _this.sendMessage(action);
+          var messageText = "イベント: " + _this.event.event_name + "\n" + _this.targetAmount.amount + "円（" + _this.targetAmount.note + "）\n" + "支払い者: " + _this.targetAmount.line_friend.display_name + "\nを" + action + "しました。";
+
+          _this.sendMessage(messageText);
         }
 
         _this.targetAmount = {};
@@ -2432,7 +2460,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
 
         if (_this2.event.notification) {
-          _this2.sendMessage('削除');
+          var messageText = "イベント: " + _this2.event.event_name + "\n" + _this2.targetAmount.amount + "円（" + _this2.targetAmount.note + "）\n" + "支払い者: " + _this2.targetAmount.line_friend.display_name + "\nを" + '削除' + "しました。";
+
+          _this2.sendMessage(messageText);
         }
 
         _this2.targetAmount = {};
@@ -2442,15 +2472,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this2.handleErr(err.response.status);
       });
     },
-    executeAction: function executeAction(type) {
-      if (type === '精算') {
+    executeAction: function executeAction(data) {
+      if (data.type === '精算') {
         this.archiveAmount();
-      } else if (type === '削除') {
+      } else if (data.type === '削除') {
         this.deleteAmount();
-      } else if (type === '編集') {
-        this.saveEditAmount();
-      } else if (type === '未精算') {
+      } else if (data.type === '未精算') {
         this.unarchiveAmount();
+      } else if (data.type == 'request') {
+        this.sendPaymentRequest(data);
+      } else if (data.type == 'settle') {
+        this.settlePayment(data);
       }
     },
     getAmountsData: function getAmountsData() {
@@ -2465,54 +2497,164 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this3.handleErr(err.response.status);
       });
     },
+    getTransactions: function getTransactions() {
+      var _this4 = this;
+
+      window.axios.get("/api/transactions/".concat(this.event.id)).then(function (_ref2) {
+        var data = _ref2.data;
+        _this4.transactions = data;
+      });
+    },
     hideLoading: function hideLoading() {
       this.isLoading = false;
       this.getAmountsData();
+      this.getTransactions();
     },
     saveEditAmount: function saveEditAmount() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.isApiLoading = true;
       window.axios.put("/amount/edit/".concat(this.targetAmount.id), {
         amount: this.targetAmount.amount,
         note: this.targetAmount.note
       }).then(function () {
-        _this4.amounts = _this4.amounts.map(function (amount) {
-          if (amount.id === _this4.targetAmount.id) {
-            return _this4.targetAmount;
+        _this5.amounts = _this5.amounts.map(function (amount) {
+          if (amount.id === _this5.targetAmount.id) {
+            return _this5.targetAmount;
           } else {
             return amount;
           }
         });
 
-        if (_this4.event.notification) {
-          _this4.sendMessage('変更');
+        if (_this5.event.notification) {
+          var messageText = "イベント: " + _this5.event.event_name + "\n" + _this5.targetAmount.amount + "円（" + _this5.targetAmount.note + "）\n" + "支払い者: " + _this5.targetAmount.line_friend.display_name + "\nを" + '編集' + "しました。";
+
+          _this5.sendMessage(messageText);
         }
 
-        _this4.targetAmount = {};
-        _this4.editModalVisibility = false;
-        _this4.isApiLoading = false;
+        _this5.targetAmount = {};
+        _this5.editModalVisibility = false;
+        _this5.isApiLoading = false;
       })["catch"](function (err) {
-        _this4.handleErr(err.response.status);
+        _this5.handleErr(err.response.status);
       });
     },
-    sendMessage: function sendMessage(action) {
-      var _this5 = this;
+    sendMessage: function sendMessage(message) {
+      var _this6 = this;
 
-      var messageText = "イベント: " + this.event.event_name + "\n" + this.targetAmount.amount + "円（" + this.targetAmount.note + "）\n" + "支払い者: " + this.targetAmount.line_friend.display_name + "\nを" + action + "しました。";
       window.liff.sendMessages([{
         type: 'text',
-        text: messageText
+        text: message
       }]).then(function () {})["catch"](function (err) {
-        _this5.handleErr(err.response.status);
+        _this6.handleErr(err.response.status);
+      });
+    },
+    sendButtonMessage: function sendButtonMessage(altText, template) {
+      var _this7 = this;
+
+      window.liff.sendMessages([{
+        type: 'template',
+        altText: altText,
+        template: template
+      }]).then(function () {})["catch"](function (err) {
+        _this7.handleErr(err.response.status);
       });
     },
     selectTab: function selectTab(tab) {
       this.activeTab = tab;
     },
-    settlePayment: function settlePayment(data) {
-      alert('settle');
-      console.log(data);
+    sendPaymentRequest: function sendPaymentRequest(sentData) {
+      var _this8 = this;
+
+      this.isApiLoading = true;
+      window.axios.post("/transaction/add/".concat(this.event.id), {
+        from_user: sentData.fromUser.line_id,
+        to_user: sentData.toUser.line_id,
+        amount: sentData.amount,
+        type: sentData.type
+      }).then(function (_ref3) {
+        var data = _ref3.data;
+        console.log(data);
+        var altText;
+        var template;
+        altText = '支払いリクエスト';
+        template = {
+          type: 'confirm',
+          text: sentData.fromUser.display_name + "さんが" + sentData.toUser.display_name + "さんに\n" + data.amount + "円\nの支払いリクエストを送信しました。",
+          actions: [{
+            type: 'uri',
+            label: '支払い済みにする',
+            uri: "https://liff.line.me/1655325455-B5Zjk37g/request/".concat(data.id, "?type=accept")
+          }, {
+            type: 'uri',
+            label: '支払いを拒否する',
+            uri: "https://liff.line.me/1655325455-B5Zjk37g/request".concat(data.id, "?type=deny")
+          }]
+        };
+
+        _this8.sendButtonMessage(altText, template);
+
+        _this8.doneAction.push({
+          text: 'リクエストを送信',
+          notificationVisibility: true
+        });
+
+        setTimeout(function () {
+          _this8.$set(_this8.doneAction, doneActionNumber, {
+            notificationVisibility: false
+          });
+        }, 2000);
+        _this8.isApiLoading = false;
+      })["catch"](function (err) {
+        _this8.handleErr(err.response.status);
+      });
+      this.eachModalVisibility = false;
+    },
+    settlePayment: function settlePayment(sentData) {
+      var _this9 = this;
+
+      this.isApiLoading = true;
+      window.axios.post("/transaction/add/".concat(this.event.id), {
+        from_user: sentData.fromUser.line_id,
+        to_user: sentData.toUser.line_id,
+        amount: sentData.amount,
+        type: sentData.type
+      }).then(function (_ref4) {
+        var data = _ref4.data;
+        var altText;
+        var template;
+        altText = '支払い';
+        template = {
+          type: 'confirm',
+          text: sentData.fromUser.display_name + 'さんが' + sentData.toUser.display_name + 'さんに\n' + data.amount + "円\nを支払いました。",
+          actions: [{
+            type: 'uri',
+            label: '承認',
+            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment?event_id=".concat(_this9.event.id, "&amount=").concat(data.amount, "&type=accept")
+          }, {
+            type: 'uri',
+            label: '拒否',
+            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment?event_id=".concat(_this9.event.id, "&amount=").concat(data.amount, "&type=deny")
+          }]
+        };
+
+        _this9.sendButtonMessage(altText, template);
+
+        _this9.doneAction.push({
+          text: '支払いを送信',
+          notificationVisibility: true
+        });
+
+        var doneActionNumber = _this9.doneAction.length - 1;
+        setTimeout(function () {
+          _this9.$set(_this9.doneAction, doneActionNumber, {
+            notificationVisibility: false
+          });
+        }, 2000);
+        _this9.isApiLoading = false;
+      })["catch"](function (err) {
+        _this9.handleErr(err.response.status);
+      });
       this.eachModalVisibility = false;
     },
     showConfirmModal: function showConfirmModal(type) {
@@ -2550,16 +2692,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   created: function created() {
-    var _this6 = this;
+    var _this10 = this;
 
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      //this.checkAccess();
-      _this6.hideLoading();
+      _this10.checkAccess();
     });
   },
-  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_10__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_11__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_12__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_12__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_13__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_14__["default"]]
 });
 
 /***/ }),
@@ -2639,6 +2780,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this2 = this;
 
+    this.event = this.transaction.event;
     window.liff.init({
       liffId: this.liff
     }).then(function () {
@@ -3061,6 +3203,296 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Payment.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Payment.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/ApiLoading */ "./resources/js/components/modules/ApiLoading.vue");
+/* harmony import */ var _modules_FormButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/FormButton */ "./resources/js/components/modules/FormButton.vue");
+/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
+/* harmony import */ var _modules_ProfileBlock__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/ProfileBlock */ "./resources/js/components/modules/ProfileBlock.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
+/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['liff', 'deployUrl', 'transaction', 'actionType', 'participants'],
+  components: {
+    ApiLoading: _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_0__["default"],
+    FormButton: _modules_FormButton__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_2__["default"],
+    ProfileBlock: _modules_ProfileBlock__WEBPACK_IMPORTED_MODULE_3__["default"]
+  },
+  data: function data() {
+    return {
+      isApiLoading: false
+    };
+  },
+  computed: {
+    isAccepting: function isAccepting() {
+      return this.actionType === 'accept' ? true : false;
+    },
+    fromUser: function fromUser() {
+      var _this = this;
+
+      return this.participants.find(function (participant) {
+        return participant.line_id === _this.transaction.from_user;
+      });
+    },
+    toUser: function toUser() {
+      var _this2 = this;
+
+      return this.participants.find(function (participant) {
+        return participant.line_id === _this2.transaction.to_user;
+      });
+    },
+    amount: function amount() {
+      return String(this.transaction.amount).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    }
+  },
+  methods: {
+    isSent: function isSent() {
+      return this.transaction.sent ? true : false;
+    },
+    hideLoading: function hideLoading() {
+      this.isLoading = false;
+
+      if (!this.isSent()) {
+        alert('支払いリクエストを支払い済みにしてください。');
+        location.href = "https://liff.line.me/1655325455-B5Zjk37g/request/".concat(this.transaction.id, "?type=accept");
+      }
+    },
+    send: function send() {
+      var _this3 = this;
+
+      this.isApiLoading = true;
+      window.axios.put("/approve/".concat(this.transaction.id)).then(function (_ref) {
+        var data = _ref.data;
+        var message = _this3.fromUser.display_name + "さんからの" + _this3.amount + "円の割り勘代支払いを承認しました。";
+
+        _this3.sendButtonMessage(altText, template);
+
+        _this3.isApiLoading = false;
+      })["catch"](function (err) {
+        _this3.handleErr(err.response.status);
+      });
+    },
+    sendMessage: function sendMessage(message) {
+      var _this4 = this;
+
+      window.liff.sendMessages([{
+        type: 'text',
+        text: message
+      }]).then(function () {})["catch"](function (err) {
+        _this4.handleErr(err.response.status);
+      });
+    }
+  },
+  mounted: function mounted() {
+    var _this5 = this;
+
+    window.liff.init({
+      liffId: this.liff
+    }).then(function () {
+      _this5.checkAccess();
+    });
+  },
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_6__["default"]]
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Request.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Request.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/ApiLoading */ "./resources/js/components/modules/ApiLoading.vue");
+/* harmony import */ var _modules_FormButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/FormButton */ "./resources/js/components/modules/FormButton.vue");
+/* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
+/* harmony import */ var _modules_ProfileBlock__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/ProfileBlock */ "./resources/js/components/modules/ProfileBlock.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
+/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
+/* harmony import */ var _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/allowAccessIfWithGroupIdMixin */ "./resources/js/mixins/allowAccessIfWithGroupIdMixin.js");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['liff', 'deployUrl', 'transaction', 'actionType', 'participants'],
+  components: {
+    ApiLoading: _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_0__["default"],
+    FormButton: _modules_FormButton__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_2__["default"],
+    ProfileBlock: _modules_ProfileBlock__WEBPACK_IMPORTED_MODULE_3__["default"]
+  },
+  data: function data() {
+    return {
+      event: {},
+      isApiLoading: false
+    };
+  },
+  computed: {
+    isAccepting: function isAccepting() {
+      return this.actionType === 'accept' ? true : false;
+    },
+    fromUser: function fromUser() {
+      var _this = this;
+
+      return this.participants.find(function (participant) {
+        return participant.line_id === _this.transaction.from_user;
+      });
+    },
+    toUser: function toUser() {
+      var _this2 = this;
+
+      return this.participants.find(function (participant) {
+        return participant.line_id === _this2.transaction.to_user;
+      });
+    },
+    amount: function amount() {
+      return String(this.transaction.amount).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    }
+  },
+  methods: {
+    hideLoading: function hideLoading() {
+      this.isLoading = false;
+    },
+    send: function send() {
+      var _this3 = this;
+
+      this.isApiLoading = true;
+      window.axios.put("/sent/".concat(this.transaction.id)).then(function (_ref) {
+        var data = _ref.data;
+        var altText;
+        var template;
+        altText = '割り勘代支払いの承認';
+        template = {
+          type: 'confirm',
+          text: sentData.fromUser.display_name + "さんが" + sentData.toUser.display_name + "さんに\n" + data.amount + "円\nを支払いました。",
+          actions: [{
+            type: 'uri',
+            label: '承認',
+            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment/".concat(_this3.transaction.id, "?type=accept")
+          }, {
+            type: 'uri',
+            label: '拒否',
+            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment/".concat(_this3.transaction.id, "?type=deny")
+          }]
+        };
+
+        _this3.sendButtonMessage(altText, template);
+
+        _this3.isApiLoading = false;
+      })["catch"](function (err) {
+        _this3.handleErr(err.response.status);
+      });
+    },
+    sendButtonMessage: function sendButtonMessage(altText, template) {
+      var _this4 = this;
+
+      window.liff.sendMessages([{
+        type: 'template',
+        altText: altText,
+        template: template
+      }]).then(function () {})["catch"](function (err) {
+        _this4.handleErr(err.response.status);
+      });
+    }
+  },
+  mounted: function mounted() {
+    var _this5 = this;
+
+    this.event = this.transaction.event;
+    window.liff.init({
+      liffId: this.liff
+    }).then(function () {
+      _this5.checkAccess();
+    });
+  },
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_7__["default"]]
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Setting.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Setting.vue?vue&type=script&lang=js& ***!
@@ -3402,7 +3834,9 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('close');
     },
     execute: function execute() {
-      this.$emit('execute', this.modalType);
+      this.$emit('execute', {
+        type: this.modalType
+      });
     }
   },
   mixins: [_mixins_formatDateTimeMixin__WEBPACK_IMPORTED_MODULE_2__["default"]]
@@ -3686,11 +4120,24 @@ __webpack_require__.r(__webpack_exports__);
         alert('支払い相手、もしくはリクエスト相手を選択してください');
         return;
       } else {
-        this.$emit('execute', {
-          fromUser: this.target.line_friend,
-          toUser: this.participants.find(function (participant) {
+        var fromUser;
+        var toUser;
+
+        if (this.modalType === 'request') {
+          fromUser = this.participants.find(function (participant) {
             return participant.line_id === _this2.partner.userId;
-          }),
+          });
+          toUser = this.target.line_friend;
+        } else if (this.modalType === 'settle') {
+          toUser = this.participants.find(function (participant) {
+            return participant.line_id === _this2.partner.userId;
+          });
+          fromUser = this.target.line_friend;
+        }
+
+        this.$emit('execute', {
+          fromUser: fromUser,
+          toUser: toUser,
           amount: this.paymentAmount,
           type: this.modalType
         });
@@ -4843,6 +5290,64 @@ __webpack_require__.r(__webpack_exports__);
       this.enabled = !this.enabled;
     }
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/TransactionItem.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/TransactionItem.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ProfileBlock */ "./resources/js/components/modules/ProfileBlock.vue");
+/* harmony import */ var _mixins_formatDateTimeMixin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/formatDateTimeMixin */ "./resources/js/mixins/formatDateTimeMixin.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['transaction', 'participants'],
+  components: {
+    ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  computed: {
+    fromUser: function fromUser() {
+      var _this = this;
+
+      return this.participants.find(function (participant) {
+        return participant.line_id === _this.transaction.from_user;
+      });
+    },
+    toUser: function toUser() {
+      var _this2 = this;
+
+      return this.participants.find(function (participant) {
+        return participant.line_id === _this2.transaction.to_user;
+      });
+    },
+    amount: function amount() {
+      return String(this.transaction.amount).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    }
+  },
+  mixins: [_mixins_formatDateTimeMixin__WEBPACK_IMPORTED_MODULE_1__["default"]]
 });
 
 /***/ }),
@@ -41353,103 +41858,144 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "section",
+    { staticClass: "section-inner" },
     [
       !_vm.isLoading
-        ? _c("article", [
-            _c("h1", { staticClass: "amount-show-title txt-big" }, [
-              _vm._v(_vm._s(_vm.event.event_name))
-            ]),
-            _vm._v(" "),
-            _c(
-              "ul",
-              {
-                staticClass: "amount-tab-container",
-                attrs: { "data-selected": _vm.activeTab }
-              },
-              _vm._l(_vm.tabList, function(tab) {
-                return _c("amount-tab", {
-                  key: tab.id,
+        ? _c(
+            "article",
+            [
+              _vm._l(_vm.doneAction, function(action, index) {
+                return _c("notification", {
+                  key: index,
                   attrs: {
-                    value: tab.value,
-                    id: tab.id,
-                    selected: _vm.activeTab
+                    action: action.text,
+                    visibility: action.notificationVisibility
                   },
-                  on: { select: _vm.selectTab }
+                  on: {
+                    close: function($event) {
+                      action.notificationVisibility = false
+                    }
+                  }
                 })
               }),
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "section",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.activeTab == 0,
-                    expression: "activeTab == 0"
-                  }
-                ],
-                staticClass: "amount-section"
-              },
-              [
-                _c(
-                  "ul",
-                  _vm._l(_vm.amounts, function(amount) {
-                    return _c("amount-item", {
-                      key: amount.id,
-                      attrs: { amount: amount, user: _vm.userInfo },
-                      on: { show: _vm.showMenuModal }
+              _vm._v(" "),
+              _c("h1", { staticClass: "amount-show-title txt-big" }, [
+                _vm._v(_vm._s(_vm.event.event_name))
+              ]),
+              _vm._v(" "),
+              _c(
+                "ul",
+                {
+                  staticClass: "amount-tab-container",
+                  attrs: { "data-selected": _vm.activeTab }
+                },
+                _vm._l(_vm.tabList, function(tab) {
+                  return _c("amount-tab", {
+                    key: tab.id,
+                    attrs: {
+                      value: tab.value,
+                      id: tab.id,
+                      selected: _vm.activeTab
+                    },
+                    on: { select: _vm.selectTab }
+                  })
+                }),
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "section",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.activeTab == 0,
+                      expression: "activeTab == 0"
+                    }
+                  ],
+                  staticClass: "amount-section"
+                },
+                [
+                  _c(
+                    "ul",
+                    _vm._l(_vm.amounts, function(amount) {
+                      return _c("amount-item", {
+                        key: amount.id,
+                        attrs: { amount: amount, user: _vm.userInfo },
+                        on: { show: _vm.showMenuModal }
+                      })
+                    }),
+                    1
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "section",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.activeTab == 1,
+                      expression: "activeTab == 1"
+                    }
+                  ],
+                  staticClass: "amount-section"
+                },
+                [
+                  _c("p", { staticClass: "small-txt amount-result-head" }, [
+                    _vm._v("1人当たり: "),
+                    _c("span", { staticClass: "big-txt" }, [
+                      _vm._v(_vm._s(_vm.PaymentPerPersonDivided))
+                    ]),
+                    _vm._v(" 円 (合計金額: "),
+                    _c("span", { staticClass: "big-txt" }, [
+                      _vm._v(" " + _vm._s(_vm.sumDivided) + " ")
+                    ]),
+                    _vm._v("円)")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.each, function(item) {
+                    return _c("amount-each-member", {
+                      key: item.friend_id,
+                      attrs: {
+                        each: item,
+                        "total-amount": _vm.sum,
+                        "total-ratio": _vm.totalRatio,
+                        participants: _vm.participants
+                      },
+                      on: { show: _vm.showEachMenuModal }
                     })
                   }),
-                  1
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "section",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.activeTab == 1,
-                    expression: "activeTab == 1"
-                  }
+                  _vm._v(" "),
+                  _c("article", [
+                    _c("p", { staticClass: "normal-txt" }, [
+                      _vm._v("割り勘代の支払い履歴")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      { staticClass: "transaction-container" },
+                      _vm._l(_vm.transactions, function(transaction) {
+                        return _c("transaction-item", {
+                          key: transaction.id,
+                          attrs: {
+                            transaction: transaction,
+                            participants: _vm.participants
+                          }
+                        })
+                      }),
+                      1
+                    )
+                  ])
                 ],
-                staticClass: "amount-section"
-              },
-              [
-                _c("p", { staticClass: "small-txt amount-result-head" }, [
-                  _vm._v("1人当たり: "),
-                  _c("span", { staticClass: "big-txt" }, [
-                    _vm._v(_vm._s(_vm.PaymentPerPersonDivided))
-                  ]),
-                  _vm._v(" 円 (合計金額: "),
-                  _c("span", { staticClass: "big-txt" }, [
-                    _vm._v(" " + _vm._s(_vm.sumDivided) + " ")
-                  ]),
-                  _vm._v("円)")
-                ]),
-                _vm._v(" "),
-                _vm._l(_vm.each, function(item) {
-                  return _c("amount-each-member", {
-                    key: item.friend_id,
-                    attrs: {
-                      each: item,
-                      "total-amount": _vm.sum,
-                      "total-ratio": _vm.totalRatio,
-                      participants: _vm.participants
-                    },
-                    on: { show: _vm.showEachMenuModal }
-                  })
-                })
-              ],
-              2
-            )
-          ])
+                2
+              )
+            ],
+            2
+          )
         : _vm._e(),
       _vm._v(" "),
       _vm.isLoading ? _c("loading") : _vm._e(),
@@ -41506,7 +42052,7 @@ var render = function() {
           close: function($event) {
             _vm.eachModalVisibility = false
           },
-          execute: _vm.settlePayment
+          execute: _vm.executeAction
         }
       }),
       _vm._v(" "),
@@ -41575,7 +42121,7 @@ var render = function() {
                       _vm._v("よろしいですか？")
                     ]),
                     _vm._v(" "),
-                    _c("p", { staticClass: "small-txt text-center" }, [
+                    _c("p", { staticClass: "small-txt" }, [
                       _vm._v(
                         "参加しない場合は一度ウィンドウを閉じて「参加しない」ボタンを押してください。"
                       )
@@ -41599,7 +42145,7 @@ var render = function() {
                       _vm._v("よろしいですか？")
                     ]),
                     _vm._v(" "),
-                    _c("p", { staticClass: "small-txt text-center" }, [
+                    _c("p", { staticClass: "small-txt" }, [
                       _vm._v(
                         "参加する場合は一度ウィンドウを閉じて「参加する」ボタンを押してください。"
                       )
@@ -41866,6 +42412,278 @@ var staticRenderFns = [
       _vm._v("プロフィール画像"),
       _c("br"),
       _vm._v("ユーザー名を更新")
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Payment.vue?vue&type=template&id=7bace86b&":
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Payment.vue?vue&type=template&id=7bace86b& ***!
+  \**********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "section",
+    { staticClass: "section-inner" },
+    [
+      !_vm.isLoading
+        ? _c(
+            "article",
+            { staticClass: "vertical-center-container" },
+            [
+              _vm.isAccepting
+                ? [
+                    _c("div", { staticClass: "amount-modal-block" }, [
+                      _c(
+                        "p",
+                        { staticClass: "amount-modal-block--title normal-txt" },
+                        [_vm._v("支払い者:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "amount-modal-block--content" },
+                        [
+                          _c("profile-block", {
+                            attrs: { user: _vm.fromUser, "icon-size": "40" }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "amount-modal-block" }, [
+                      _c(
+                        "p",
+                        { staticClass: "amount-modal-block--title normal-txt" },
+                        [_vm._v("支払われ先:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "amount-modal-block--content" },
+                        [
+                          _c("profile-block", {
+                            attrs: { user: _vm.toUser, "icon-size": "40" }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "amount-modal-block" }, [
+                      _c(
+                        "p",
+                        { staticClass: "amount-modal-block--title normal-txt" },
+                        [_vm._v("金額:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "p",
+                        {
+                          staticClass: "amount-modal-block--content normal-txt"
+                        },
+                        [
+                          _vm._v(_vm._s(_vm.amount)),
+                          _c("span", { staticClass: "small-txt" }, [
+                            _vm._v("円")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("form-button", {
+                      attrs: { value: "支払いを承認", type: "accept" },
+                      on: { send: _vm.send }
+                    })
+                  ]
+                : _vm._e()
+            ],
+            2
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.isLoading ? _c("loading") : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "small-txt amount-modal-confirm" }, [
+      _vm._v("を"),
+      _c("span", { staticClass: "normal-txt red-txt" }, [_vm._v("承認")]),
+      _vm._v("してもいいですか？")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "small-txt" }, [
+      _vm._v(
+        "上記の支払いを受け取っていない場合や、金額が間違っている場合はウィンドウを閉じて「拒否」ボタンを押してください。一度承認すると拒否することはできません。"
+      ),
+      _c("br"),
+      _vm._v("承認すると、割り勘代の支払いがwatteに反映されます。")
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Request.vue?vue&type=template&id=1c0a3c74&":
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Request.vue?vue&type=template&id=1c0a3c74& ***!
+  \**********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "section",
+    { staticClass: "section-inner" },
+    [
+      !_vm.isLoading
+        ? _c(
+            "article",
+            { staticClass: "vertical-center-container" },
+            [
+              _vm.isAccepting
+                ? [
+                    _c("div", { staticClass: "amount-modal-block" }, [
+                      _c(
+                        "p",
+                        { staticClass: "amount-modal-block--title normal-txt" },
+                        [_vm._v("支払い者:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "amount-modal-block--content" },
+                        [
+                          _c("profile-block", {
+                            attrs: { user: _vm.fromUser, "icon-size": "40" }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "amount-modal-block" }, [
+                      _c(
+                        "p",
+                        { staticClass: "amount-modal-block--title normal-txt" },
+                        [_vm._v("支払われ先:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "amount-modal-block--content" },
+                        [
+                          _c("profile-block", {
+                            attrs: { user: _vm.toUser, "icon-size": "40" }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "amount-modal-block" }, [
+                      _c(
+                        "p",
+                        { staticClass: "amount-modal-block--title normal-txt" },
+                        [_vm._v("金額:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "p",
+                        {
+                          staticClass: "amount-modal-block--content normal-txt"
+                        },
+                        [
+                          _vm._v(_vm._s(_vm.amount)),
+                          _c("span", { staticClass: "small-txt" }, [
+                            _vm._v("円")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("form-button", {
+                      attrs: { value: "支払い済みにする", type: "accept" },
+                      on: { send: _vm.send }
+                    })
+                  ]
+                : _vm._e()
+            ],
+            2
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.isLoading ? _c("loading") : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "small-txt amount-modal-confirm" }, [
+      _vm._v("を"),
+      _c("span", { staticClass: "normal-txt red-txt" }, [_vm._v("支払い済み")]),
+      _vm._v("にしてもいいですか？")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "small-txt" }, [
+      _vm._v(
+        "支払いを拒否、または金額を変更する場合は、ウィンドウを閉じて「支払いを拒否」ボタンを押してください。"
+      ),
+      _c("br"),
+      _vm._v(
+        "支払い済みにした後、支払いリクエスト者が承認すると、割り勘代の支払いがwatteに反映されます。"
+      )
     ])
   }
 ]
@@ -42878,50 +43696,25 @@ var render = function() {
                     key: "default",
                     fn: function() {
                       return [
-                        _c(
-                          "ul",
-                          { staticClass: "option-block" },
-                          [
-                            _c(
-                              "li",
-                              {
-                                staticClass: "option-button",
-                                on: { click: _vm.editAmount }
-                              },
-                              [_vm._v("支払い内容を編集")]
-                            ),
-                            _vm._v(" "),
-                            [
-                              _vm.target.archive_flg == 0
-                                ? _c(
-                                    "li",
-                                    {
-                                      staticClass: "option-button",
-                                      on: { click: _vm.archiveAmount }
-                                    },
-                                    [_vm._v("精算済にする")]
-                                  )
-                                : _c(
-                                    "li",
-                                    {
-                                      staticClass: "option-button",
-                                      on: { click: _vm.unarchiveAmount }
-                                    },
-                                    [_vm._v("未精算に戻す")]
-                                  )
-                            ],
-                            _vm._v(" "),
-                            _c(
-                              "li",
-                              {
-                                staticClass: "option-button btn-danger",
-                                on: { click: _vm.deleteAmount }
-                              },
-                              [_vm._v("削除する")]
-                            )
-                          ],
-                          2
-                        ),
+                        _c("ul", { staticClass: "option-block" }, [
+                          _c(
+                            "li",
+                            {
+                              staticClass: "option-button",
+                              on: { click: _vm.editAmount }
+                            },
+                            [_vm._v("支払い内容を編集")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            {
+                              staticClass: "option-button btn-danger",
+                              on: { click: _vm.deleteAmount }
+                            },
+                            [_vm._v("削除する")]
+                          )
+                        ]),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -42939,7 +43732,7 @@ var render = function() {
                 ],
                 null,
                 false,
-                3581952515
+                702288001
               )
             })
           ],
@@ -43842,6 +44635,60 @@ var render = function() {
         staticClass: "toggle-button__switch",
         attrs: { "data-enabled": _vm.enabled ? "true" : "false" }
       })
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/TransactionItem.vue?vue&type=template&id=6fa30924&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/TransactionItem.vue?vue&type=template&id=6fa30924& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("li", { staticClass: "transaction-item" }, [
+    _c("div", { staticClass: "transaction-item-inner" }, [
+      _c(
+        "div",
+        { staticClass: "transaction-item-left" },
+        [
+          _c("profile-block", {
+            attrs: { user: _vm.fromUser, "icon-size": "25" }
+          }),
+          _vm._v(" "),
+          _c("p", { staticClass: "normal-txt mb-0" }, [_vm._v(" → ")]),
+          _vm._v(" "),
+          _c("profile-block", {
+            attrs: { user: _vm.toUser, "icon-size": "25" }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", [
+        _c("p", { staticClass: "normal-txt transaction-item-text" }, [
+          _vm._v(_vm._s(_vm.amount)),
+          _c("span", { staticClass: "small-txt" }, [_vm._v("円")])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("p", { staticClass: "small-txt amount-register-date" }, [
+      _vm._v("登録日時：" + _vm._s(_vm.dateParser(_vm.transaction.created_at)))
     ])
   ])
 }
@@ -56058,6 +56905,9 @@ Vue.component('notification', __webpack_require__(/*! ./components/modules/Notif
 Vue.component('amount-edit-modal', __webpack_require__(/*! ./components/modules/AmountEditModal.vue */ "./resources/js/components/modules/AmountEditModal.vue")["default"]);
 Vue.component('amount-each-option-window', __webpack_require__(/*! ./components/modules/AmountEachOptionWindow.vue */ "./resources/js/components/modules/AmountEachOptionWindow.vue")["default"]);
 Vue.component('amount-each-payment-modal', __webpack_require__(/*! ./components/modules/AmountEachPaymentModal.vue */ "./resources/js/components/modules/AmountEachPaymentModal.vue")["default"]);
+Vue.component('request', __webpack_require__(/*! ./components/Request.vue */ "./resources/js/components/Request.vue")["default"]);
+Vue.component('payment', __webpack_require__(/*! ./components/Payment.vue */ "./resources/js/components/Payment.vue")["default"]);
+Vue.component('transaction-item', __webpack_require__(/*! ./components/modules/TransactionItem.vue */ "./resources/js/components/modules/TransactionItem.vue")["default"]);
 axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="line-id"]').getAttribute('content');
 var app = new Vue({
   el: '#app'
@@ -56450,6 +57300,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Participants_vue_vue_type_template_id_7eee9b8b___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Participants_vue_vue_type_template_id_7eee9b8b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Payment.vue":
+/*!*********************************************!*\
+  !*** ./resources/js/components/Payment.vue ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Payment_vue_vue_type_template_id_7bace86b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Payment.vue?vue&type=template&id=7bace86b& */ "./resources/js/components/Payment.vue?vue&type=template&id=7bace86b&");
+/* harmony import */ var _Payment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Payment.vue?vue&type=script&lang=js& */ "./resources/js/components/Payment.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Payment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Payment_vue_vue_type_template_id_7bace86b___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Payment_vue_vue_type_template_id_7bace86b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Payment.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Payment.vue?vue&type=script&lang=js&":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/Payment.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Payment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Payment.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Payment.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Payment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Payment.vue?vue&type=template&id=7bace86b&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/Payment.vue?vue&type=template&id=7bace86b& ***!
+  \****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Payment_vue_vue_type_template_id_7bace86b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Payment.vue?vue&type=template&id=7bace86b& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Payment.vue?vue&type=template&id=7bace86b&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Payment_vue_vue_type_template_id_7bace86b___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Payment_vue_vue_type_template_id_7bace86b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Request.vue":
+/*!*********************************************!*\
+  !*** ./resources/js/components/Request.vue ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Request_vue_vue_type_template_id_1c0a3c74___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Request.vue?vue&type=template&id=1c0a3c74& */ "./resources/js/components/Request.vue?vue&type=template&id=1c0a3c74&");
+/* harmony import */ var _Request_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Request.vue?vue&type=script&lang=js& */ "./resources/js/components/Request.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Request_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Request_vue_vue_type_template_id_1c0a3c74___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Request_vue_vue_type_template_id_1c0a3c74___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Request.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Request.vue?vue&type=script&lang=js&":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/Request.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Request_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Request.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Request.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Request_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Request.vue?vue&type=template&id=1c0a3c74&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/Request.vue?vue&type=template&id=1c0a3c74& ***!
+  \****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Request_vue_vue_type_template_id_1c0a3c74___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Request.vue?vue&type=template&id=1c0a3c74& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Request.vue?vue&type=template&id=1c0a3c74&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Request_vue_vue_type_template_id_1c0a3c74___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Request_vue_vue_type_template_id_1c0a3c74___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -58440,6 +59428,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/modules/TransactionItem.vue":
+/*!*************************************************************!*\
+  !*** ./resources/js/components/modules/TransactionItem.vue ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TransactionItem_vue_vue_type_template_id_6fa30924___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TransactionItem.vue?vue&type=template&id=6fa30924& */ "./resources/js/components/modules/TransactionItem.vue?vue&type=template&id=6fa30924&");
+/* harmony import */ var _TransactionItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TransactionItem.vue?vue&type=script&lang=js& */ "./resources/js/components/modules/TransactionItem.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TransactionItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TransactionItem_vue_vue_type_template_id_6fa30924___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TransactionItem_vue_vue_type_template_id_6fa30924___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/modules/TransactionItem.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/TransactionItem.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/modules/TransactionItem.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TransactionItem.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/TransactionItem.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/TransactionItem.vue?vue&type=template&id=6fa30924&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/modules/TransactionItem.vue?vue&type=template&id=6fa30924& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionItem_vue_vue_type_template_id_6fa30924___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TransactionItem.vue?vue&type=template&id=6fa30924& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/TransactionItem.vue?vue&type=template&id=6fa30924&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionItem_vue_vue_type_template_id_6fa30924___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionItem_vue_vue_type_template_id_6fa30924___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/mixins/allowAccessIfWithGroupIdMixin.js":
 /*!**************************************************************!*\
   !*** ./resources/js/mixins/allowAccessIfWithGroupIdMixin.js ***!
@@ -58830,14 +59887,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     isTextFilled: function isTextFilled(field) {
-      return field !== '' && field.match(/\S/g) ? true : false;
+      return field !== '' && String(field).match(/\S/g) ? true : false;
     },
     ValidateNumber: function ValidateNumber(field) {
-      var numberValue = field.replace(/\D/g, '');
+      var numberValue = String(field).replace(/\D/g, '');
       return numberValue !== '' ? true : false;
     },
     validateDecimal: function validateDecimal(value) {
-      var result = value.match(/^([0-9]+)(\.[0-9]{0,2})?/);
+      var result = String(value).match(/^([0-9]+)(\.[0-9]{0,2})?/);
       return result ? Number(result[0]) : false;
     }
   }
