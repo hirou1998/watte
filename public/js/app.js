@@ -2328,7 +2328,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       eachModalVisibility: false,
       editModalVisibility: false,
       isApiLoading: false,
-      isLoading: true,
+      isLoading: false,
       menuModalVisibility: false,
       modalVisibility: false,
       modalType: {
