@@ -310,6 +310,7 @@ export default {
             window.axios.get(`/api/transactions/${this.event.id}`)
             .then(({data}) => {
                 this.transactions = data;
+                this.isApiLoading = false;
             })
         },
         hideLoading(){
