@@ -496,8 +496,7 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            this.hideLoading();
-            //this.checkAccess();
+            this.checkAccess();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, handleErrMinxin]
