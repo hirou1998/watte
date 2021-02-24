@@ -2690,7 +2690,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.archiveRelatedAction('unarchive');
     }
   },
-  created: function created() {
+  mounted: function mounted() {
     var _this10 = this;
 
     window.liff.init({

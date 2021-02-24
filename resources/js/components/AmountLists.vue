@@ -491,7 +491,7 @@ export default {
             this.archiveRelatedAction('unarchive')
         }
     },
-    created(){
+    mounted(){
         window.liff.init({
             liffId: this.liff
         })
