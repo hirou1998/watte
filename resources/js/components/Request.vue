@@ -103,7 +103,7 @@ export default {
             return this.transaction.approved ? true : false;
         },
         hideLoading(){
-            if(!this.isApproved()){
+            if(this.isApproved()){
                 alert('承認済の支払いです。');
                 window.liff.closeWindow();
             }
