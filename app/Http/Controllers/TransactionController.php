@@ -87,4 +87,15 @@ class TransactionController extends Controller
         ]);
         return $transaction;
     }
+
+    public function delete(Transaction $transaction)
+    {
+        if($transaction){
+            $transaction->delete();
+            return response()->json([]);
+        }else{
+            abort(404, 'Not Found');
+            return;
+        }
+    }
 }

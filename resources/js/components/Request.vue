@@ -19,8 +19,29 @@
                     <p class="amount-modal-block--content normal-txt">{{amount}}<span class="small-txt">円</span></p>
                 </div>
                 <p class="small-txt amount-modal-confirm">を<span class="normal-txt red-txt">支払い済み</span>にしてもいいですか？</p>
-                <p class="small-txt">支払いを拒否、または金額を変更する場合は、ウィンドウを閉じて「支払いを拒否」ボタンを押してください。<br>支払い済みにした後、支払いリクエスト者が承認すると、割り勘代の支払いがwatteに反映されます。</p>
+                <p class="small-txt">支払いを拒否、または金額を変更する場合は、ウィンドウを閉じて「拒否」ボタンを押してください。<br>支払い済みにした後、支払いリクエスト者が承認すると、割り勘代の支払いがwatteに反映されます。</p>
                 <form-button value="支払い済みにする" type="accept" @send="send"></form-button>
+            </template>
+            <template v-else>
+                <div class="amount-modal-block">
+                    <p class="amount-modal-block--title normal-txt">支払い者:</p>
+                    <div class="amount-modal-block--content">
+                        <profile-block :user="fromUser" icon-size="40"></profile-block>
+                    </div>
+                </div>
+                <div class="amount-modal-block">
+                    <p class="amount-modal-block--title normal-txt">支払われ先:</p>
+                    <div class="amount-modal-block--content">
+                        <profile-block :user="toUser" icon-size="40"></profile-block>
+                    </div>
+                </div>
+                <div class="amount-modal-block">
+                    <p class="amount-modal-block--title normal-txt">金額:</p>
+                    <p class="amount-modal-block--content normal-txt">{{amount}}<span class="small-txt">円</span></p>
+                </div>
+                <p class="small-txt amount-modal-confirm">を<span class="normal-txt red-txt">支払い拒否</span>にしてもいいですか？</p>
+                <p class="small-txt">支払い済みにする場合は、ウィンドウを閉じて「支払済」ボタンを押してください。<br>支払いを拒否するとリクエストは削除されます。金額変更の場合は拒否してから再度入力し直してください。</p>
+                <form-button value="支払いを拒否する" type="deny" @send="deny"></form-button>
             </template>
         </article>
         <loading v-if="isLoading"></loading>
@@ -66,7 +87,26 @@ export default {
         },
     },
     methods: {
+        deny(){
+            this.isApiLoading = true;
+            window.axios.delete(`transaction/delete/${this.transaction.id}`)
+            .then(() => {
+                let message = this.toUser.display_name + "さんからの" + this.amount + "円の割り勘代支払いリクエストを拒否しました。";
+                this.sendMessage(message)
+                this.isApiLoading = false;
+            })
+            .catch(err => {
+                this.handleErr(err.response.status)
+            })
+        },
+        isApproved(){
+            return this.transaction.approved ? true : false;
+        },
         hideLoading(){
+            if(!this.isApproved()){
+                alert('承認済の支払いです。');
+                window.liff.closeWindow();
+            }
             this.isLoading = false;
         },
         send(){
@@ -108,8 +148,11 @@ export default {
                 }
             ])
             .then(() => {
+                window.liff.closeWindow();
             })
             .catch((err) => {
+                alert(err)
+                window.liff.closeWindow();
                 this.handleErr(err.response.status)
             })
         },

@@ -2581,15 +2581,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         altText = '支払いリクエスト';
         template = {
           type: 'confirm',
-          text: sentData.fromUser.display_name + "さんが" + sentData.toUser.display_name + "さんに\n" + data.amount + "円\nの支払いリクエストを送信しました。",
+          text: sentData.toUser.display_name + "さんが" + sentData.fromUser.display_name + "さんに" + data.amount + "円の支払いリクエストを送信しました。",
           actions: [{
             type: 'uri',
-            label: '支払い済みにする',
+            label: '支払済',
             uri: "https://liff.line.me/1655325455-B5Zjk37g/request/".concat(data.id, "?type=accept")
           }, {
             type: 'uri',
-            label: '支払いを拒否する',
-            uri: "https://liff.line.me/1655325455-B5Zjk37g/request".concat(data.id, "?type=deny")
+            label: '拒否',
+            uri: "https://liff.line.me/1655325455-B5Zjk37g/request/".concat(data.id, "?type=deny")
           }]
         };
 
@@ -2627,7 +2627,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         altText = '支払い';
         template = {
           type: 'confirm',
-          text: sentData.fromUser.display_name + 'さんが' + sentData.toUser.display_name + 'さんに\n' + data.amount + "円\nを支払いました。",
+          text: sentData.fromUser.display_name + 'さんが' + sentData.toUser.display_name + 'さんに' + data.amount + "円を支払いました。",
           actions: [{
             type: 'uri',
             label: '承認',
@@ -3249,6 +3249,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3293,51 +3314,78 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    isSent: function isSent() {
-      return this.transaction.sent ? true : false;
-    },
-    hideLoading: function hideLoading() {
-      this.isLoading = false;
-
-      if (!this.isSent()) {
-        alert('支払いリクエストを支払い済みにしてください。');
-        location.href = "https://liff.line.me/1655325455-B5Zjk37g/request/".concat(this.transaction.id, "?type=accept");
-      }
-    },
-    send: function send() {
+    deny: function deny() {
       var _this3 = this;
 
       this.isApiLoading = true;
-      window.axios.put("/approve/".concat(this.transaction.id)).then(function (_ref) {
-        var data = _ref.data;
-        var message = _this3.fromUser.display_name + "さんからの" + _this3.amount + "円の割り勘代支払いを承認しました。";
+      window.axios["delete"]("transaction/delete/".concat(this.transaction.id)).then(function () {
+        var message = _this3.fromUser.display_name + "さんからの" + _this3.amount + "円の割り勘代支払いを拒否しました。";
 
-        _this3.sendButtonMessage(altText, template);
+        _this3.sendMessage(message);
 
         _this3.isApiLoading = false;
       })["catch"](function (err) {
         _this3.handleErr(err.response.status);
       });
     },
-    sendMessage: function sendMessage(message) {
+    isSent: function isSent() {
+      return this.transaction.sent ? true : false;
+    },
+    isApproved: function isApproved() {
+      return this.transaction.approved ? true : false;
+    },
+    hideLoading: function hideLoading() {
+      if (!this.isSent()) {
+        alert('支払いリクエストを支払い済みにしてください。');
+        location.href = "https://liff.line.me/1655325455-B5Zjk37g/request/".concat(this.transaction.id, "?type=accept");
+      }
+
+      if (!this.isApproved()) {
+        alert('承認済の支払いです。');
+        window.liff.closeWindow();
+      }
+
+      this.isLoading = false;
+    },
+    approve: function approve() {
       var _this4 = this;
+
+      this.isApiLoading = true;
+      window.axios.put("/approve/".concat(this.transaction.id)).then(function (_ref) {
+        var data = _ref.data;
+        var message = _this4.fromUser.display_name + "さんからの" + _this4.amount + "円の割り勘代支払いを承認しました。";
+
+        _this4.sendMessage(message);
+
+        _this4.isApiLoading = false;
+      })["catch"](function (err) {
+        _this4.handleErr(err.response.status);
+      });
+    },
+    sendMessage: function sendMessage(message) {
+      var _this5 = this;
 
       window.liff.sendMessages([{
         type: 'text',
         text: message
-      }]).then(function () {})["catch"](function (err) {
-        _this4.handleErr(err.response.status);
+      }]).then(function () {
+        window.liff.closeWindow();
+      })["catch"](function (err) {
+        alert(err);
+        window.liff.closeWindow();
+
+        _this5.handleErr(err.response.status);
       });
     }
   },
   mounted: function mounted() {
-    var _this5 = this;
+    var _this6 = this;
 
     this.event = this.transaction.event;
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this5.checkAccess();
+      _this6.checkAccess();
     });
   },
   mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_6__["default"]]
@@ -3391,6 +3439,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3436,11 +3505,33 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    deny: function deny() {
+      var _this3 = this;
+
+      this.isApiLoading = true;
+      window.axios["delete"]("transaction/delete/".concat(this.transaction.id)).then(function () {
+        var message = _this3.toUser.display_name + "さんからの" + _this3.amount + "円の割り勘代支払いリクエストを拒否しました。";
+
+        _this3.sendMessage(message);
+
+        _this3.isApiLoading = false;
+      })["catch"](function (err) {
+        _this3.handleErr(err.response.status);
+      });
+    },
+    isApproved: function isApproved() {
+      return this.transaction.approved ? true : false;
+    },
     hideLoading: function hideLoading() {
+      if (!this.isApproved()) {
+        alert('承認済の支払いです。');
+        window.liff.closeWindow();
+      }
+
       this.isLoading = false;
     },
     send: function send() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.isApiLoading = true;
       window.axios.put("/sent/".concat(this.transaction.id)).then(function (_ref) {
@@ -3454,41 +3545,46 @@ __webpack_require__.r(__webpack_exports__);
           actions: [{
             type: 'uri',
             label: '承認',
-            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment/".concat(_this3.transaction.id, "?type=accept")
+            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment/".concat(_this4.transaction.id, "?type=accept")
           }, {
             type: 'uri',
             label: '拒否',
-            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment/".concat(_this3.transaction.id, "?type=deny")
+            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment/".concat(_this4.transaction.id, "?type=deny")
           }]
         };
 
-        _this3.sendButtonMessage(altText, template);
+        _this4.sendButtonMessage(altText, template);
 
-        _this3.isApiLoading = false;
+        _this4.isApiLoading = false;
       })["catch"](function (err) {
-        _this3.handleErr(err.response.status);
+        _this4.handleErr(err.response.status);
       });
     },
     sendButtonMessage: function sendButtonMessage(altText, template) {
-      var _this4 = this;
+      var _this5 = this;
 
       window.liff.sendMessages([{
         type: 'template',
         altText: altText,
         template: template
-      }]).then(function () {})["catch"](function (err) {
-        _this4.handleErr(err.response.status);
+      }]).then(function () {
+        window.liff.closeWindow();
+      })["catch"](function (err) {
+        alert(err);
+        window.liff.closeWindow();
+
+        _this5.handleErr(err.response.status);
       });
     }
   },
   mounted: function mounted() {
-    var _this5 = this;
+    var _this6 = this;
 
     this.event = this.transaction.event;
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this5.checkAccess();
+      _this6.checkAccess();
     });
   },
   mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_7__["default"]]
@@ -42516,10 +42612,78 @@ var render = function() {
                     _vm._v(" "),
                     _c("form-button", {
                       attrs: { value: "支払いを承認", type: "accept" },
-                      on: { send: _vm.send }
+                      on: { send: _vm.approve }
                     })
                   ]
-                : _vm._e()
+                : [
+                    _c("div", { staticClass: "amount-modal-block" }, [
+                      _c(
+                        "p",
+                        { staticClass: "amount-modal-block--title normal-txt" },
+                        [_vm._v("支払い者:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "amount-modal-block--content" },
+                        [
+                          _c("profile-block", {
+                            attrs: { user: _vm.fromUser, "icon-size": "40" }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "amount-modal-block" }, [
+                      _c(
+                        "p",
+                        { staticClass: "amount-modal-block--title normal-txt" },
+                        [_vm._v("支払われ先:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "amount-modal-block--content" },
+                        [
+                          _c("profile-block", {
+                            attrs: { user: _vm.toUser, "icon-size": "40" }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "amount-modal-block" }, [
+                      _c(
+                        "p",
+                        { staticClass: "amount-modal-block--title normal-txt" },
+                        [_vm._v("金額:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "p",
+                        {
+                          staticClass: "amount-modal-block--content normal-txt"
+                        },
+                        [
+                          _vm._v(_vm._s(_vm.amount)),
+                          _c("span", { staticClass: "small-txt" }, [
+                            _vm._v("円")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("form-button", {
+                      attrs: { value: "支払いを拒否", type: "deny" },
+                      on: { send: _vm.deny }
+                    })
+                  ]
             ],
             2
           )
@@ -42551,6 +42715,30 @@ var staticRenderFns = [
       ),
       _c("br"),
       _vm._v("承認すると、割り勘代の支払いがwatteに反映されます。")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "small-txt amount-modal-confirm" }, [
+      _vm._v("を"),
+      _c("span", { staticClass: "normal-txt red-txt" }, [_vm._v("拒否")]),
+      _vm._v("してもいいですか？")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "small-txt" }, [
+      _vm._v(
+        "上記の支払いを受け取っている場合は、ウィンドウを閉じて「承認」ボタンを押してください。"
+      ),
+      _c("br"),
+      _vm._v(
+        "支払いは拒否すると削除されます。金額変更の場合は拒否してから再度入力し直してください。"
+      )
     ])
   }
 ]
@@ -42654,7 +42842,75 @@ var render = function() {
                       on: { send: _vm.send }
                     })
                   ]
-                : _vm._e()
+                : [
+                    _c("div", { staticClass: "amount-modal-block" }, [
+                      _c(
+                        "p",
+                        { staticClass: "amount-modal-block--title normal-txt" },
+                        [_vm._v("支払い者:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "amount-modal-block--content" },
+                        [
+                          _c("profile-block", {
+                            attrs: { user: _vm.fromUser, "icon-size": "40" }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "amount-modal-block" }, [
+                      _c(
+                        "p",
+                        { staticClass: "amount-modal-block--title normal-txt" },
+                        [_vm._v("支払われ先:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "amount-modal-block--content" },
+                        [
+                          _c("profile-block", {
+                            attrs: { user: _vm.toUser, "icon-size": "40" }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "amount-modal-block" }, [
+                      _c(
+                        "p",
+                        { staticClass: "amount-modal-block--title normal-txt" },
+                        [_vm._v("金額:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "p",
+                        {
+                          staticClass: "amount-modal-block--content normal-txt"
+                        },
+                        [
+                          _vm._v(_vm._s(_vm.amount)),
+                          _c("span", { staticClass: "small-txt" }, [
+                            _vm._v("円")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("form-button", {
+                      attrs: { value: "支払いを拒否する", type: "deny" },
+                      on: { send: _vm.deny }
+                    })
+                  ]
             ],
             2
           )
@@ -42682,11 +42938,35 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("p", { staticClass: "small-txt" }, [
       _vm._v(
-        "支払いを拒否、または金額を変更する場合は、ウィンドウを閉じて「支払いを拒否」ボタンを押してください。"
+        "支払いを拒否、または金額を変更する場合は、ウィンドウを閉じて「拒否」ボタンを押してください。"
       ),
       _c("br"),
       _vm._v(
         "支払い済みにした後、支払いリクエスト者が承認すると、割り勘代の支払いがwatteに反映されます。"
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "small-txt amount-modal-confirm" }, [
+      _vm._v("を"),
+      _c("span", { staticClass: "normal-txt red-txt" }, [_vm._v("支払い拒否")]),
+      _vm._v("にしてもいいですか？")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "small-txt" }, [
+      _vm._v(
+        "支払い済みにする場合は、ウィンドウを閉じて「支払済」ボタンを押してください。"
+      ),
+      _c("br"),
+      _vm._v(
+        "支払いを拒否するとリクエストは削除されます。金額変更の場合は拒否してから再度入力し直してください。"
       )
     ])
   }
