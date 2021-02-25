@@ -2631,11 +2631,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           actions: [{
             type: 'uri',
             label: '承認',
-            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment?event_id=".concat(_this9.event.id, "&amount=").concat(data.amount, "&type=accept")
+            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment/".concat(data.id, "?type=accept")
           }, {
             type: 'uri',
             label: '拒否',
-            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment?event_id=".concat(_this9.event.id, "&amount=").concat(data.amount, "&type=deny")
+            uri: "https://liff.line.me/1655325455-B5Zjk37g/payment/".concat(data.id, "?type=deny")
           }]
         };
 
@@ -3266,6 +3266,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      event: {},
       isApiLoading: false
     };
   },
@@ -3332,6 +3333,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this5 = this;
 
+    this.event = this.transaction.event;
     window.liff.init({
       liffId: this.liff
     }).then(function () {
@@ -3909,7 +3911,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['each', 'totalAmount', 'totalRatio', 'participants'],
+  props: ['each', 'totalAmount', 'totalRatio', 'participants', 'user'],
   components: {
     HamburgerButton: _HamburgerButton_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_1__["default"],
