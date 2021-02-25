@@ -88,7 +88,7 @@ export default {
     methods: {
         deny(){
             this.isApiLoading = true;
-            window.axios.delete(`transaction/delete/${this.transaction.id}`)
+            window.axios.delete(`/transaction/delete/${this.transaction.id}`)
             .then(() => {
                 let message = this.fromUser.display_name + "さんからの" + this.amount + "円の割り勘代支払いを拒否しました。";
                 this.sendMessage(message)

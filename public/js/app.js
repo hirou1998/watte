@@ -3318,7 +3318,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       this.isApiLoading = true;
-      window.axios["delete"]("transaction/delete/".concat(this.transaction.id)).then(function () {
+      window.axios["delete"]("/transaction/delete/".concat(this.transaction.id)).then(function () {
         var message = _this3.fromUser.display_name + "さんからの" + _this3.amount + "円の割り勘代支払いを拒否しました。";
 
         _this3.sendMessage(message);
@@ -3513,7 +3513,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       this.isApiLoading = true;
-      window.axios["delete"]("transaction/delete/".concat(this.transaction.id)).then(function () {
+      window.axios["delete"]("/transaction/delete/".concat(this.transaction.id)).then(function () {
         var message = _this3.toUser.display_name + "さんからの" + _this3.amount + "円の割り勘代支払いリクエストを拒否しました。";
 
         _this3.sendMessage(message);
@@ -3535,7 +3535,7 @@ __webpack_require__.r(__webpack_exports__);
         window.liff.closeWindow();
       }
 
-      if (!this.isSent()) {
+      if (this.isSent()) {
         alert('支払い済です。');
         window.liff.closeWindow();
       }
