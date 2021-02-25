@@ -22,6 +22,7 @@ class LineBotController extends Controller
         $bot = app('line-bot');
 
         $channel_secret = config('line.channel_secret');
+        //$channel_secret = 'bad9d2d3404174ae078135c46a687279';
         $signature = $request->headers->get(HTTPHeader::LINE_SIGNATURE);
         $event_body = $request->getContent();
 

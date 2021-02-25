@@ -389,17 +389,17 @@ export default {
                 altText = '支払いリクエスト';
                 template = {
                     type: 'confirm',
-                    text: sentData.fromUser.display_name + "さんが" + sentData.toUser.display_name + "さんに\n" + data.amount + "円\nの支払いリクエストを送信しました。",
+                    text: sentData.toUser.display_name + "さんが" + sentData.fromUser.display_name + "さんに" + data.amount + "円の支払いリクエストを送信しました。",
                     actions: [
                         {
                             type: 'uri',
-                            label: '支払い済みにする',
+                            label: '支払済',
                             uri: `https://liff.line.me/1655325455-B5Zjk37g/request/${data.id}?type=accept`
                         },
                         {
                             type: 'uri',
-                            label: '支払いを拒否する',
-                            uri: `https://liff.line.me/1655325455-B5Zjk37g/request${data.id}?type=deny`
+                            label: '拒否',
+                            uri: `https://liff.line.me/1655325455-B5Zjk37g/request/${data.id}?type=deny`
                         }
                     ]
                 };
@@ -430,7 +430,7 @@ export default {
                 altText = '支払い';
                 template = {
                     type: 'confirm',
-                    text: sentData.fromUser.display_name + 'さんが' + sentData.toUser.display_name + 'さんに\n' + data.amount + "円\nを支払いました。",
+                    text: sentData.fromUser.display_name + 'さんが' + sentData.toUser.display_name + 'さんに' + data.amount + "円を支払いました。",
                     actions: [
                         {
                             type: 'uri',
