@@ -3335,6 +3335,11 @@ __webpack_require__.r(__webpack_exports__);
       return this.transaction.approved ? true : false;
     },
     hideLoading: function hideLoading() {
+      if (!this.transaction.id) {
+        alert('削除済の支払いリクエストです。');
+        window.liff.closeWindow();
+      }
+
       if (!this.isSent()) {
         alert('支払いリクエストを支払い済みにしてください。');
         location.href = "https://liff.line.me/1655325455-B5Zjk37g/request/".concat(this.transaction.id, "?type=accept");
@@ -3351,8 +3356,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       this.isApiLoading = true;
-      window.axios.put("/approve/".concat(this.transaction.id)).then(function (_ref) {
-        var data = _ref.data;
+      window.axios.put("/approve/".concat(this.transaction.id)).then(function () {
         var message = _this4.fromUser.display_name + "さんからの" + _this4.amount + "円の割り勘代支払いを承認しました。";
 
         _this4.sendMessage(message);
@@ -3519,10 +3523,23 @@ __webpack_require__.r(__webpack_exports__);
         _this3.handleErr(err.response.status);
       });
     },
+    isSent: function isSent() {
+      return this.transaction.sent ? true : false;
+    },
     isApproved: function isApproved() {
       return this.transaction.approved ? true : false;
     },
     hideLoading: function hideLoading() {
+      if (!this.transaction.id) {
+        alert('削除済の支払いリクエストです。');
+        window.liff.closeWindow();
+      }
+
+      if (!this.isSent()) {
+        alert('支払い済です。');
+        window.liff.closeWindow();
+      }
+
       if (this.isApproved()) {
         alert('承認済の支払いです。');
         window.liff.closeWindow();
@@ -3534,14 +3551,13 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       this.isApiLoading = true;
-      window.axios.put("/sent/".concat(this.transaction.id)).then(function (_ref) {
-        var data = _ref.data;
+      window.axios.put("/sent/".concat(this.transaction.id)).then(function () {
         var altText;
         var template;
-        altText = '割り勘代支払いの承認';
+        altText = '支払い';
         template = {
           type: 'confirm',
-          text: sentData.fromUser.display_name + "さんが" + sentData.toUser.display_name + "さんに\n" + data.amount + "円\nを支払いました。",
+          text: _this4.fromUser.display_name + 'さんが' + _this4.toUser.display_name + 'さんに' + _this4.amount + "円を支払いました。",
           actions: [{
             type: 'uri',
             label: '承認',
@@ -3560,6 +3576,23 @@ __webpack_require__.r(__webpack_exports__);
         _this4.handleErr(err.response.status);
       });
     },
+    // sendButtonMessage(altText, template){
+    //     window.liff.sendMessages([
+    //         {
+    //             type: 'template',
+    //             altText: altText,
+    //             template: template
+    //         }
+    //     ])
+    //     .then(() => {
+    //         window.liff.closeWindow();
+    //     })
+    //     .catch((err) => {
+    //         alert(err)
+    //         window.liff.closeWindow();
+    //         this.handleErr(err.response.status)
+    //     })
+    // },
     sendButtonMessage: function sendButtonMessage(altText, template) {
       var _this5 = this;
 

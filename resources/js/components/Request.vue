@@ -99,10 +99,21 @@ export default {
                 this.handleErr(err.response.status)
             })
         },
+        isSent(){
+            return this.transaction.sent ? true : false;
+        },
         isApproved(){
             return this.transaction.approved ? true : false;
         },
         hideLoading(){
+            if(!this.transaction.id){
+                alert('削除済の支払いリクエストです。');
+                window.liff.closeWindow();
+            }
+            if(!this.isSent()){
+                alert('支払い済です。');
+                window.liff.closeWindow();
+            }
             if(this.isApproved()){
                 alert('承認済の支払いです。');
                 window.liff.closeWindow();
@@ -112,13 +123,13 @@ export default {
         send(){
             this.isApiLoading = true;
             window.axios.put(`/sent/${this.transaction.id}`)
-            .then(({data}) => {
+            .then(() => {
                 let altText;
                 let template;
-                altText = '割り勘代支払いの承認';
+                altText = '支払い';
                 template = {
                     type: 'confirm',
-                    text: sentData.fromUser.display_name + "さんが" + sentData.toUser.display_name + "さんに\n" + data.amount + "円\nを支払いました。",
+                    text: this.fromUser.display_name + 'さんが' + this.toUser.display_name + 'さんに' + this.amount + "円を支払いました。",
                     actions: [
                         {
                             type: 'uri',
@@ -139,6 +150,23 @@ export default {
                 this.handleErr(err.response.status)
             })
         },
+        // sendButtonMessage(altText, template){
+        //     window.liff.sendMessages([
+        //         {
+        //             type: 'template',
+        //             altText: altText,
+        //             template: template
+        //         }
+        //     ])
+        //     .then(() => {
+        //         window.liff.closeWindow();
+        //     })
+        //     .catch((err) => {
+        //         alert(err)
+        //         window.liff.closeWindow();
+        //         this.handleErr(err.response.status)
+        //     })
+        // },
         sendButtonMessage(altText, template){
             window.liff.sendMessages([
                 {

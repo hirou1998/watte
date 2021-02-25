@@ -105,6 +105,10 @@ export default {
             return this.transaction.approved ? true : false;
         },
         hideLoading(){
+            if(!this.transaction.id){
+                alert('削除済の支払いリクエストです。');
+                window.liff.closeWindow();
+            }
             if(!this.isSent()){
                 alert('支払いリクエストを支払い済みにしてください。');
                 location.href = `https://liff.line.me/1655325455-B5Zjk37g/request/${this.transaction.id}?type=accept`;
@@ -118,7 +122,7 @@ export default {
         approve(){
             this.isApiLoading = true;
             window.axios.put(`/approve/${this.transaction.id}`)
-            .then(({data}) => {
+            .then(() => {
                 let message = this.fromUser.display_name + "さんからの" + this.amount + "円の割り勘代支払いを承認しました。";
                 this.sendMessage(message)
                 this.isApiLoading = false;

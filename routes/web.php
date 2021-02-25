@@ -50,4 +50,4 @@ Route::get('/request/{transaction}', 'TransactionController@request');
 Route::put('/sent/{transaction}', 'TransactionController@changeTransactionToSent');
 Route::get('/payment/{transaction}', 'TransactionController@payment');
 Route::put('/approve/{transaction}', 'TransactionController@changeTransactionToApproved');
-Route::delete('transaction/delete/{transaction}', 'TransactionController@delete');
+Route::delete('/transaction/delete/{transaction}', 'TransactionController@delete');
