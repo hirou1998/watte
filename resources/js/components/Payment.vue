@@ -109,7 +109,7 @@ export default {
                 alert('支払いリクエストを支払い済みにしてください。');
                 location.href = `https://liff.line.me/1655325455-B5Zjk37g/request/${this.transaction.id}?type=accept`;
             }
-            if(!this.isApproved()){
+            if(this.isApproved()){
                 alert('承認済の支払いです。');
                 window.liff.closeWindow();
             }

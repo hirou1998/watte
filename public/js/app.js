@@ -3340,7 +3340,7 @@ __webpack_require__.r(__webpack_exports__);
         location.href = "https://liff.line.me/1655325455-B5Zjk37g/request/".concat(this.transaction.id, "?type=accept");
       }
 
-      if (!this.isApproved()) {
+      if (this.isApproved()) {
         alert('承認済の支払いです。');
         window.liff.closeWindow();
       }
@@ -3523,7 +3523,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.transaction.approved ? true : false;
     },
     hideLoading: function hideLoading() {
-      if (!this.isApproved()) {
+      if (this.isApproved()) {
         alert('承認済の支払いです。');
         window.liff.closeWindow();
       }
