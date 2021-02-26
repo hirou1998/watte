@@ -89,7 +89,7 @@ export default {
     methods: {
         deny(){
             this.isApiLoading = true;
-            window.axios.delete(`transaction/delete/${this.transaction.id}`)
+            window.axios.delete(`/transaction/delete/${this.transaction.id}`)
             .then(() => {
                 let message = this.toUser.display_name + "さんからの" + this.amount + "円の割り勘代支払いリクエストを拒否しました。";
                 this.sendMessage(message)
@@ -110,7 +110,7 @@ export default {
                 alert('削除済の支払いリクエストです。');
                 window.liff.closeWindow();
             }
-            if(!this.isSent()){
+            if(this.isSent()){
                 alert('支払い済です。');
                 window.liff.closeWindow();
             }
@@ -150,23 +150,6 @@ export default {
                 this.handleErr(err.response.status)
             })
         },
-        // sendButtonMessage(altText, template){
-        //     window.liff.sendMessages([
-        //         {
-        //             type: 'template',
-        //             altText: altText,
-        //             template: template
-        //         }
-        //     ])
-        //     .then(() => {
-        //         window.liff.closeWindow();
-        //     })
-        //     .catch((err) => {
-        //         alert(err)
-        //         window.liff.closeWindow();
-        //         this.handleErr(err.response.status)
-        //     })
-        // },
         sendButtonMessage(altText, template){
             window.liff.sendMessages([
                 {
