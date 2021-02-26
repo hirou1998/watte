@@ -1,6 +1,5 @@
 <template>
     <section class="section-inner">
-        {{userInfo}}
         <article v-if="!isLoading" class="vertical-center-container">
             <template v-if="isAccepting">
                 <div class="amount-modal-block">
