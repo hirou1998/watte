@@ -3464,6 +3464,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -42572,10 +42573,12 @@ var render = function() {
                     _vm._v(" "),
                     _vm._m(1),
                     _vm._v(" "),
-                    _c("form-button", {
-                      attrs: { value: "支払いを承認", type: "accept" },
-                      on: { send: _vm.approve }
-                    })
+                    _vm.userInfo.userId === _vm.toUser.line_id
+                      ? _c("form-button", {
+                          attrs: { value: "支払いを承認", type: "accept" },
+                          on: { send: _vm.approve }
+                        })
+                      : _vm._e()
                   ]
                 : [
                     _c("div", { staticClass: "amount-modal-block" }, [
@@ -42641,10 +42644,12 @@ var render = function() {
                     _vm._v(" "),
                     _vm._m(3),
                     _vm._v(" "),
-                    _c("form-button", {
-                      attrs: { value: "支払いを拒否", type: "deny" },
-                      on: { send: _vm.deny }
-                    })
+                    _vm.userInfo.userId === _vm.toUser.line_id
+                      ? _c("form-button", {
+                          attrs: { value: "支払いを拒否", type: "deny" },
+                          on: { send: _vm.deny }
+                        })
+                      : _vm._e()
                   ]
             ],
             2
@@ -42664,7 +42669,7 @@ var staticRenderFns = [
     return _c("p", { staticClass: "small-txt amount-modal-confirm" }, [
       _vm._v("を"),
       _c("span", { staticClass: "normal-txt red-txt" }, [_vm._v("承認")]),
-      _vm._v("してもいいですか？")
+      _vm._v("します")
     ])
   },
   function() {
@@ -42686,7 +42691,7 @@ var staticRenderFns = [
     return _c("p", { staticClass: "small-txt amount-modal-confirm" }, [
       _vm._v("を"),
       _c("span", { staticClass: "normal-txt red-txt" }, [_vm._v("拒否")]),
-      _vm._v("してもいいですか？")
+      _vm._v("します")
     ])
   },
   function() {
@@ -42729,6 +42734,7 @@ var render = function() {
     "section",
     { staticClass: "section-inner" },
     [
+      _vm._v("\n    " + _vm._s(_vm.userInfo) + "\n    "),
       !_vm.isLoading
         ? _c(
             "article",
@@ -42799,10 +42805,12 @@ var render = function() {
                     _vm._v(" "),
                     _vm._m(1),
                     _vm._v(" "),
-                    _c("form-button", {
-                      attrs: { value: "支払い済みにする", type: "accept" },
-                      on: { send: _vm.send }
-                    })
+                    _vm.userInfo.userId === _vm.fromUser.line_id
+                      ? _c("form-button", {
+                          attrs: { value: "支払い済みにする", type: "accept" },
+                          on: { send: _vm.send }
+                        })
+                      : _vm._e()
                   ]
                 : [
                     _c("div", { staticClass: "amount-modal-block" }, [
@@ -42868,10 +42876,12 @@ var render = function() {
                     _vm._v(" "),
                     _vm._m(3),
                     _vm._v(" "),
-                    _c("form-button", {
-                      attrs: { value: "支払いを拒否する", type: "deny" },
-                      on: { send: _vm.deny }
-                    })
+                    _vm.userInfo.userId === _vm.fromUser.line_id
+                      ? _c("form-button", {
+                          attrs: { value: "支払いを拒否する", type: "deny" },
+                          on: { send: _vm.deny }
+                        })
+                      : _vm._e()
                   ]
             ],
             2
@@ -42891,7 +42901,7 @@ var staticRenderFns = [
     return _c("p", { staticClass: "small-txt amount-modal-confirm" }, [
       _vm._v("を"),
       _c("span", { staticClass: "normal-txt red-txt" }, [_vm._v("支払い済み")]),
-      _vm._v("にしてもいいですか？")
+      _vm._v("にします")
     ])
   },
   function() {
@@ -42915,7 +42925,7 @@ var staticRenderFns = [
     return _c("p", { staticClass: "small-txt amount-modal-confirm" }, [
       _vm._v("を"),
       _c("span", { staticClass: "normal-txt red-txt" }, [_vm._v("支払い拒否")]),
-      _vm._v("にしてもいいですか？")
+      _vm._v("します")
     ])
   },
   function() {
