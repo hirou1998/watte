@@ -150,23 +150,6 @@ export default {
                 this.handleErr(err.response.status)
             })
         },
-        // sendButtonMessage(altText, template){
-        //     window.liff.sendMessages([
-        //         {
-        //             type: 'template',
-        //             altText: altText,
-        //             template: template
-        //         }
-        //     ])
-        //     .then(() => {
-        //         window.liff.closeWindow();
-        //     })
-        //     .catch((err) => {
-        //         alert(err)
-        //         window.liff.closeWindow();
-        //         this.handleErr(err.response.status)
-        //     })
-        // },
         sendButtonMessage(altText, template){
             window.liff.sendMessages([
                 {

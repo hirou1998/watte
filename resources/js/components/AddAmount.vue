@@ -16,7 +16,7 @@
             <amount-note-form 
                 v-model="note"
             ></amount-note-form>
-            <toggle-block 
+            <!-- <toggle-block 
                 v-model="isPrivate" 
                 text="個人間の貸し借りを記録する"
                 v-if="participants.length > 2"
@@ -32,7 +32,7 @@
                     ></amount-user-form>
                 </template>
                 <button class="btn btn-success amount-user-add-button" @click="addPertner" v-if="enableToAddPartner">+支払い相手を追加する</button>
-            </section>
+            </section> -->
             <form-button v-if="isFilled" value="追加" type="accept" @send="add"></form-button>
         </article>
         <loading v-if="isLoading"></loading>

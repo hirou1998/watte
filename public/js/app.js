@@ -3576,23 +3576,6 @@ __webpack_require__.r(__webpack_exports__);
         _this4.handleErr(err.response.status);
       });
     },
-    // sendButtonMessage(altText, template){
-    //     window.liff.sendMessages([
-    //         {
-    //             type: 'template',
-    //             altText: altText,
-    //             template: template
-    //         }
-    //     ])
-    //     .then(() => {
-    //         window.liff.closeWindow();
-    //     })
-    //     .catch((err) => {
-    //         alert(err)
-    //         window.liff.closeWindow();
-    //         this.handleErr(err.response.status)
-    //     })
-    // },
     sendButtonMessage: function sendButtonMessage(altText, template) {
       var _this5 = this;
 
@@ -41893,60 +41876,6 @@ var render = function() {
                   expression: "note"
                 }
               }),
-              _vm._v(" "),
-              _vm.participants.length > 2
-                ? _c("toggle-block", {
-                    attrs: { text: "個人間の貸し借りを記録する" },
-                    model: {
-                      value: _vm.isPrivate,
-                      callback: function($$v) {
-                        _vm.isPrivate = $$v
-                      },
-                      expression: "isPrivate"
-                    }
-                  })
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.isPrivate
-                ? _c(
-                    "section",
-                    { staticClass: "private-amount-container" },
-                    [
-                      _vm._l(_vm.partner, function(user, index) {
-                        return [
-                          _c("amount-user-form", {
-                            key: index,
-                            attrs: {
-                              participants: _vm.partnerLists,
-                              text: "支払い相手" + (index + 1),
-                              "place-holder": "誰に払いましたか？"
-                            },
-                            model: {
-                              value: user.user,
-                              callback: function($$v) {
-                                _vm.$set(user, "user", $$v)
-                              },
-                              expression: "user.user"
-                            }
-                          })
-                        ]
-                      }),
-                      _vm._v(" "),
-                      _vm.enableToAddPartner
-                        ? _c(
-                            "button",
-                            {
-                              staticClass:
-                                "btn btn-success amount-user-add-button",
-                              on: { click: _vm.addPertner }
-                            },
-                            [_vm._v("+支払い相手を追加する")]
-                          )
-                        : _vm._e()
-                    ],
-                    2
-                  )
-                : _vm._e(),
               _vm._v(" "),
               _vm.isFilled
                 ? _c("form-button", {
