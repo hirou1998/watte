@@ -18,9 +18,9 @@
                     <p class="amount-modal-block--title normal-txt">金額:</p>
                     <p class="amount-modal-block--content normal-txt">{{amount}}<span class="small-txt">円</span></p>
                 </div>
-                <p class="small-txt amount-modal-confirm">を<span class="normal-txt red-txt">承認</span>してもいいですか？</p>
+                <p class="small-txt amount-modal-confirm">を<span class="normal-txt red-txt">承認</span>します</p>
                 <p class="small-txt">上記の支払いを受け取っていない場合や、金額が間違っている場合はウィンドウを閉じて「拒否」ボタンを押してください。一度承認すると拒否することはできません。<br>承認すると、割り勘代の支払いがwatteに反映されます。</p>
-                <form-button value="支払いを承認" type="accept" @send="approve"></form-button>
+                <form-button value="支払いを承認" type="accept" @send="approve" v-if="userInfo.userId === toUser.line_id"></form-button>
             </template>
             <template v-else>
                 <div class="amount-modal-block">
@@ -39,9 +39,9 @@
                     <p class="amount-modal-block--title normal-txt">金額:</p>
                     <p class="amount-modal-block--content normal-txt">{{amount}}<span class="small-txt">円</span></p>
                 </div>
-                <p class="small-txt amount-modal-confirm">を<span class="normal-txt red-txt">拒否</span>してもいいですか？</p>
+                <p class="small-txt amount-modal-confirm">を<span class="normal-txt red-txt">拒否</span>します</p>
                 <p class="small-txt">上記の支払いを受け取っている場合は、ウィンドウを閉じて「承認」ボタンを押してください。<br>支払いは拒否すると削除されます。金額変更の場合は拒否してから再度入力し直してください。</p>
-                <form-button value="支払いを拒否" type="deny" @send="deny"></form-button>
+                <form-button value="支払いを拒否" type="deny" @send="deny" v-if="userInfo.userId === toUser.line_id"></form-button>
             </template>
         </article>
         <loading v-if="isLoading"></loading>

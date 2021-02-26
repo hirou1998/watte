@@ -1,5 +1,6 @@
 <template>
     <section class="section-inner">
+        {{userInfo}}
         <article v-if="!isLoading" class="vertical-center-container">
             <template v-if="isAccepting">
                 <div class="amount-modal-block">
@@ -18,9 +19,9 @@
                     <p class="amount-modal-block--title normal-txt">金額:</p>
                     <p class="amount-modal-block--content normal-txt">{{amount}}<span class="small-txt">円</span></p>
                 </div>
-                <p class="small-txt amount-modal-confirm">を<span class="normal-txt red-txt">支払い済み</span>にしてもいいですか？</p>
+                <p class="small-txt amount-modal-confirm">を<span class="normal-txt red-txt">支払い済み</span>にします</p>
                 <p class="small-txt">支払いを拒否、または金額を変更する場合は、ウィンドウを閉じて「拒否」ボタンを押してください。<br>支払い済みにした後、支払いリクエスト者が承認すると、割り勘代の支払いがwatteに反映されます。</p>
-                <form-button value="支払い済みにする" type="accept" @send="send"></form-button>
+                <form-button value="支払い済みにする" type="accept" @send="send" v-if="userInfo.userId === fromUser.line_id"></form-button>
             </template>
             <template v-else>
                 <div class="amount-modal-block">
@@ -39,9 +40,9 @@
                     <p class="amount-modal-block--title normal-txt">金額:</p>
                     <p class="amount-modal-block--content normal-txt">{{amount}}<span class="small-txt">円</span></p>
                 </div>
-                <p class="small-txt amount-modal-confirm">を<span class="normal-txt red-txt">支払い拒否</span>にしてもいいですか？</p>
+                <p class="small-txt amount-modal-confirm">を<span class="normal-txt red-txt">支払い拒否</span>します</p>
                 <p class="small-txt">支払い済みにする場合は、ウィンドウを閉じて「支払済」ボタンを押してください。<br>支払いを拒否するとリクエストは削除されます。金額変更の場合は拒否してから再度入力し直してください。</p>
-                <form-button value="支払いを拒否する" type="deny" @send="deny"></form-button>
+                <form-button value="支払いを拒否する" type="deny" @send="deny" v-if="userInfo.userId === fromUser.line_id"></form-button>
             </template>
         </article>
         <loading v-if="isLoading"></loading>
