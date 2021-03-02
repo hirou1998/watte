@@ -58,7 +58,6 @@ export default {
         }
     },
     mounted(){
-        this.event = this.transaction.event;
         window.liff.init({
             liffId: this.liff
         })

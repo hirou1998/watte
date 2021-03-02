@@ -2781,7 +2781,6 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this2 = this;
 
-    this.event = this.transaction.event;
     window.liff.init({
       liffId: this.liff
     }).then(function () {
