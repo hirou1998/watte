@@ -9,28 +9,27 @@
                 <ratio-block :ratio-num="ratio"></ratio-block>
             </div>
         </div>
-        <table class="amount-each-table">
-            <tr>
-                <th class="small-txt amount-each-head amount-each-item">支払済金額</th>
-                <th class="small-txt amount-each-head amount-each-item">割り勘代</th>
-            </tr>
-            <tr>
-                <td class="normal-txt amount-each-number amount-each-item">{{sum}} <span class="smaller-txt">円</span></td>
-                <td 
-                    class="normal-txt amount-each-number amount-each-item"
-                    :data-deficit="[gap < 0 ? 'true' : 'false']"
-                >{{gapDivided}} <span class="smaller-txt">円</span></td>
-            </tr>
-        </table>
-        <ul>
+        <div class="amount-each-item-container">
+            <div class="amount-each-item">
+                <p class="normal-txt mb-0"><span class="small-txt light-txt">支払済</span><span class="amount-each-item-number">{{sum}}</span> 円</p>
+            </div>
+            <div class="amount-each-item">
+                <p class="normal-txt mb-0"><span class="small-txt light-txt">割り勘代</span><span class="amount-each-item-number" :data-deficit="[gap < 0 ? 'true' : 'false']">{{gapDivided}}</span> 円</p>
+            </div>
+        </div>
+        <button class="btn btn-underline" v-if="each.deals.length > 0 && !privateDealsVisibility" @click="showPrivateDeals">個人間の支払いを確認</button>
+        <ul class="amount-each-private-item-container" v-show="privateDealsVisibility">
             <li
                 v-for="deal in each.deals"
                 :key="deal.partner.line_id"
+                class="amount-each-private-item"
             >
-                <profile-block :user="deal.partner" iconSize="20"></profile-block>
-                {{deal.pay_sum}}
-                {{deal.paid_sum}}
-                {{deal.pay_sum - deal.paid_sum}}
+                <profile-block :user="deal.partner" iconSize="20" nameSize="1.2rem"></profile-block>
+                <ul class="amount-each-item-container">
+                    <li class="small-txt amount-each-private-item-list"><span class="txt-smaller light-txt">貸し</span><span class="amount-each-private-item-number">{{deal.pay_sum}}</span>円</li>
+                    <li class="small-txt amount-each-private-item-list"><span class="txt-smaller light-txt">借り</span><span class="amount-each-private-item-number">{{deal.paid_sum}}</span>円</li>
+                    <li class="small-txt amount-each-private-item-list"><span class="txt-smaller light-txt">割り勘代</span><span class="amount-each-private-item-number" :data-deficit="[deal.pay_sum - deal.paid_sum < 0 ? 'true' : 'false']">{{deal.pay_sum - deal.paid_sum}}</span>円</li>
+                </ul>
             </li>
         </ul>
         <hamburger-button
@@ -52,12 +51,17 @@ export default {
         ProfileBlock,
         RatioBlock
     },
+    data(){
+        return {
+            privateDealsVisibility: false
+        }
+    },
     computed: {
         mustPayment(){
             return Math.ceil(Number(this.totalAmount) / Number(this.totalRatio) * Number(this.ratio));
         },
         gap(){
-            let calcGap = Number(this.each.sum) - this.mustPayment;
+            let calcGap = Number(this.sumAddedPrivate) - this.mustPayment;
             return isNaN(calcGap) ? 0 : calcGap;
         },
         gapDivided(){
@@ -67,7 +71,15 @@ export default {
             return this.each.line_friend.line_id == this.user.userId ? true : false;
         },
         sum(){
-            return String(this.each.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+            
+            return String(this.sumAddedPrivate).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+        },
+        sumAddedPrivate(){
+            let sumAddedPrivate = this.each.sum;
+            this.each.deals.forEach(deal => {
+                sumAddedPrivate += deal.pay_sum;
+            })
+            return sumAddedPrivate;
         },
         ratio(){
             return this.each.line_friend.pivot.ratio;
@@ -83,6 +95,9 @@ export default {
                 gap: this.gap
             });
         },
+        showPrivateDeals(){
+            this.privateDealsVisibility = true;
+        }
     }
 }
 </script>

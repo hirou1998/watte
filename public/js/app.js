@@ -1926,11 +1926,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/ApiLoading */ "./resources/js/components/modules/ApiLoading.vue");
 /* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
 /* harmony import */ var _modules_FormButton__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/FormButton */ "./resources/js/components/modules/FormButton.vue");
-/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
-/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
-/* harmony import */ var _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/ToggleBlock.vue */ "./resources/js/components/modules/ToggleBlock.vue");
-/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
-/* harmony import */ var _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../mixins/formValidatorMixin */ "./resources/js/mixins/formValidatorMixin.js");
+/* harmony import */ var _modules_PrivateDealInfoModal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/PrivateDealInfoModal */ "./resources/js/components/modules/PrivateDealInfoModal.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
+/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
+/* harmony import */ var _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/ToggleBlock.vue */ "./resources/js/components/modules/ToggleBlock.vue");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
+/* harmony import */ var _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../mixins/formValidatorMixin */ "./resources/js/mixins/formValidatorMixin.js");
 //
 //
 //
@@ -1973,6 +1974,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 
 
@@ -1992,7 +1999,8 @@ __webpack_require__.r(__webpack_exports__);
     ApiLoading: _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_3__["default"],
     Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_4__["default"],
     FormButton: _modules_FormButton__WEBPACK_IMPORTED_MODULE_5__["default"],
-    ToggleBlock: _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
+    ToggleBlock: _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
+    PrivateDealInfoModal: _modules_PrivateDealInfoModal__WEBPACK_IMPORTED_MODULE_6__["default"]
   },
   props: ['event', 'liff', 'participants'],
   data: function data() {
@@ -2006,7 +2014,8 @@ __webpack_require__.r(__webpack_exports__);
         user: {
           userId: '誰に払いましたか？'
         }
-      }]
+      }],
+      privateDealsInfoVisibility: false
     };
   },
   computed: {
@@ -2061,6 +2070,12 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.isPrivate) {
+        if (this.arePartnersDuplicated()) {
+          alert('支払い相手が重複しています');
+          this.isApiLoading = false;
+          return;
+        }
+
         formItem = {
           userId: this.userInfo.userId,
           amount: this.amount,
@@ -2101,6 +2116,18 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         alert('これ以上相手を増やせません');
       }
+    },
+    arePartnersDuplicated: function arePartnersDuplicated() {
+      var passedUsers = [];
+      var isDuplicated = false;
+      this.partner.forEach(function (user) {
+        if (passedUsers.indexOf(user.user.userId) === -1) {
+          passedUsers.push(user.user.userId);
+        } else {
+          isDuplicated = true;
+        }
+      });
+      return isDuplicated;
     },
     hideLoading: function hideLoading() {
       this.isLoading = false;
@@ -2152,7 +2179,7 @@ __webpack_require__.r(__webpack_exports__);
       _this5.checkAccess();
     });
   },
-  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_7__["default"], _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_10__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_9__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_7__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_8__["default"], _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_11__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_10__["default"]]
 });
 
 /***/ }),
@@ -4017,7 +4044,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 
@@ -4028,12 +4054,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     ProfileBlock: _ProfileBlock__WEBPACK_IMPORTED_MODULE_1__["default"],
     RatioBlock: _RatioBlock__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
+  data: function data() {
+    return {
+      privateDealsVisibility: false
+    };
+  },
   computed: {
     mustPayment: function mustPayment() {
       return Math.ceil(Number(this.totalAmount) / Number(this.totalRatio) * Number(this.ratio));
     },
     gap: function gap() {
-      var calcGap = Number(this.each.sum) - this.mustPayment;
+      var calcGap = Number(this.sumAddedPrivate) - this.mustPayment;
       return isNaN(calcGap) ? 0 : calcGap;
     },
     gapDivided: function gapDivided() {
@@ -4043,7 +4074,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.each.line_friend.line_id == this.user.userId ? true : false;
     },
     sum: function sum() {
-      return String(this.each.sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+      return String(this.sumAddedPrivate).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    },
+    sumAddedPrivate: function sumAddedPrivate() {
+      var sumAddedPrivate = this.each.sum;
+      this.each.deals.forEach(function (deal) {
+        sumAddedPrivate += deal.pay_sum;
+      });
+      return sumAddedPrivate;
     },
     ratio: function ratio() {
       return this.each.line_friend.pivot.ratio;
@@ -4057,6 +4095,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.$emit('show', _objectSpread(_objectSpread({}, this.each), {}, {
         gap: this.gap
       }));
+    },
+    showPrivateDeals: function showPrivateDeals() {
+      this.privateDealsVisibility = true;
     }
   }
 });
@@ -4371,6 +4412,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_formatDateTimeMixin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixins/formatDateTimeMixin */ "./resources/js/mixins/formatDateTimeMixin.js");
 /* harmony import */ var _HamburgerButton_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HamburgerButton.vue */ "./resources/js/components/modules/HamburgerButton.vue");
 /* harmony import */ var _ProfileBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ProfileBlock */ "./resources/js/components/modules/ProfileBlock.vue");
+//
+//
+//
 //
 //
 //
@@ -5151,6 +5195,47 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/PrivateDealInfoModal.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/PrivateDealInfoModal.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FormButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormButton */ "./resources/js/components/modules/FormButton.vue");
+/* harmony import */ var _ModalBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ModalBase */ "./resources/js/components/modules/ModalBase.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    FormButton: _FormButton__WEBPACK_IMPORTED_MODULE_0__["default"],
+    ModalBase: _ModalBase__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  props: ['visibility'],
+  methods: {
+    close: function close() {
+      this.$emit('close');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/ProfileBlock.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/ProfileBlock.vue?vue&type=script&lang=js& ***!
@@ -5174,7 +5259,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user', 'iconSize'],
+  props: ['user', 'iconSize', 'nameSize'],
+  computed: {
+    nameFontSize: function nameFontSize() {
+      return this.nameSize ? this.nameSize : '1.6rem';
+    }
+  },
   methods: {
     setDefault: function setDefault(event) {
       event.target.src = '/images/watte-icon.png';
@@ -41876,6 +41966,65 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
+              _vm.participants.length > 2
+                ? _c("toggle-block", {
+                    attrs: { text: "個人間の貸し借りを記録する" },
+                    on: {
+                      show: function($event) {
+                        _vm.privateDealsInfoVisibility = true
+                      }
+                    },
+                    model: {
+                      value: _vm.isPrivate,
+                      callback: function($$v) {
+                        _vm.isPrivate = $$v
+                      },
+                      expression: "isPrivate"
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.isPrivate
+                ? _c(
+                    "section",
+                    { staticClass: "private-amount-container" },
+                    [
+                      _vm._l(_vm.partner, function(user, index) {
+                        return [
+                          _c("amount-user-form", {
+                            key: index,
+                            attrs: {
+                              participants: _vm.partnerLists,
+                              text: "支払い相手" + (index + 1),
+                              "place-holder": "誰に払いましたか？"
+                            },
+                            model: {
+                              value: user.user,
+                              callback: function($$v) {
+                                _vm.$set(user, "user", $$v)
+                              },
+                              expression: "user.user"
+                            }
+                          })
+                        ]
+                      }),
+                      _vm._v(" "),
+                      _vm.enableToAddPartner
+                        ? _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn btn-success amount-user-add-button",
+                              on: { click: _vm.addPertner }
+                            },
+                            [_vm._v("+支払い相手を追加する")]
+                          )
+                        : _vm._e()
+                    ],
+                    2
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _vm.isFilled
                 ? _c("form-button", {
                     attrs: { value: "追加", type: "accept" },
@@ -41889,7 +42038,16 @@ var render = function() {
       _vm._v(" "),
       _vm.isLoading ? _c("loading") : _vm._e(),
       _vm._v(" "),
-      _vm.isApiLoading ? _c("api-loading") : _vm._e()
+      _vm.isApiLoading ? _c("api-loading") : _vm._e(),
+      _vm._v(" "),
+      _c("private-deal-info-modal", {
+        attrs: { visibility: _vm.privateDealsInfoVisibility },
+        on: {
+          close: function($event) {
+            _vm.privateDealsInfoVisibility = false
+          }
+        }
+      })
     ],
     1
   )
@@ -43383,52 +43541,133 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("table", { staticClass: "amount-each-table" }, [
-        _vm._m(0),
+      _c("div", { staticClass: "amount-each-item-container" }, [
+        _c("div", { staticClass: "amount-each-item" }, [
+          _c("p", { staticClass: "normal-txt mb-0" }, [
+            _c("span", { staticClass: "small-txt light-txt" }, [
+              _vm._v("支払済")
+            ]),
+            _c("span", { staticClass: "amount-each-item-number" }, [
+              _vm._v(_vm._s(_vm.sum))
+            ]),
+            _vm._v(" 円")
+          ])
+        ]),
         _vm._v(" "),
-        _c("tr", [
-          _c(
-            "td",
-            { staticClass: "normal-txt amount-each-number amount-each-item" },
-            [
-              _vm._v(_vm._s(_vm.sum) + " "),
-              _c("span", { staticClass: "smaller-txt" }, [_vm._v("円")])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "td",
-            {
-              staticClass: "normal-txt amount-each-number amount-each-item",
-              attrs: { "data-deficit": [_vm.gap < 0 ? "true" : "false"] }
-            },
-            [
-              _vm._v(_vm._s(_vm.gapDivided) + " "),
-              _c("span", { staticClass: "smaller-txt" }, [_vm._v("円")])
-            ]
-          )
+        _c("div", { staticClass: "amount-each-item" }, [
+          _c("p", { staticClass: "normal-txt mb-0" }, [
+            _c("span", { staticClass: "small-txt light-txt" }, [
+              _vm._v("割り勘代")
+            ]),
+            _c(
+              "span",
+              {
+                staticClass: "amount-each-item-number",
+                attrs: { "data-deficit": [_vm.gap < 0 ? "true" : "false"] }
+              },
+              [_vm._v(_vm._s(_vm.gapDivided))]
+            ),
+            _vm._v(" 円")
+          ])
         ])
       ]),
       _vm._v(" "),
+      _vm.each.deals.length > 0 && !_vm.privateDealsVisibility
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-underline",
+              on: { click: _vm.showPrivateDeals }
+            },
+            [_vm._v("個人間の支払いを確認")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
       _c(
         "ul",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.privateDealsVisibility,
+              expression: "privateDealsVisibility"
+            }
+          ],
+          staticClass: "amount-each-private-item-container"
+        },
         _vm._l(_vm.each.deals, function(deal) {
           return _c(
             "li",
-            { key: deal.partner.line_id },
+            {
+              key: deal.partner.line_id,
+              staticClass: "amount-each-private-item"
+            },
             [
               _c("profile-block", {
-                attrs: { user: deal.partner, iconSize: "20" }
+                attrs: {
+                  user: deal.partner,
+                  iconSize: "20",
+                  nameSize: "1.2rem"
+                }
               }),
-              _vm._v(
-                "\n            " +
-                  _vm._s(deal.pay_sum) +
-                  "\n            " +
-                  _vm._s(deal.paid_sum) +
-                  "\n            " +
-                  _vm._s(deal.pay_sum - deal.paid_sum) +
-                  "\n        "
-              )
+              _vm._v(" "),
+              _c("ul", { staticClass: "amount-each-item-container" }, [
+                _c(
+                  "li",
+                  { staticClass: "small-txt amount-each-private-item-list" },
+                  [
+                    _c("span", { staticClass: "txt-smaller light-txt" }, [
+                      _vm._v("貸し")
+                    ]),
+                    _c(
+                      "span",
+                      { staticClass: "amount-each-private-item-number" },
+                      [_vm._v(_vm._s(deal.pay_sum))]
+                    ),
+                    _vm._v("円")
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  { staticClass: "small-txt amount-each-private-item-list" },
+                  [
+                    _c("span", { staticClass: "txt-smaller light-txt" }, [
+                      _vm._v("借り")
+                    ]),
+                    _c(
+                      "span",
+                      { staticClass: "amount-each-private-item-number" },
+                      [_vm._v(_vm._s(deal.paid_sum))]
+                    ),
+                    _vm._v("円")
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  { staticClass: "small-txt amount-each-private-item-list" },
+                  [
+                    _c("span", { staticClass: "txt-smaller light-txt" }, [
+                      _vm._v("割り勘代")
+                    ]),
+                    _c(
+                      "span",
+                      {
+                        staticClass: "amount-each-private-item-number",
+                        attrs: {
+                          "data-deficit": [
+                            deal.pay_sum - deal.paid_sum < 0 ? "true" : "false"
+                          ]
+                        }
+                      },
+                      [_vm._v(_vm._s(deal.pay_sum - deal.paid_sum))]
+                    ),
+                    _vm._v("円")
+                  ]
+                )
+              ])
             ],
             1
           )
@@ -43445,22 +43684,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("th", { staticClass: "small-txt amount-each-head amount-each-item" }, [
-        _vm._v("支払済金額")
-      ]),
-      _vm._v(" "),
-      _c("th", { staticClass: "small-txt amount-each-head amount-each-item" }, [
-        _vm._v("割り勘代")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -43825,37 +44049,41 @@ var render = function() {
           ),
           _vm._v(" "),
           _c("div", [
-            _c("p", { staticClass: "normal-txt amount-memo" }, [
-              _vm._v(_vm._s(_vm.amount.note))
+            _c("div", { staticClass: "amount-item-bottom" }, [
+              _c("p", { staticClass: "small-txt amount-register-date" }, [
+                _vm._v(_vm._s(_vm.dateParser(_vm.amount.created_at)))
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "small-txt amount-memo" }, [
+                _vm._v(_vm._s(_vm.amount.note))
+              ])
             ]),
             _vm._v(" "),
             _vm.amount.deals.length > 0
-              ? _c(
-                  "ul",
-                  { staticClass: "amount-partners-container" },
-                  [
-                    _vm._m(0),
-                    _vm._v(" "),
+              ? _c("div", [
+                  _c(
+                    "ul",
+                    { staticClass: "amount-partners-container" },
                     _vm._l(_vm.amount.deals, function(deal) {
                       return _c(
                         "li",
                         { key: deal.partner, staticClass: "amount-partner" },
                         [
                           _c("profile-block", {
-                            attrs: { user: deal.line_friend, "icon-size": "20" }
+                            attrs: {
+                              user: deal.line_friend,
+                              "icon-size": "20",
+                              "name-size": "1.2rem"
+                            }
                           })
                         ],
                         1
                       )
-                    })
-                  ],
-                  2
-                )
+                    }),
+                    0
+                  )
+                ])
               : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "small-txt amount-register-date" }, [
-            _vm._v("登録日時：" + _vm._s(_vm.dateParser(_vm.amount.created_at)))
           ])
         ]
       ),
@@ -43870,17 +44098,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "small-txt amount-partner-title" }, [
-      _vm._v("相手"),
-      _c("img", { attrs: { src: "/images/person-icon.png", alt: "" } })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -44681,6 +44899,75 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/PrivateDealInfoModal.vue?vue&type=template&id=f59f237a&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/PrivateDealInfoModal.vue?vue&type=template&id=f59f237a& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("modal-base", {
+    attrs: { visibility: _vm.visibility },
+    on: { close: _vm.close },
+    scopedSlots: _vm._u([
+      {
+        key: "content",
+        fn: function() {
+          return [
+            _c("p", { staticClass: "small-txt" }, [
+              _vm._v(
+                "「個人の貸し借りを記録する」ボタンを有効にすると、イベントに参加している全員にではなく、個人間の支払いを記録することができます。一人当たりの支払い金額を入力してください。"
+              ),
+              _c("br"),
+              _vm._v(
+                "個人間の貸し借りとして記録した場合、全体の支払い金額合計及び一人当たり金額には含まれませんが、各ユーザーの支払い済金額及び割り勘代には加算されます。"
+              )
+            ]),
+            _vm._v(" "),
+            _c("img", {
+              staticClass: "info-picture",
+              attrs: { src: "/images/private-info-example.png", alt: "" }
+            }),
+            _vm._v(" "),
+            _c("p", { staticClass: "small-txt" }, [
+              _vm._v(
+                "※一度個人の支払いとして登録すると、全体の支払いへの変更及び支払い相手の変更はできません。"
+              )
+            ])
+          ]
+        },
+        proxy: true
+      },
+      {
+        key: "button",
+        fn: function() {
+          return [
+            _c("form-button", {
+              attrs: { value: "OK", type: "accept" },
+              on: { send: _vm.close }
+            })
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/ProfileBlock.vue?vue&type=template&id=35d264d7&":
 /*!***********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/ProfileBlock.vue?vue&type=template&id=35d264d7& ***!
@@ -44704,9 +44991,11 @@ var render = function() {
       on: { error: _vm.setDefault }
     }),
     _vm._v(" "),
-    _c("p", { staticClass: "normal-txt profile-name" }, [
-      _vm._v(_vm._s(_vm.user.display_name))
-    ])
+    _c(
+      "p",
+      { staticClass: "profile-name", style: { fontSize: _vm.nameFontSize } },
+      [_vm._v(_vm._s(_vm.user.display_name))]
+    )
   ])
 }
 var staticRenderFns = []
@@ -57161,6 +57450,7 @@ Vue.component('amount-each-payment-modal', __webpack_require__(/*! ./components/
 Vue.component('request', __webpack_require__(/*! ./components/Request.vue */ "./resources/js/components/Request.vue")["default"]);
 Vue.component('payment', __webpack_require__(/*! ./components/Payment.vue */ "./resources/js/components/Payment.vue")["default"]);
 Vue.component('transaction-item', __webpack_require__(/*! ./components/modules/TransactionItem.vue */ "./resources/js/components/modules/TransactionItem.vue")["default"]);
+Vue.component('private-deal-info-modal', __webpack_require__(/*! ./components/modules/PrivateDealInfoModal.vue */ "./resources/js/components/modules/PrivateDealInfoModal.vue")["default"]);
 axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="line-id"]').getAttribute('content');
 var app = new Vue({
   el: '#app'
@@ -59400,6 +59690,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Participant_vue_vue_type_template_id_3eaa5110___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Participant_vue_vue_type_template_id_3eaa5110___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/PrivateDealInfoModal.vue":
+/*!******************************************************************!*\
+  !*** ./resources/js/components/modules/PrivateDealInfoModal.vue ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PrivateDealInfoModal_vue_vue_type_template_id_f59f237a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PrivateDealInfoModal.vue?vue&type=template&id=f59f237a& */ "./resources/js/components/modules/PrivateDealInfoModal.vue?vue&type=template&id=f59f237a&");
+/* harmony import */ var _PrivateDealInfoModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PrivateDealInfoModal.vue?vue&type=script&lang=js& */ "./resources/js/components/modules/PrivateDealInfoModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PrivateDealInfoModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PrivateDealInfoModal_vue_vue_type_template_id_f59f237a___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PrivateDealInfoModal_vue_vue_type_template_id_f59f237a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/modules/PrivateDealInfoModal.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/PrivateDealInfoModal.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/modules/PrivateDealInfoModal.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateDealInfoModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./PrivateDealInfoModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/PrivateDealInfoModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateDealInfoModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/PrivateDealInfoModal.vue?vue&type=template&id=f59f237a&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/modules/PrivateDealInfoModal.vue?vue&type=template&id=f59f237a& ***!
+  \*************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateDealInfoModal_vue_vue_type_template_id_f59f237a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./PrivateDealInfoModal.vue?vue&type=template&id=f59f237a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/PrivateDealInfoModal.vue?vue&type=template&id=f59f237a&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateDealInfoModal_vue_vue_type_template_id_f59f237a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateDealInfoModal_vue_vue_type_template_id_f59f237a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

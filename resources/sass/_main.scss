@@ -64,6 +64,9 @@ a:focus, a:checked, a:visited, a:hover{
 .red-txt{
     color: $red;
 }
+.light-txt{
+    color: $light-color;
+}
 @mixin animationValue($name, $duration, $function, $delay, $count, $state){
     -webkit-animation: $name $duration+s $function $delay+s $count $state;
     animation: $name $duration+s $function $delay+s $count $state;
