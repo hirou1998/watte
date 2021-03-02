@@ -4064,7 +4064,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return Math.ceil(Number(this.totalAmount) / Number(this.totalRatio) * Number(this.ratio));
     },
     gap: function gap() {
-      var calcGap = Number(this.sumAddedPrivate) - this.mustPayment;
+      var calcGap = Number(this.sumMinusPrivate) - this.mustPayment;
       return isNaN(calcGap) ? 0 : calcGap;
     },
     gapDivided: function gapDivided() {
@@ -4082,6 +4082,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         sumAddedPrivate += deal.pay_sum;
       });
       return sumAddedPrivate;
+    },
+    sumMinusPrivate: function sumMinusPrivate() {
+      var sumMinusPrivate = this.sumAddedPrivate;
+      this.each.deals.forEach(function (deal) {
+        sumMinusPrivate -= deal.paid_sum;
+      });
+      return sumMinusPrivate;
     },
     ratio: function ratio() {
       return this.each.line_friend.pivot.ratio;
