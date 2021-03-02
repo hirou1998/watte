@@ -88,10 +88,6 @@
 .amount-each-item{
     width: 50%;
     text-align: center;
-
-    &:first-child{
-        border-right: solid 1px $light-color;
-    }
 }
 .amount-each-item-number{
     font-size: 2.2rem;

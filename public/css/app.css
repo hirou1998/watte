@@ -11522,10 +11522,6 @@ a:hover {
   text-align: center;
 }
 
-.amount-each-item:first-child {
-  border-right: solid 1px #989898;
-}
-
 .amount-each-item-number {
   font-size: 2.2rem;
   display: inline-block;

@@ -61,7 +61,7 @@ export default {
             return Math.ceil(Number(this.totalAmount) / Number(this.totalRatio) * Number(this.ratio));
         },
         gap(){
-            let calcGap = Number(this.sumAddedPrivate) - this.mustPayment;
+            let calcGap = Number(this.sumMinusPrivate) - this.mustPayment;
             return isNaN(calcGap) ? 0 : calcGap;
         },
         gapDivided(){
@@ -71,7 +71,6 @@ export default {
             return this.each.line_friend.line_id == this.user.userId ? true : false;
         },
         sum(){
-            
             return String(this.sumAddedPrivate).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
         },
         sumAddedPrivate(){
@@ -80,6 +79,13 @@ export default {
                 sumAddedPrivate += deal.pay_sum;
             })
             return sumAddedPrivate;
+        },
+        sumMinusPrivate(){
+            let sumMinusPrivate = this.sumAddedPrivate;
+            this.each.deals.forEach(deal => {
+                sumMinusPrivate -= deal.paid_sum;
+            })
+            return sumMinusPrivate;
         },
         ratio(){
             return this.each.line_friend.pivot.ratio;
