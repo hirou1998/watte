@@ -3464,7 +3464,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -42734,7 +42733,6 @@ var render = function() {
     "section",
     { staticClass: "section-inner" },
     [
-      _vm._v("\n    " + _vm._s(_vm.userInfo) + "\n    "),
       !_vm.isLoading
         ? _c(
             "article",
