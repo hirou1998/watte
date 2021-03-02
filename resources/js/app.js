@@ -39,6 +39,7 @@ Vue.component('amount-each-payment-modal', require('./components/modules/AmountE
 Vue.component('request', require('./components/Request.vue').default);
 Vue.component('payment', require('./components/Payment.vue').default);
 Vue.component('transaction-item', require('./components/modules/TransactionItem.vue').default);
+Vue.component('private-deal-info-modal', require('./components/modules/PrivateDealInfoModal.vue').default);
 
 axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="line-id"]').getAttribute('content');
 

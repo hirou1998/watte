@@ -16,10 +16,11 @@
             <amount-note-form 
                 v-model="note"
             ></amount-note-form>
-            <!-- <toggle-block 
+            <toggle-block 
                 v-model="isPrivate" 
                 text="個人間の貸し借りを記録する"
                 v-if="participants.length > 2"
+                @show="privateDealsInfoVisibility = true"
             ></toggle-block>
             <section class="private-amount-container" v-if="isPrivate">
                 <template v-for="(user, index) in partner">
@@ -32,11 +33,15 @@
                     ></amount-user-form>
                 </template>
                 <button class="btn btn-success amount-user-add-button" @click="addPertner" v-if="enableToAddPartner">+支払い相手を追加する</button>
-            </section> -->
+            </section>
             <form-button v-if="isFilled" value="追加" type="accept" @send="add"></form-button>
         </article>
         <loading v-if="isLoading"></loading>
         <api-loading v-if="isApiLoading"></api-loading>
+        <private-deal-info-modal 
+            :visibility="privateDealsInfoVisibility"
+            @close="privateDealsInfoVisibility = false"
+        ></private-deal-info-modal>
     </section>
 </template>
 
@@ -47,6 +52,7 @@ import AmountNoteForm from './modules/AmountNoteForm'
 import ApiLoading from './modules/ApiLoading'
 import Loading from './modules/Loading'
 import FormButton from './modules/FormButton'
+import PrivateDealInfoModal from './modules/PrivateDealInfoModal'
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
 import ToggleBlock from './modules/ToggleBlock.vue'
@@ -61,7 +67,8 @@ export default {
         ApiLoading,
         Loading,
         FormButton,
-        ToggleBlock
+        ToggleBlock,
+        PrivateDealInfoModal
     },
     props: ['event', 'liff', 'participants'],
     data: function(){
@@ -77,7 +84,8 @@ export default {
                         userId: '誰に払いましたか？'
                     }
                 }
-            ]
+            ],
+            privateDealsInfoVisibility: false
         }
     },
     computed: {
@@ -124,6 +132,11 @@ export default {
             }
 
             if(this.isPrivate){
+                if(this.arePartnersDuplicated()){
+                    alert('支払い相手が重複しています')
+                    this.isApiLoading = false;
+                    return
+                }
                 formItem = {
                     userId: this.userInfo.userId,
                     amount: this.amount,
@@ -139,6 +152,7 @@ export default {
                     private: false
                 }
             }
+
             window.axios.post(`/amounts/add/${this.event.id}`, formItem)
             .then(({data}) => {
                 if(this.event.notification){
@@ -162,6 +176,18 @@ export default {
             }else{
                 alert('これ以上相手を増やせません')
             }
+        },
+        arePartnersDuplicated(){
+            let passedUsers = [];
+            let isDuplicated = false;
+            this.partner.forEach(user => {
+                if(passedUsers.indexOf(user.user.userId) === -1){
+                    passedUsers.push(user.user.userId);
+                }else{
+                    isDuplicated = true
+                }
+            })
+            return isDuplicated;
         },
         hideLoading(){
             this.isLoading = false;

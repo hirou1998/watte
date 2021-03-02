@@ -11351,6 +11351,10 @@ a:hover {
   color: #e3342f;
 }
 
+.light-txt {
+  color: #989898;
+}
+
 .start-form-container {
   display: flex;
   flex-direction: column;
@@ -11408,8 +11412,12 @@ a:hover {
   flex: 3;
 }
 
+.btn-underline {
+  text-decoration: underline;
+}
+
 .amount-item {
-  padding: 1rem 1.5rem;
+  padding: 1rem;
   background-color: #fff;
   width: 100%;
   margin: 0 auto 1rem;
@@ -11456,11 +11464,18 @@ a:hover {
   font-weight: bold;
 }
 
+.amount-item-bottom {
+  display: flex;
+  align-items: flex-end;
+}
+
 .amount-memo {
-  background-color: #eff5f4;
-  padding: 1vh 1vw;
+  background-color: #f3f3f3;
+  padding: 1rem;
   margin-bottom: 0;
   border-radius: 5px;
+  flex: 1;
+  margin: 0 0 0 1rem;
 }
 
 .amount-tab-container {
@@ -11493,19 +11508,13 @@ a:hover {
   border-radius: 0 10px 10px 0;
 }
 
-.amount-each-table {
-  width: 100%;
-}
-
-.amount-each-table td,
-.amount-each-table th {
-  border: solid 1px #464c4b;
-}
-
 .amount-each-item-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #fcfcfc;
+  padding: 1rem 0;
+  border-radius: 5px;
 }
 
 .amount-each-item {
@@ -11513,22 +11522,28 @@ a:hover {
   text-align: center;
 }
 
-.amount-each-head {
-  background-color: #dbefeb;
-  padding: 1vh 0;
+.amount-each-item:first-child {
+  border-right: solid 1px #989898;
 }
 
-.amount-each-number[data-deficit=true] {
+.amount-each-item-number {
+  font-size: 2.2rem;
+  display: inline-block;
+  margin: 0 0.3rem 0 1rem;
+}
+
+.amount-each-item-number[data-deficit=true] {
   color: red;
 }
 
-.amount-each-number[data-deficit=false] {
+.amount-each-item-number[data-deficit=false] {
   color: blue;
 }
 
 .amount-register-date {
   text-align: right;
   margin: 1vh 0 0;
+  color: #989898;
 }
 
 .amount-times {
@@ -11567,19 +11582,26 @@ a:hover {
 .amount-partners-container {
   display: flex;
   align-items: center;
-  margin: 1rem 0 0;
+  justify-content: flex-end;
+  margin: 1rem 0 0 auto;
+  max-width: 75%;
+  flex-wrap: wrap;
 }
 
-.amount-partner-title {
+.amount-partner {
   margin: 0 1rem 0 0;
-  background: #c05b77;
-  color: #fff;
-  padding: 0.2rem;
-  border-radius: 3px;
+  position: relative;
 }
 
-.amount-partner-title img {
-  width: 1.2rem;
+.amount-partner:first-child:before {
+  content: "\2192";
+  font-size: 1.2rem;
+  color: #989898;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-2rem, -50%);
+  line-height: 1;
 }
 
 .amount-modal-block {
@@ -11648,6 +11670,36 @@ a:hover {
   align-items: flex-start;
 }
 
+.amount-each-private-item-container {
+  margin-top: 2rem;
+}
+
+.amount-each-private-item {
+  margin-bottom: 1rem;
+}
+
+.amount-each-private-item-number {
+  display: inline-block;
+  margin: 0 0.2rem 0 0.7rem;
+}
+
+.amount-each-private-item-number[data-deficit=true] {
+  color: red;
+}
+
+.amount-each-private-item-number[data-deficit=false] {
+  color: blue;
+}
+
+.amount-each-private-item-list {
+  flex: 1;
+  text-align: center;
+}
+
+.amount-each-private-item-list:not(:last-child) {
+  border-right: solid 1px #989898;
+}
+
 .setting-container {
   display: flex;
   flex-wrap: wrap;
@@ -11692,6 +11744,7 @@ a:hover {
 
 .profile-name {
   margin: 0 0 0 0.8rem !important;
+  line-height: 1;
 }
 
 .participants-head {

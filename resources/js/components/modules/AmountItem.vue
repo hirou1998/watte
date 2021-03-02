@@ -6,19 +6,22 @@
                 <p class="big-txt amount-number">{{number}} <span class="txt-smaller">円</span></p>
             </div>
             <div>
-                <p class="normal-txt amount-memo">{{amount.note}}</p>
-                <ul class="amount-partners-container" v-if="amount.deals.length > 0">
-                    <p class="small-txt amount-partner-title">相手<img src="/images/person-icon.png" alt=""></p>
-                    <li
-                        v-for="deal in amount.deals"
-                        :key="deal.partner"
-                        class="amount-partner"
-                    >
-                        <profile-block :user="deal.line_friend" icon-size="20"></profile-block>
-                    </li>
-                </ul>
+                <div class="amount-item-bottom">
+                    <p class="small-txt amount-register-date">{{dateParser(amount.created_at)}}</p>
+                    <p class="small-txt amount-memo">{{amount.note}}</p>
+                </div>
+                <div v-if="amount.deals.length > 0">
+                    <ul class="amount-partners-container">
+                        <li
+                            v-for="deal in amount.deals"
+                            :key="deal.partner"
+                            class="amount-partner"
+                        >
+                            <profile-block :user="deal.line_friend" icon-size="20" name-size="1.2rem"></profile-block>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <p class="small-txt amount-register-date">登録日時：{{dateParser(amount.created_at)}}</p>
         </section>
         <hamburger-button
             v-if="isPaidByMe"

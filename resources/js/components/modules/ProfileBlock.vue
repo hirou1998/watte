@@ -7,13 +7,18 @@
             @error="setDefault"
             :style="{width: iconSize + 'px', height: iconSize + 'px'}"
         >
-        <p class="normal-txt profile-name">{{user.display_name}}</p>
+        <p class="profile-name" :style="{fontSize: nameFontSize}">{{user.display_name}}</p>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['user', 'iconSize'],
+    props: ['user', 'iconSize', 'nameSize'],
+    computed: {
+        nameFontSize(){
+            return this.nameSize ? this.nameSize :  '1.6rem';
+        }
+    },
     methods: {
         setDefault(event){
             event.target.src = '/images/watte-icon.png'
