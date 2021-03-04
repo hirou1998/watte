@@ -167,7 +167,9 @@ export default {
         sum(){
             let sumAmount = 0;
             this.amounts.forEach(item => {
-                sumAmount += Number(item.amount);
+                if(!item.private){
+                    sumAmount += Number(item.amount);
+                }
             });
             return sumAmount;
         },
@@ -498,7 +500,8 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            this.checkAccess();
+            //this.checkAccess();
+            this.hideLoading();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, handleErrMinxin]
