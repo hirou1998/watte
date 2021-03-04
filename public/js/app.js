@@ -2378,7 +2378,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     sum: function sum() {
       var sumAmount = 0;
       this.amounts.forEach(function (item) {
-        sumAmount += Number(item.amount);
+        if (!item["private"]) {
+          sumAmount += Number(item.amount);
+        }
       });
       return sumAmount;
     },
@@ -2725,7 +2727,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this10.checkAccess();
+      //this.checkAccess();
+      _this10.hideLoading();
     });
   },
   mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_12__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_13__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_14__["default"]]
