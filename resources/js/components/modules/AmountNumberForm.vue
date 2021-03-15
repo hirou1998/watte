@@ -1,6 +1,6 @@
 <template>
     <div class="form-group">
-        <p class="small-txt form-item-title">金額</p>
+        <p class="small-txt form-item-title">支払いの合計金額</p>
         <div class="d-flex amount-number-block form-item-content">
             <input type="tel" v-model="number" class="form-control" placeholder="金額を数字で入力してください">
             <p class="small-txt mb-0 ml-2">円</p>

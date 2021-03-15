@@ -35,13 +35,18 @@
                 <button class="btn btn-success amount-user-add-button" @click="addPertner" v-if="enableToAddPartner">+支払い相手を追加する</button>
             </section>
             <form-button v-if="isFilled" value="追加" type="accept" @send="add"></form-button>
+            <api-loading v-if="isApiLoading"></api-loading>
+            <private-deal-info-modal 
+                :visibility="privateDealsInfoVisibility"
+                @close="privateDealsInfoVisibility = false"
+            ></private-deal-info-modal>
+            <private-deal-change-info-modal 
+                :visibility="privateDealsChangeInfoVisibility"
+                :user="userInfo"
+                @close="privateDealsChangeInfoVisibility = false"
+            ></private-deal-change-info-modal>
         </article>
         <loading v-if="isLoading"></loading>
-        <api-loading v-if="isApiLoading"></api-loading>
-        <private-deal-info-modal 
-            :visibility="privateDealsInfoVisibility"
-            @close="privateDealsInfoVisibility = false"
-        ></private-deal-info-modal>
     </section>
 </template>
 
@@ -53,6 +58,7 @@ import ApiLoading from './modules/ApiLoading'
 import Loading from './modules/Loading'
 import FormButton from './modules/FormButton'
 import PrivateDealInfoModal from './modules/PrivateDealInfoModal'
+import PrivateDealChangeInfoModal from './modules/PrivateDealChangeInfoModal'
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
 import ToggleBlock from './modules/ToggleBlock.vue'
@@ -68,7 +74,8 @@ export default {
         Loading,
         FormButton,
         ToggleBlock,
-        PrivateDealInfoModal
+        PrivateDealInfoModal,
+        PrivateDealChangeInfoModal
     },
     props: ['event', 'liff', 'participants'],
     data: function(){
@@ -85,7 +92,8 @@ export default {
                     }
                 }
             ],
-            privateDealsInfoVisibility: false
+            privateDealsInfoVisibility: false,
+            privateDealsChangeInfoVisibility: true
         }
     },
     computed: {
@@ -137,9 +145,10 @@ export default {
                     this.isApiLoading = false;
                     return
                 }
+                let dividedAmount = this.amount / ( this.partner.length + 1);
                 formItem = {
                     userId: this.userInfo.userId,
-                    amount: this.amount,
+                    amount: dividedAmount,
                     note: this.note,
                     private: true,
                     partner: this.partner

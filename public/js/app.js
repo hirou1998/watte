@@ -1927,11 +1927,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
 /* harmony import */ var _modules_FormButton__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/FormButton */ "./resources/js/components/modules/FormButton.vue");
 /* harmony import */ var _modules_PrivateDealInfoModal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/PrivateDealInfoModal */ "./resources/js/components/modules/PrivateDealInfoModal.vue");
-/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
-/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
-/* harmony import */ var _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/ToggleBlock.vue */ "./resources/js/components/modules/ToggleBlock.vue");
-/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
-/* harmony import */ var _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../mixins/formValidatorMixin */ "./resources/js/mixins/formValidatorMixin.js");
+/* harmony import */ var _modules_PrivateDealChangeInfoModal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/PrivateDealChangeInfoModal */ "./resources/js/components/modules/PrivateDealChangeInfoModal.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
+/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
+/* harmony import */ var _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/ToggleBlock.vue */ "./resources/js/components/modules/ToggleBlock.vue");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
+/* harmony import */ var _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../mixins/formValidatorMixin */ "./resources/js/mixins/formValidatorMixin.js");
 //
 //
 //
@@ -1979,6 +1980,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 
 
@@ -1999,8 +2006,9 @@ __webpack_require__.r(__webpack_exports__);
     ApiLoading: _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_3__["default"],
     Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_4__["default"],
     FormButton: _modules_FormButton__WEBPACK_IMPORTED_MODULE_5__["default"],
-    ToggleBlock: _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
-    PrivateDealInfoModal: _modules_PrivateDealInfoModal__WEBPACK_IMPORTED_MODULE_6__["default"]
+    ToggleBlock: _modules_ToggleBlock_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
+    PrivateDealInfoModal: _modules_PrivateDealInfoModal__WEBPACK_IMPORTED_MODULE_6__["default"],
+    PrivateDealChangeInfoModal: _modules_PrivateDealChangeInfoModal__WEBPACK_IMPORTED_MODULE_7__["default"]
   },
   props: ['event', 'liff', 'participants'],
   data: function data() {
@@ -2015,7 +2023,8 @@ __webpack_require__.r(__webpack_exports__);
           userId: '誰に払いましたか？'
         }
       }],
-      privateDealsInfoVisibility: false
+      privateDealsInfoVisibility: false,
+      privateDealsChangeInfoVisibility: true
     };
   },
   computed: {
@@ -2076,9 +2085,10 @@ __webpack_require__.r(__webpack_exports__);
           return;
         }
 
+        var dividedAmount = this.amount / (this.partner.length + 1);
         formItem = {
           userId: this.userInfo.userId,
-          amount: this.amount,
+          amount: dividedAmount,
           note: this.note,
           "private": true,
           partner: this.partner
@@ -2179,7 +2189,7 @@ __webpack_require__.r(__webpack_exports__);
       _this5.checkAccess();
     });
   },
-  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_7__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_8__["default"], _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_11__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_10__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_8__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_9__["default"], _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_12__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_11__["default"]]
 });
 
 /***/ }),
@@ -4741,6 +4751,47 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/CheckboxBlock.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/CheckboxBlock.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['label', 'notShowAgainFlg'],
+  model: {
+    prop: 'notShowAgainFlg',
+    event: 'change'
+  },
+  computed: {
+    checked: {
+      get: function get() {
+        return this.notShowAgainFlg;
+      },
+      set: function set(notShowAgainFlg) {
+        this.updateValue(notShowAgainFlg);
+      }
+    }
+  },
+  methods: {
+    updateValue: function updateValue(value) {
+      this.$emit('change', value);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/FormButton.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/FormButton.vue?vue&type=script&lang=js& ***!
@@ -5200,6 +5251,76 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('show');
     }
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/PrivateDealChangeInfoModal.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/PrivateDealChangeInfoModal.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CheckboxBlock__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CheckboxBlock */ "./resources/js/components/modules/CheckboxBlock.vue");
+/* harmony import */ var _FormButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FormButton */ "./resources/js/components/modules/FormButton.vue");
+/* harmony import */ var _ModalBase__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalBase */ "./resources/js/components/modules/ModalBase.vue");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    CheckboxBlock: _CheckboxBlock__WEBPACK_IMPORTED_MODULE_0__["default"],
+    FormButton: _FormButton__WEBPACK_IMPORTED_MODULE_1__["default"],
+    ModalBase: _ModalBase__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  props: ['visibility', 'user'],
+  data: function data() {
+    return {
+      notShowAgainFlg: false
+    };
+  },
+  methods: {
+    close: function close() {
+      var _this = this;
+
+      if (this.notShowAgainFlg) {
+        if (this.user.userId) {
+          window.axios.put("/linefriend/check-not-show/update/".concat(this.user.userId)).then(function (_ref) {
+            var data = _ref.data;
+            console.log(data);
+          })["catch"](function (err) {
+            _this.handleErr(err.response.status);
+          });
+        } else {
+          alert('ユーザー情報が取得できませんでした。');
+        }
+      }
+
+      this.$emit('close');
+    }
+  },
+  mixins: [_mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_3__["default"]]
 });
 
 /***/ }),
@@ -42039,24 +42160,36 @@ var render = function() {
                     attrs: { value: "追加", type: "accept" },
                     on: { send: _vm.add }
                   })
-                : _vm._e()
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.isApiLoading ? _c("api-loading") : _vm._e(),
+              _vm._v(" "),
+              _c("private-deal-info-modal", {
+                attrs: { visibility: _vm.privateDealsInfoVisibility },
+                on: {
+                  close: function($event) {
+                    _vm.privateDealsInfoVisibility = false
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("private-deal-change-info-modal", {
+                attrs: {
+                  visibility: _vm.privateDealsChangeInfoVisibility,
+                  user: _vm.userInfo
+                },
+                on: {
+                  close: function($event) {
+                    _vm.privateDealsChangeInfoVisibility = false
+                  }
+                }
+              })
             ],
             1
           )
         : _vm._e(),
       _vm._v(" "),
-      _vm.isLoading ? _c("loading") : _vm._e(),
-      _vm._v(" "),
-      _vm.isApiLoading ? _c("api-loading") : _vm._e(),
-      _vm._v(" "),
-      _c("private-deal-info-modal", {
-        attrs: { visibility: _vm.privateDealsInfoVisibility },
-        on: {
-          close: function($event) {
-            _vm.privateDealsInfoVisibility = false
-          }
-        }
-      })
+      _vm.isLoading ? _c("loading") : _vm._e()
     ],
     1
   )
@@ -44292,7 +44425,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "form-group" }, [
-    _c("p", { staticClass: "small-txt form-item-title" }, [_vm._v("金額")]),
+    _c("p", { staticClass: "small-txt form-item-title" }, [
+      _vm._v("支払いの合計金額")
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "d-flex amount-number-block form-item-content" }, [
       _c("input", {
@@ -44483,6 +44618,73 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/CheckboxBlock.vue?vue&type=template&id=41ff5ba7&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/CheckboxBlock.vue?vue&type=template&id=41ff5ba7& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "form-group checkbox-block" }, [
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.checked,
+          expression: "checked"
+        }
+      ],
+      staticClass: "form-control checkbox-input",
+      attrs: { type: "checkbox", id: "checkbox-input" },
+      domProps: {
+        checked: Array.isArray(_vm.checked)
+          ? _vm._i(_vm.checked, null) > -1
+          : _vm.checked
+      },
+      on: {
+        change: function($event) {
+          var $$a = _vm.checked,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false
+          if (Array.isArray($$a)) {
+            var $$v = null,
+              $$i = _vm._i($$a, $$v)
+            if ($$el.checked) {
+              $$i < 0 && (_vm.checked = $$a.concat([$$v]))
+            } else {
+              $$i > -1 &&
+                (_vm.checked = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            }
+          } else {
+            _vm.checked = $$c
+          }
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c(
+      "label",
+      { staticClass: "checkbox-label", attrs: { for: "checkbox-input" } },
+      [_vm._v(_vm._s(_vm.label))]
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -44908,6 +45110,75 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/PrivateDealChangeInfoModal.vue?vue&type=template&id=20226f73&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/PrivateDealChangeInfoModal.vue?vue&type=template&id=20226f73& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("modal-base", {
+    attrs: { visibility: _vm.visibility },
+    on: { close: _vm.close },
+    scopedSlots: _vm._u([
+      {
+        key: "content",
+        fn: function() {
+          return [
+            _c("p", { staticClass: "small-txt" }, [
+              _vm._v("アップデート情報 2021.3.16")
+            ]),
+            _vm._v(" "),
+            _c("p", { staticClass: "small-txt" }, [
+              _vm._v("個人間の支払いの場合でも金額には"),
+              _c("span", [_vm._v("合計支払額")]),
+              _vm._v("を入力するように変更しました。")
+            ]),
+            _vm._v(" "),
+            _c("checkbox-block", {
+              attrs: { label: "次回から表示しない" },
+              model: {
+                value: _vm.notShowAgainFlg,
+                callback: function($$v) {
+                  _vm.notShowAgainFlg = $$v
+                },
+                expression: "notShowAgainFlg"
+              }
+            })
+          ]
+        },
+        proxy: true
+      },
+      {
+        key: "button",
+        fn: function() {
+          return [
+            _c("form-button", {
+              attrs: { value: "OK", type: "accept" },
+              on: { send: _vm.close }
+            })
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/PrivateDealInfoModal.vue?vue&type=template&id=f59f237a&":
 /*!*******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modules/PrivateDealInfoModal.vue?vue&type=template&id=f59f237a& ***!
@@ -44933,7 +45204,7 @@ var render = function() {
           return [
             _c("p", { staticClass: "small-txt" }, [
               _vm._v(
-                "「個人の貸し借りを記録する」ボタンを有効にすると、イベントに参加している全員にではなく、個人間の支払いを記録することができます。一人当たりの支払い金額を入力してください。"
+                "「個人の貸し借りを記録する」ボタンを有効にすると、イベントに参加している全員にではなく、個人間の支払いを記録することができます。合計支払額を入力してください。"
               ),
               _c("br"),
               _vm._v(
@@ -57460,6 +57731,8 @@ Vue.component('request', __webpack_require__(/*! ./components/Request.vue */ "./
 Vue.component('payment', __webpack_require__(/*! ./components/Payment.vue */ "./resources/js/components/Payment.vue")["default"]);
 Vue.component('transaction-item', __webpack_require__(/*! ./components/modules/TransactionItem.vue */ "./resources/js/components/modules/TransactionItem.vue")["default"]);
 Vue.component('private-deal-info-modal', __webpack_require__(/*! ./components/modules/PrivateDealInfoModal.vue */ "./resources/js/components/modules/PrivateDealInfoModal.vue")["default"]);
+Vue.component('private-deal-change-info-modal', __webpack_require__(/*! ./components/modules/PrivateDealChangeInfoModal.vue */ "./resources/js/components/modules/PrivateDealChangeInfoModal.vue")["default"]);
+Vue.component('checkbox-block', __webpack_require__(/*! ./components/modules/CheckboxBlock.vue */ "./resources/js/components/modules/CheckboxBlock.vue")["default"]);
 axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="line-id"]').getAttribute('content');
 var app = new Vue({
   el: '#app'
@@ -59014,6 +59287,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/modules/CheckboxBlock.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/modules/CheckboxBlock.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CheckboxBlock_vue_vue_type_template_id_41ff5ba7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CheckboxBlock.vue?vue&type=template&id=41ff5ba7& */ "./resources/js/components/modules/CheckboxBlock.vue?vue&type=template&id=41ff5ba7&");
+/* harmony import */ var _CheckboxBlock_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CheckboxBlock.vue?vue&type=script&lang=js& */ "./resources/js/components/modules/CheckboxBlock.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CheckboxBlock_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CheckboxBlock_vue_vue_type_template_id_41ff5ba7___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CheckboxBlock_vue_vue_type_template_id_41ff5ba7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/modules/CheckboxBlock.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/CheckboxBlock.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/modules/CheckboxBlock.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CheckboxBlock_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./CheckboxBlock.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/CheckboxBlock.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CheckboxBlock_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/CheckboxBlock.vue?vue&type=template&id=41ff5ba7&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/modules/CheckboxBlock.vue?vue&type=template&id=41ff5ba7& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CheckboxBlock_vue_vue_type_template_id_41ff5ba7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./CheckboxBlock.vue?vue&type=template&id=41ff5ba7& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/CheckboxBlock.vue?vue&type=template&id=41ff5ba7&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CheckboxBlock_vue_vue_type_template_id_41ff5ba7___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CheckboxBlock_vue_vue_type_template_id_41ff5ba7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/modules/FormButton.vue":
 /*!********************************************************!*\
   !*** ./resources/js/components/modules/FormButton.vue ***!
@@ -59699,6 +60041,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Participant_vue_vue_type_template_id_3eaa5110___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Participant_vue_vue_type_template_id_3eaa5110___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/PrivateDealChangeInfoModal.vue":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/modules/PrivateDealChangeInfoModal.vue ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PrivateDealChangeInfoModal_vue_vue_type_template_id_20226f73___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PrivateDealChangeInfoModal.vue?vue&type=template&id=20226f73& */ "./resources/js/components/modules/PrivateDealChangeInfoModal.vue?vue&type=template&id=20226f73&");
+/* harmony import */ var _PrivateDealChangeInfoModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PrivateDealChangeInfoModal.vue?vue&type=script&lang=js& */ "./resources/js/components/modules/PrivateDealChangeInfoModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PrivateDealChangeInfoModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PrivateDealChangeInfoModal_vue_vue_type_template_id_20226f73___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PrivateDealChangeInfoModal_vue_vue_type_template_id_20226f73___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/modules/PrivateDealChangeInfoModal.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/PrivateDealChangeInfoModal.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/modules/PrivateDealChangeInfoModal.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateDealChangeInfoModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./PrivateDealChangeInfoModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/PrivateDealChangeInfoModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateDealChangeInfoModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/modules/PrivateDealChangeInfoModal.vue?vue&type=template&id=20226f73&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/modules/PrivateDealChangeInfoModal.vue?vue&type=template&id=20226f73& ***!
+  \*******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateDealChangeInfoModal_vue_vue_type_template_id_20226f73___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./PrivateDealChangeInfoModal.vue?vue&type=template&id=20226f73& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modules/PrivateDealChangeInfoModal.vue?vue&type=template&id=20226f73&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateDealChangeInfoModal_vue_vue_type_template_id_20226f73___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateDealChangeInfoModal_vue_vue_type_template_id_20226f73___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
