@@ -7,10 +7,11 @@ use App\Model\LineFriend;
 
 class LineFriendCotnroller extends Controller
 {
-    // public function block($friend)
-    // {
-    //     $friend->update([
-    //         'is_blocked' => true
-    //     ]);
-    // }
+    public function checkNotShowInfo(LineFriend $friend)
+    {
+        $friend->update([
+            'private_notification_flg' => true
+        ]);
+        return $friend;
+    }
 }

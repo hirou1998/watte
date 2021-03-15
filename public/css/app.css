@@ -11416,6 +11416,26 @@ a:hover {
   text-decoration: underline;
 }
 
+.checkbox-block {
+  display: flex;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+}
+
+.checkbox-input {
+  width: 1.6rem;
+  height: auto;
+}
+
+.checkbox-label {
+  margin: 0 0 0 0.3rem;
+}
+
 .amount-item {
   padding: 1rem;
   background-color: #fff;

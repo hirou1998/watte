@@ -75,7 +75,7 @@ class LineBotController extends Controller
                     logger()->warning('Unknown event. ['. get_class($event) . ']', compact('body'));
                 
             }
-            //$response = $bot->replyMessage($reply_token, $reply_message);
+            $response = $bot->replyMessage($reply_token, $reply_message);
         }
     }
 }
