@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Model\LineFriend;
+use App\Models\LineFriend;
 
 class LineFriendCotnroller extends Controller
 {
