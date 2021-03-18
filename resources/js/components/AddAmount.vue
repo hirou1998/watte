@@ -40,11 +40,11 @@
                 :visibility="privateDealsInfoVisibility"
                 @close="privateDealsInfoVisibility = false"
             ></private-deal-info-modal>
-            <private-deal-change-info-modal 
+            <!-- <private-deal-change-info-modal 
                 :visibility="privateDealsChangeInfoVisibility"
                 :user="userInfo"
                 @close="privateDealsChangeInfoVisibility = false"
-            ></private-deal-change-info-modal>
+            ></private-deal-change-info-modal> -->
         </article>
         <loading v-if="isLoading"></loading>
     </section>
@@ -145,10 +145,10 @@ export default {
                     this.isApiLoading = false;
                     return
                 }
-                let dividedAmount = this.amount / ( this.partner.length + 1);
+                //let dividedAmount = this.amount / ( this.partner.length + 1);
                 formItem = {
                     userId: this.userInfo.userId,
-                    amount: dividedAmount,
+                    amount: this.amount,
                     note: this.note,
                     private: true,
                     partner: this.partner

@@ -2083,12 +2083,12 @@ __webpack_require__.r(__webpack_exports__);
           alert('支払い相手が重複しています');
           this.isApiLoading = false;
           return;
-        }
+        } //let dividedAmount = this.amount / ( this.partner.length + 1);
 
-        var dividedAmount = this.amount / (this.partner.length + 1);
+
         formItem = {
           userId: this.userInfo.userId,
-          amount: dividedAmount,
+          amount: this.amount,
           note: this.note,
           "private": true,
           partner: this.partner
@@ -42171,18 +42171,6 @@ var render = function() {
                     _vm.privateDealsInfoVisibility = false
                   }
                 }
-              }),
-              _vm._v(" "),
-              _c("private-deal-change-info-modal", {
-                attrs: {
-                  visibility: _vm.privateDealsChangeInfoVisibility,
-                  user: _vm.userInfo
-                },
-                on: {
-                  close: function($event) {
-                    _vm.privateDealsChangeInfoVisibility = false
-                  }
-                }
               })
             ],
             1
@@ -45204,7 +45192,7 @@ var render = function() {
           return [
             _c("p", { staticClass: "small-txt" }, [
               _vm._v(
-                "「個人の貸し借りを記録する」ボタンを有効にすると、イベントに参加している全員にではなく、個人間の支払いを記録することができます。合計支払額を入力してください。"
+                "「個人の貸し借りを記録する」ボタンを有効にすると、イベントに参加している全員にではなく、個人間の支払いを記録することができます。一人当たり支払額を入力してください。"
               ),
               _c("br"),
               _vm._v(
