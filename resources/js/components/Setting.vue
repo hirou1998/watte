@@ -19,22 +19,45 @@
                 </div>
                 <p class="normal-txt text-center setting-menu-text">参加者の追加</p>
             </div>
+            <div class="setting-menu" role="button" @click="sendInvitation">
+                <div class="setting-menu-icon">
+                    <img src="/images/archive.png" alt="">
+                </div>
+                <p class="normal-txt text-center setting-menu-text">アーカイブ</p>
+            </div>
+            <div class="delete-button-container">
+                <form-button value="このイベントを削除する" type="deny" @send="openDeleteConfirm"></form-button>
+            </div>
         </article>
         <loading v-if="isLoading"></loading>
+        <event-delete-confirm
+            @close="modalVisibility = false"
+            @execute="deleteEvent"
+            :target="event"
+            :visibility="modalVisibility"
+        ></event-delete-confirm>
     </section>
 </template>
 
 <script>
+import EventDeleteConfirm from './modules/EventDeleteConfirm'
+import FormButton from './modules/FormButton'
 import Loading from './modules/Loading';
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
+import handleErrMinxin from '../mixins/handleErrMinxin'
 
 export default {
-    components: { Loading },
+    components: { 
+        EventDeleteConfirm,
+        FormButton,
+        Loading
+    },
     props: ['liff', 'event'],
     data(){
         return{
-            isLoading: true
+            isLoading: false,
+            modalVisibility: false
         }
     },
     computed: {
@@ -46,6 +69,18 @@ export default {
         }
     },
     methods: {
+        deleteEvent(){
+            window.axios.delete(`/delete/${this.event.id}`)
+            .then(() => {
+                window.liff.closeWindow();
+            })
+            .catch(err => {
+                this.handleErr(err.response.status)
+            })
+        },
+        openDeleteConfirm(){
+            this.modalVisibility = true;
+        },
         sendInvitation(){
             let url = `https://liff.line.me/1655325455-B5Zjk37g/confirm?type=confirm&id=${this.event.id}`;
             window.liff.sendMessages([
@@ -78,9 +113,9 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            this.checkAccess();
+            //this.checkAccess();
         })
     },
-    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, handleErrMinxin]
 }
 </script>

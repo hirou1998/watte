@@ -60,7 +60,7 @@ class StartService
             }
             $add_button = new UriTemplateActionBuilder('支払いを追加', 'https://liff.line.me/1655325455-B5Zjk37g/amounts/add/' . $event->id);
             $check_button = new UriTemplateActionBuilder('割り勘状況を確認', 'https://liff.line.me/1655325455-B5Zjk37g/amounts/show/' . $event->id);
-            $setting_button = new UriTemplateActionBuilder('設定', 'https://liff.line.me/1655325455-B5Zjk37g/setting/' . $event->id);
+            $setting_button = new UriTemplateActionBuilder('設定/その他', 'https://liff.line.me/1655325455-B5Zjk37g/setting/' . $event->id);
             $column = $this->generateColumn($event->event_name, '各イベントの割り勘追加、確認ができます', $image, [$add_button, $check_button, $setting_button]);
             array_push($columns, $column);
         }

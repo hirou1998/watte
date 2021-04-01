@@ -200,7 +200,7 @@ export default {
         },
         hideLoading(){
             this.isLoading = false;
-            this.isParticipated();
+            //this.isParticipated();
         },
         isParticipated(){
             let friend = this.participants.find(p => p.line_id === this.userInfo.userId);
@@ -237,7 +237,8 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            this.checkAccess();
+            this.hideLoading();
+            //this.checkAccess();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, formValidatorMixin, handleErrMinxin]

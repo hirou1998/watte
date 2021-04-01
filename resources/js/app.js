@@ -42,6 +42,7 @@ Vue.component('transaction-item', require('./components/modules/TransactionItem.
 Vue.component('private-deal-info-modal', require('./components/modules/PrivateDealInfoModal.vue').default);
 Vue.component('private-deal-change-info-modal', require('./components/modules/PrivateDealChangeInfoModal.vue').default);
 Vue.component('checkbox-block', require('./components/modules/CheckboxBlock.vue').default);
+Vue.component('event-delete-confirm', require('./components/modules/EventDeleteConfirm.vue').default);
 
 axios.defaults.headers.common['Authorization'] = "Bearer " + document.querySelector('meta[name="line-id"]').getAttribute('content');
 
