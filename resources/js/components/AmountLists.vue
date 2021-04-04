@@ -385,7 +385,6 @@ export default {
                 type: sentData.type
             })
             .then(({data}) => {
-                console.log(data)
                 let altText;
                 let template;
                 altText = '支払いリクエスト';
@@ -500,8 +499,7 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            this.hideLoading();
-            //this.checkAccess();
+            this.checkAccess();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, handleErrMinxin]

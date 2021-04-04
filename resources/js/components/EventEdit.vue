@@ -175,8 +175,7 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            this.hideLoading()
-            //this.checkAccess();
+            this.checkAccess();
         })
         .catch(err => {
             alert('データの取得に失敗しました')

@@ -2140,7 +2140,8 @@ __webpack_require__.r(__webpack_exports__);
       return isDuplicated;
     },
     hideLoading: function hideLoading() {
-      this.isLoading = false; //this.isParticipated();
+      this.isLoading = false;
+      this.isParticipated();
     },
     isParticipated: function isParticipated() {
       var _this3 = this;
@@ -2185,8 +2186,7 @@ __webpack_require__.r(__webpack_exports__);
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this5.hideLoading(); //this.checkAccess();
-
+      _this5.checkAccess();
     });
   },
   mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_8__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_9__["default"], _mixins_formValidatorMixin__WEBPACK_IMPORTED_MODULE_12__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_11__["default"]]
@@ -2614,7 +2614,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         type: sentData.type
       }).then(function (_ref3) {
         var data = _ref3.data;
-        console.log(data);
         var altText;
         var template;
         altText = '支払いリクエスト';
@@ -2737,8 +2736,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this10.hideLoading(); //this.checkAccess();
-
+      _this10.checkAccess();
     });
   },
   mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_12__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_13__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_14__["default"]]
@@ -3050,8 +3048,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this3.hideLoading(); //this.checkAccess();
-
+      _this3.checkAccess();
     })["catch"](function (err) {
       alert('データの取得に失敗しました');
     });
@@ -3111,6 +3108,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -3129,6 +3127,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      archivedEvents: [],
       archivedEventVisibility: false,
       eventList: [],
       isApiLoading: true,
@@ -3164,27 +3163,47 @@ __webpack_require__.r(__webpack_exports__);
         desc: false
       }],
       selectedOrderOptionId: 0,
-      unarchivedEventVisibility: true
+      unarchivedEvents: [],
+      unarchivedEventVisibility: true,
+      visibleEventList: []
     };
   },
   methods: {
-    changeEventVisibility: function changeEventVisibility(category) {
-      if (!this.unarchivedEventVisibility && !this.archivedEventVisibility) {
-        alert('どちらか必ず選択してください。');
-        this.unarchivedEventVisibility = true;
-        this.$nextTick();
-      }
-    },
-    getEventList: function getEventList() {
+    changeEventVisibility: function changeEventVisibility() {
       var _this = this;
 
-      //window.axios.get(`/api/event/list/${this.groupId}`)
-      window.axios.get("/api/event/list/C770bf141bae7bc3206716627ca5bb87f").then(function (_ref) {
+      this.visibleEventList = [];
+
+      if (this.unarchivedEventVisibility) {
+        this.unarchivedEvents.forEach(function (event) {
+          _this.visibleEventList.push(event);
+        });
+      }
+
+      if (this.archivedEventVisibility) {
+        this.archivedEvents.forEach(function (event) {
+          _this.visibleEventList.push(event);
+        });
+      }
+
+      this.sortEvents();
+    },
+    getEventList: function getEventList() {
+      var _this2 = this;
+
+      window.axios.get("/api/event/list/".concat(this.groupId)).then(function (_ref) {
         var data = _ref.data;
-        _this.eventList = data;
-        _this.isApiLoading = false;
+        _this2.eventList = data;
+        _this2.archivedEvents = _this2.eventList.filter(function (event) {
+          return event.is_archived;
+        });
+        _this2.unarchivedEvents = _this2.eventList.filter(function (event) {
+          return !event.is_archived;
+        });
+        _this2.visibleEventList = _this2.unarchivedEvents;
+        _this2.isApiLoading = false;
       })["catch"](function (err) {
-        _this.handleErr(err.response.status);
+        _this2.handleErr(err.response.status);
       });
     },
     hideLoading: function hideLoading() {
@@ -3198,13 +3217,13 @@ __webpack_require__.r(__webpack_exports__);
       var type = option['desc'];
 
       if (type) {
-        this.eventList.sort(function (a, b) {
+        this.visibleEventList.sort(function (a, b) {
           if (a[key] > b[key]) return -1;
           if (a[key] < b[key]) return 1;
           return 0;
         });
       } else {
-        this.eventList.sort(function (a, b) {
+        this.visibleEventList.sort(function (a, b) {
           if (a[key] < b[key]) return -1;
           if (a[key] > b[key]) return 1;
           return 0;
@@ -3215,13 +3234,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this3 = this;
 
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this2.hideLoading(); //this.checkAccess();
-
+      _this3.checkAccess();
     })["catch"](function (err) {
       alert('データの取得に失敗しました');
     });
@@ -3897,7 +3915,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['liff', 'event'],
   data: function data() {
     return {
-      isLoading: false,
+      isLoading: true,
       archiveModalVisibility: false,
       deleteModalVisibility: false
     };
@@ -3958,9 +3976,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    var _this3 = this;
+
     window.liff.init({
       liffId: this.liff
-    }).then(function () {//this.checkAccess();
+    }).then(function () {
+      _this3.checkAccess();
     });
   },
   mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_6__["default"]]
@@ -43151,13 +43172,18 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c(
-        "ul",
-        _vm._l(_vm.eventList, function(event) {
-          return _c("event-card", { key: event.id, attrs: { event: event } })
-        }),
-        1
-      ),
+      _vm.visibleEventList.length > 0
+        ? _c(
+            "ul",
+            _vm._l(_vm.visibleEventList, function(event) {
+              return _c("event-card", {
+                key: event.id,
+                attrs: { event: event }
+              })
+            }),
+            1
+          )
+        : _c("div", [_vm._v("該当のイベントが見つかりません。")]),
       _vm._v(" "),
       _vm.isApiLoading ? _c("api-loading") : _vm._e()
     ],
@@ -44715,7 +44741,7 @@ var render = function() {
   return _c(
     "li",
     {
-      staticClass: "amount-item",
+      staticClass: "card-item",
       attrs: { "data-archived": _vm.amount.archive_flg }
     },
     [

@@ -64,7 +64,7 @@ export default {
     props: ['liff', 'event'],
     data(){
         return{
-            isLoading: false,
+            isLoading: true,
             archiveModalVisibility: false,
             deleteModalVisibility: false
         }
@@ -134,7 +134,7 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            //this.checkAccess();
+            this.checkAccess();
         })
     },
     mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, handleErrMinxin]

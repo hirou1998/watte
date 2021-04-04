@@ -22,13 +22,14 @@
                 </div>
             </div>
         </div>
-        <ul>
+        <ul v-if="visibleEventList.length > 0">
             <event-card
-                v-for="event in eventList"
+                v-for="event in visibleEventList"
                 :event="event"
                 :key="event.id"
             ></event-card>
         </ul>
+        <div v-else>該当のイベントが見つかりません。</div>
         <api-loading v-if="isApiLoading"></api-loading>
     </section>
 </template>
@@ -53,6 +54,7 @@ export default {
     },
     data(){
         return{
+            archivedEvents: [],
             archivedEventVisibility: false,
             eventList: [],
             isApiLoading: true,
@@ -95,22 +97,33 @@ export default {
                 }
             ],
             selectedOrderOptionId: 0,
+            unarchivedEvents: [],
             unarchivedEventVisibility: true,
+            visibleEventList: [],
         }
     },
     methods: {
-        changeEventVisibility(category){
-            if(!this.unarchivedEventVisibility && !this.archivedEventVisibility){
-                alert('どちらか必ず選択してください。')
-                this.unarchivedEventVisibility = true;
-                this.$nextTick();
+        changeEventVisibility(){
+            this.visibleEventList = [];
+            if(this.unarchivedEventVisibility){
+                this.unarchivedEvents.forEach(event => {
+                    this.visibleEventList.push(event)
+                })
             }
+            if(this.archivedEventVisibility){
+                this.archivedEvents.forEach(event => {
+                    this.visibleEventList.push(event)
+                })
+            }
+            this.sortEvents();
         },
         getEventList(){
-            //window.axios.get(`/api/event/list/${this.groupId}`)
-            window.axios.get(`/api/event/list/C770bf141bae7bc3206716627ca5bb87f`)
+            window.axios.get(`/api/event/list/${this.groupId}`)
             .then(({data}) => {
                 this.eventList = data;
+                this.archivedEvents = this.eventList.filter(event => event.is_archived);
+                this.unarchivedEvents = this.eventList.filter(event => !event.is_archived);
+                this.visibleEventList = this.unarchivedEvents;
                 this.isApiLoading = false;
             })
             .catch(err => {
@@ -127,13 +140,13 @@ export default {
             let key = option['key'];
             let type = option['desc'];
             if(type){
-                this.eventList.sort((a, b) => {
+                this.visibleEventList.sort((a, b) => {
                     if(a[key] > b[key]) return -1;
                     if(a[key] < b[key]) return 1;
                     return 0;
                 })
             }else{
-                this.eventList.sort((a, b) => {
+                this.visibleEventList.sort((a, b) => {
                     if(a[key] < b[key]) return -1;
                     if(a[key] > b[key]) return 1;
                     return 0;
@@ -147,8 +160,7 @@ export default {
             liffId: this.liff
         })
         .then(() => {
-            this.hideLoading()
-            //this.checkAccess();
+            this.checkAccess();
         })
         .catch(err => {
             alert('データの取得に失敗しました')
