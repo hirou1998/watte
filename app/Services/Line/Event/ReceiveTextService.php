@@ -5,6 +5,7 @@ namespace App\Services\Line\Event;
 use LINE\LINEBot;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
 use App\Services\Line\Event\StartService;
+use App\Services\Line\Event\EventsListService;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 
 class ReceiveTextService
@@ -36,10 +37,6 @@ class ReceiveTextService
             return false;
         }
 
-        // if(strpos($message, '@watte イベント作成: ')){
-        //     $event_name = 
-        // }
-
         $user_id = $event->getUserId();
         $is_sent_from_group = $event->isGroupEvent();
 
@@ -49,6 +46,8 @@ class ReceiveTextService
             $start = new StartService($group_id);
             $reply = $start->execute();
         }else{
+            $line_id = $event->getUserId();
+            $user_event_lists = new EventsListService($line_id);
             $reply = new TextMessageBuilder(config('LINEBotMessage.user_reply'));
         }
 

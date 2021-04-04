@@ -1,0 +1,25 @@
+.event-card{
+    &-head{
+        display: flex;
+        justify-content: space-between;
+    }
+    &-participants{
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
+
+        &-item{
+            flex: 33%;
+        }
+    }
+    &-bottom{
+        display: flex;
+        justify-content: space-between;
+
+        &-links{
+            display: flex;
+            justify-content: space-around;
+            width: 20%;
+        }
+    }
+}

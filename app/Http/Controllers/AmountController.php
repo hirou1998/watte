@@ -74,6 +74,7 @@ class AmountController extends Controller
 
     public function delete(Amount $amount)
     {
+        $amount->deals->delete();
         $amount->delete();
 
         return response()->json([]);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Group;
 use App\Models\LineFriend;
+use App\Models\Amount;
 use App\Services\Line\Event\AskJoinService;
 use Illuminate\Support\Facades\Storage;
 use Image;
@@ -184,5 +185,27 @@ class EventController extends Controller
             ];
             return $returnObj;
         }
+    }
+
+    /**
+     * イベントの削除
+     */
+    public function delete(Event $event)
+    {
+        Amount::where('event_id', $event->id)->delete();
+        $event->delete();
+
+        return response()->json([]);
+    }
+
+    /**
+     * イベントのアーカイブ
+     */
+    public function archive(Event $event)
+    {
+        $event->update([
+            'is_archived' => true
+        ]);
+        return $event;
     }
 }

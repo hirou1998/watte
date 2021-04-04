@@ -11261,6 +11261,7 @@ main {
   width: 100%;
   height: 100vh;
   padding: 1.5rem 0;
+  position: relative;
 }
 
 .content-container {
@@ -11279,6 +11280,16 @@ main {
 .section-inner {
   width: 94%;
   margin: 0 auto;
+}
+
+.card-item {
+  padding: 1rem;
+  background-color: #fff;
+  width: 100%;
+  margin: 0 auto 1rem;
+  border-radius: 10px 10px 0 0;
+  position: relative;
+  overflow: hidden;
 }
 
 input.form-control,
@@ -11418,9 +11429,6 @@ a:hover {
 
 .checkbox-block {
   display: flex;
-  position: absolute;
-  left: 0;
-  bottom: 0;
   width: 100%;
   justify-content: flex-start;
   align-items: center;
@@ -11746,6 +11754,14 @@ a:hover {
 .setting-menu-text {
   margin-bottom: 0;
   color: #000;
+}
+
+.delete-button-container {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  transform: translate(-50%, 0);
+  width: 80%;
 }
 
 .profile-block {
@@ -12368,5 +12384,31 @@ a:hover {
 
 .transaction-item-text {
   margin-bottom: 0;
+}
+
+.event-card-head {
+  display: flex;
+  justify-content: space-between;
+}
+
+.event-card-participants {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.event-card-participants-item {
+  flex: 33%;
+}
+
+.event-card-bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.event-card-bottom-links {
+  display: flex;
+  justify-content: space-around;
+  width: 20%;
 }
 
