@@ -10,7 +10,6 @@ class EventController extends Controller
 {
     public function index(Event $event, Request $request)
     {
-        //return $event;
         $userToken = $request->bearerToken();
         $sessionToken = session()->get('line_id');
         if($userToken && $userToken == $sessionToken){
