@@ -22,6 +22,15 @@ main{
     width: 94%;
     margin: 0 auto;
 }
+.card-item{
+    padding: 1rem;
+    background-color: #fff;
+    width: 100%;
+    margin: 0 auto 1rem;
+    border-radius: 10px 10px 0 0;
+    position: relative;
+    overflow: hidden;
+}
 input.form-control, textarea.form-control, select.form-control{
     font-size: 1.6rem;
 }

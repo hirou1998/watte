@@ -19,7 +19,7 @@
                 </div>
                 <p class="normal-txt text-center setting-menu-text">参加者の追加</p>
             </div>
-            <div class="setting-menu" role="button" @click="sendInvitation">
+            <div class="setting-menu" role="button" @click="openArchiveConfirm">
                 <div class="setting-menu-icon">
                     <img src="/images/archive.png" alt="">
                 </div>
@@ -31,15 +31,22 @@
         </article>
         <loading v-if="isLoading"></loading>
         <event-delete-confirm
-            @close="modalVisibility = false"
+            @close="deleteModalVisibility = false"
             @execute="deleteEvent"
             :target="event"
-            :visibility="modalVisibility"
+            :visibility="deleteModalVisibility"
         ></event-delete-confirm>
+        <event-archive-confirm
+            @close="archiveModalVisibility = false"
+            @execute="archiveEvent"
+            :target="event"
+            :visibility="archiveModalVisibility"
+        ></event-archive-confirm>
     </section>
 </template>
 
 <script>
+import EventArchiveConfirm from './modules/EventArchiveConfirm';
 import EventDeleteConfirm from './modules/EventDeleteConfirm'
 import FormButton from './modules/FormButton'
 import Loading from './modules/Loading';
@@ -48,7 +55,8 @@ import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFro
 import handleErrMinxin from '../mixins/handleErrMinxin'
 
 export default {
-    components: { 
+    components: {
+        EventArchiveConfirm,
         EventDeleteConfirm,
         FormButton,
         Loading
@@ -57,7 +65,8 @@ export default {
     data(){
         return{
             isLoading: false,
-            modalVisibility: false
+            archiveModalVisibility: false,
+            deleteModalVisibility: false
         }
     },
     computed: {
@@ -69,6 +78,15 @@ export default {
         }
     },
     methods: {
+        archiveEvent(){
+            window.axios.put(`/archive/${this.event.id}`)
+            .then(() => {
+                window.liff.closeWindow();
+            })
+            .catch(err => {
+                this.handleErr(err.response.status)
+            })
+        },
         deleteEvent(){
             window.axios.delete(`/delete/${this.event.id}`)
             .then(() => {
@@ -78,8 +96,11 @@ export default {
                 this.handleErr(err.response.status)
             })
         },
+        openArchiveConfirm(){
+            this.archiveModalVisibility = true;
+        },
         openDeleteConfirm(){
-            this.modalVisibility = true;
+            this.deleteModalVisibility = true;
         },
         sendInvitation(){
             let url = `https://liff.line.me/1655325455-B5Zjk37g/confirm?type=confirm&id=${this.event.id}`;

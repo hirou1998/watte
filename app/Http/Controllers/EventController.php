@@ -197,4 +197,15 @@ class EventController extends Controller
 
         return response()->json([]);
     }
+
+    /**
+     * イベントのアーカイブ
+     */
+    public function archive(Event $event)
+    {
+        $event->update([
+            'is_archived' => true
+        ]);
+        return $event;
+    }
 }
