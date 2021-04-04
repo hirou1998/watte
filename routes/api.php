@@ -18,4 +18,5 @@ Route::get('/participants/{event}', 'Api\ParitipantController@index')->name('api
 Route::post('/line/callback', 'Api\LineBotController@callback')->name('line.callback');
 Route::get('/amount/lists/{event}', 'Api\AmountController@lists')->name('api.amounts');
 Route::get('/event/{event}', 'Api\EventController@index')->name('api.event');
+Route::get('/event/list/{group}', 'Api\GroupController@showEventList')->name('api.event_list');
 Route::get('/transactions/{event}', 'Api\TransactonContorller@getApprovedTransactionByEventId')->name('api.transactions');

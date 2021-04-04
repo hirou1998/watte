@@ -19,22 +19,54 @@
                 </div>
                 <p class="normal-txt text-center setting-menu-text">参加者の追加</p>
             </div>
+            <div class="setting-menu" role="button" @click="openArchiveConfirm">
+                <div class="setting-menu-icon">
+                    <img src="/images/archive.png" alt="">
+                </div>
+                <p class="normal-txt text-center setting-menu-text">アーカイブ</p>
+            </div>
+            <div class="delete-button-container">
+                <form-button value="このイベントを削除する" type="deny" @send="openDeleteConfirm"></form-button>
+            </div>
         </article>
         <loading v-if="isLoading"></loading>
+        <event-delete-confirm
+            @close="deleteModalVisibility = false"
+            @execute="deleteEvent"
+            :target="event"
+            :visibility="deleteModalVisibility"
+        ></event-delete-confirm>
+        <event-archive-confirm
+            @close="archiveModalVisibility = false"
+            @execute="archiveEvent"
+            :target="event"
+            :visibility="archiveModalVisibility"
+        ></event-archive-confirm>
     </section>
 </template>
 
 <script>
+import EventArchiveConfirm from './modules/EventArchiveConfirm';
+import EventDeleteConfirm from './modules/EventDeleteConfirm'
+import FormButton from './modules/FormButton'
 import Loading from './modules/Loading';
 import checkAccessMixin from '../mixins/checkAccessMixin'
 import checkIsAccessingFromCorrectGroupMixin from '../mixins/checkIsAccessingFromCorrectGroupMixin'
+import handleErrMinxin from '../mixins/handleErrMinxin'
 
 export default {
-    components: { Loading },
+    components: {
+        EventArchiveConfirm,
+        EventDeleteConfirm,
+        FormButton,
+        Loading
+    },
     props: ['liff', 'event'],
     data(){
         return{
-            isLoading: true
+            isLoading: true,
+            archiveModalVisibility: false,
+            deleteModalVisibility: false
         }
     },
     computed: {
@@ -46,6 +78,30 @@ export default {
         }
     },
     methods: {
+        archiveEvent(){
+            window.axios.put(`/archive/${this.event.id}`)
+            .then(() => {
+                window.liff.closeWindow();
+            })
+            .catch(err => {
+                this.handleErr(err.response.status)
+            })
+        },
+        deleteEvent(){
+            window.axios.delete(`/delete/${this.event.id}`)
+            .then(() => {
+                window.liff.closeWindow();
+            })
+            .catch(err => {
+                this.handleErr(err.response.status)
+            })
+        },
+        openArchiveConfirm(){
+            this.archiveModalVisibility = true;
+        },
+        openDeleteConfirm(){
+            this.deleteModalVisibility = true;
+        },
         sendInvitation(){
             let url = `https://liff.line.me/1655325455-B5Zjk37g/confirm?type=confirm&id=${this.event.id}`;
             window.liff.sendMessages([
@@ -81,6 +137,6 @@ export default {
             this.checkAccess();
         })
     },
-    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin]
+    mixins: [checkAccessMixin, checkIsAccessingFromCorrectGroupMixin, handleErrMinxin]
 }
 </script>
