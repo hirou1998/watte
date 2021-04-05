@@ -44,7 +44,7 @@ class StartService
         $columns = [];
 
         $start_button = new UriTemplateActionBuilder('新規割り勘スタート', 'https://liff.line.me/1655325455-B5Zjk37g');
-        $detail_button = new PostBackTemplateActionBuilder('イベント一覧を確認する', 'https://liff.line.me/1655325455-B5Zjk37g/event/list');
+        $detail_button = new UriTemplateActionBuilder('イベント一覧を確認する', 'https://liff.line.me/1655325455-B5Zjk37g/event/list');
         $privacy_button = new PostBackTemplateActionBuilder('watteについて', 'action=detail');
 
         //新規イベントスタート
