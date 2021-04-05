@@ -57,7 +57,7 @@ export default {
             archivedEvents: [],
             archivedEventVisibility: false,
             eventList: [],
-            isApiLoading: true,
+            isApiLoading: false,
             orderOptions: [
                 {
                     id: 0, 
