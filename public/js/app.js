@@ -3130,7 +3130,7 @@ __webpack_require__.r(__webpack_exports__);
       archivedEvents: [],
       archivedEventVisibility: false,
       eventList: [],
-      isApiLoading: true,
+      isApiLoading: false,
       orderOptions: [{
         id: 0,
         value: '作成日が新しい順',
