@@ -57,7 +57,7 @@ export default {
             archivedEvents: [],
             archivedEventVisibility: false,
             eventList: [],
-            isApiLoading: false,
+            isApiLoading: true,
             orderOptions: [
                 {
                     id: 0, 
@@ -131,6 +131,7 @@ export default {
             })
         },
         hideLoading(){
+            alert('this is running')
             this.isLoading = false;
             this.getEventList();
         },
