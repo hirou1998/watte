@@ -69,7 +69,7 @@ export default {
             isNotificationOn: true,
             isStartView: false,
             isRedirectView: false,
-            otherPath: ['confirm', 'add', 'show', 'setting', 'participants', 'edit'],
+            otherPath: ['confirm', 'add', 'show', 'setting', 'participants', 'edit', 'list'],
             session: {
                 line_id: '',
                 group_id: ''
