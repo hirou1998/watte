@@ -3246,22 +3246,56 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    getEventList: function getEventList() {
+    checkIfUserAndGroupRegistered: function checkIfUserAndGroupRegistered() {
       var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.post('/auth/user-and-group', {
+                  lineId: _this3.userInfo.userId,
+                  groupId: _this3.groupId
+                }).then(function () {
+                  _this3.hideLoading();
+                })["catch"](function (err) {
+                  if (String(err).indexOf('401') !== -1) {
+                    alert("401: Unauthorized\nWatteアカウントが参加しているグループ内でアクセスしてください。");
+                    location.href = "".concat(_this3.deployUrl, "/err/forbidden");
+                  } else {
+                    alert("500: Server Error\n予期せぬエラーが発生しました。");
+                    location.href = "".concat(_this3.deployUrl, "/err/servererror");
+                  }
+
+                  window.liff.closeWindow(); //lineからのアクセス対策
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    getEventList: function getEventList() {
+      var _this4 = this;
 
       window.axios.get("/api/event/list/".concat(this.groupId)).then(function (_ref) {
         var data = _ref.data;
-        _this3.eventList = data;
-        _this3.archivedEvents = _this3.eventList.filter(function (event) {
+        _this4.eventList = data;
+        _this4.archivedEvents = _this4.eventList.filter(function (event) {
           return event.is_archived;
         });
-        _this3.unarchivedEvents = _this3.eventList.filter(function (event) {
+        _this4.unarchivedEvents = _this4.eventList.filter(function (event) {
           return !event.is_archived;
         });
-        _this3.visibleEventList = _this3.unarchivedEvents;
-        _this3.isApiLoading = false;
+        _this4.visibleEventList = _this4.unarchivedEvents;
+        _this4.isApiLoading = false;
       })["catch"](function (err) {
-        _this3.handleErr(err.response.status);
+        _this4.handleErr(err.response.status);
       });
     },
     hideLoading: function hideLoading() {
@@ -3292,12 +3326,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   mounted: function mounted() {
-    var _this4 = this;
+    var _this5 = this;
 
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this4.checkAccess();
+      _this5.checkAccess();
     })["catch"](function (err) {
       alert('データの取得に失敗しました');
     });

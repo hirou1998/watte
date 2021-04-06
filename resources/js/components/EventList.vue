@@ -132,6 +132,25 @@ export default {
                 await this.checkIfUserAndGroupRegistered();
             }
         },
+        async checkIfUserAndGroupRegistered(){
+            await axios.post('/auth/user-and-group', {
+                lineId: this.userInfo.userId,
+                groupId: this.groupId
+            })
+            .then(() => {
+                this.hideLoading();
+            })
+            .catch((err) => {
+                if(String(err).indexOf('401') !== -1){
+                    alert("401: Unauthorized\nWatteアカウントが参加しているグループ内でアクセスしてください。");
+                    location.href = `${this.deployUrl}/err/forbidden`;
+                }else{
+                    alert("500: Server Error\n予期せぬエラーが発生しました。");
+                    location.href = `${this.deployUrl}/err/servererror`;
+                }
+                window.liff.closeWindow(); //lineからのアクセス対策
+            })
+        },
         getEventList(){
             window.axios.get(`/api/event/list/${this.groupId}`)
             .then(({data}) => {
