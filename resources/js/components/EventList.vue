@@ -117,6 +117,21 @@ export default {
             }
             this.sortEvents();
         },
+        async checkAccess(){
+            await this.getUserProfile();
+            this.getGroupId();
+            let sessionValue = this.checkSession();
+            if(sessionValue.lineId === this.userInfo.userId && sessionValue.groupId === this.groupId){
+                if(sessionValue.groupId === this.event.group_id){
+                    this.hideLoading();
+                    return
+                }else{
+                    this.checkIsGroupIdCorrect();
+                }
+            }else{
+                await this.checkIfUserAndGroupRegistered();
+            }
+        },
         getEventList(){
             window.axios.get(`/api/event/list/${this.groupId}`)
             .then(({data}) => {
@@ -131,7 +146,6 @@ export default {
             })
         },
         hideLoading(){
-            alert('this is running')
             this.isLoading = false;
             this.getEventList();
         },
