@@ -122,12 +122,8 @@ export default {
             this.getGroupId();
             let sessionValue = this.checkSession();
             if(sessionValue.lineId === this.userInfo.userId && sessionValue.groupId === this.groupId){
-                if(sessionValue.groupId === this.event.group_id){
-                    this.hideLoading();
-                    return
-                }else{
-                    this.checkIsGroupIdCorrect();
-                }
+                this.hideLoading();
+                return
             }else{
                 await this.checkIfUserAndGroupRegistered();
             }

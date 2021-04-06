@@ -3214,12 +3214,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 sessionValue = _this2.checkSession();
 
                 if (!(sessionValue.lineId === _this2.userInfo.userId && sessionValue.groupId === _this2.groupId)) {
-                  _context.next = 13;
-                  break;
-                }
-
-                if (!(sessionValue.groupId === _this2.event.group_id)) {
-                  _context.next = 10;
+                  _context.next = 9;
                   break;
                 }
 
@@ -3227,18 +3222,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 return _context.abrupt("return");
 
-              case 10:
-                _this2.checkIsGroupIdCorrect();
-
-              case 11:
-                _context.next = 15;
-                break;
-
-              case 13:
-                _context.next = 15;
+              case 9:
+                _context.next = 11;
                 return _this2.checkIfUserAndGroupRegistered();
 
-              case 15:
+              case 11:
               case "end":
                 return _context.stop();
             }
