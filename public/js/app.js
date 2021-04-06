@@ -3130,7 +3130,7 @@ __webpack_require__.r(__webpack_exports__);
       archivedEvents: [],
       archivedEventVisibility: false,
       eventList: [],
-      isApiLoading: false,
+      isApiLoading: true,
       orderOptions: [{
         id: 0,
         value: '作成日が新しい順',
@@ -3207,6 +3207,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     hideLoading: function hideLoading() {
+      alert('this is running');
       this.isLoading = false;
       this.getEventList();
     },
