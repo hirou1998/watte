@@ -3247,6 +3247,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   lineId: _this3.userInfo.userId,
                   groupId: _this3.groupId
                 }).then(function () {
+                  document.querySelector('meta[name="line-id"]').setAttribute('content', _this3.userInfo.userId);
+
                   _this3.hideLoading();
                 })["catch"](function (err) {
                   if (String(err).indexOf('401') !== -1) {
