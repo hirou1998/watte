@@ -117,6 +117,37 @@ export default {
             }
             this.sortEvents();
         },
+        async checkAccess(){
+            await this.getUserProfile();
+            this.getGroupId();
+            let sessionValue = this.checkSession();
+            if(sessionValue.lineId === this.userInfo.userId && sessionValue.groupId === this.groupId){
+                this.hideLoading();
+                return
+            }else{
+                await this.checkIfUserAndGroupRegistered();
+            }
+        },
+        async checkIfUserAndGroupRegistered(){
+            await axios.post('/auth/user-and-group', {
+                lineId: this.userInfo.userId,
+                groupId: this.groupId
+            })
+            .then(() => {
+                document.querySelector('meta[name="line-id"]').setAttribute('content', this.userInfo.userId);
+                this.hideLoading();
+            })
+            .catch((err) => {
+                if(String(err).indexOf('401') !== -1){
+                    alert("401: Unauthorized\nWatteアカウントが参加しているグループ内でアクセスしてください。");
+                    location.href = `${this.deployUrl}/err/forbidden`;
+                }else{
+                    alert("500: Server Error\n予期せぬエラーが発生しました。");
+                    location.href = `${this.deployUrl}/err/servererror`;
+                }
+                window.liff.closeWindow(); //lineからのアクセス対策
+            })
+        },
         getEventList(){
             window.axios.get(`/api/event/list/${this.groupId}`)
             .then(({data}) => {
@@ -131,7 +162,6 @@ export default {
             })
         },
         hideLoading(){
-            alert('this is running')
             this.isLoading = false;
             this.getEventList();
         },

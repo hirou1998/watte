@@ -3067,12 +3067,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/ApiLoading */ "./resources/js/components/modules/ApiLoading.vue");
-/* harmony import */ var _modules_CheckboxBlock__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/CheckboxBlock */ "./resources/js/components/modules/CheckboxBlock.vue");
-/* harmony import */ var _modules_EventCard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/EventCard */ "./resources/js/components/modules/EventCard.vue");
-/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
-/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
-/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/ApiLoading */ "./resources/js/components/modules/ApiLoading.vue");
+/* harmony import */ var _modules_CheckboxBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/CheckboxBlock */ "./resources/js/components/modules/CheckboxBlock.vue");
+/* harmony import */ var _modules_EventCard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/EventCard */ "./resources/js/components/modules/EventCard.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
+/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -3121,9 +3129,9 @@ __webpack_require__.r(__webpack_exports__);
     deployUrl: String
   },
   components: {
-    ApiLoading: _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_0__["default"],
-    CheckboxBlock: _modules_CheckboxBlock__WEBPACK_IMPORTED_MODULE_1__["default"],
-    EventCard: _modules_EventCard__WEBPACK_IMPORTED_MODULE_2__["default"]
+    ApiLoading: _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_1__["default"],
+    CheckboxBlock: _modules_CheckboxBlock__WEBPACK_IMPORTED_MODULE_2__["default"],
+    EventCard: _modules_EventCard__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     return {
@@ -3188,26 +3196,99 @@ __webpack_require__.r(__webpack_exports__);
 
       this.sortEvents();
     },
-    getEventList: function getEventList() {
+    checkAccess: function checkAccess() {
       var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var sessionValue;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _this2.getUserProfile();
+
+              case 2:
+                _this2.getGroupId();
+
+                sessionValue = _this2.checkSession();
+
+                if (!(sessionValue.lineId === _this2.userInfo.userId && sessionValue.groupId === _this2.groupId)) {
+                  _context.next = 9;
+                  break;
+                }
+
+                _this2.hideLoading();
+
+                return _context.abrupt("return");
+
+              case 9:
+                _context.next = 11;
+                return _this2.checkIfUserAndGroupRegistered();
+
+              case 11:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    checkIfUserAndGroupRegistered: function checkIfUserAndGroupRegistered() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.post('/auth/user-and-group', {
+                  lineId: _this3.userInfo.userId,
+                  groupId: _this3.groupId
+                }).then(function () {
+                  document.querySelector('meta[name="line-id"]').setAttribute('content', _this3.userInfo.userId);
+
+                  _this3.hideLoading();
+                })["catch"](function (err) {
+                  if (String(err).indexOf('401') !== -1) {
+                    alert("401: Unauthorized\nWatteアカウントが参加しているグループ内でアクセスしてください。");
+                    location.href = "".concat(_this3.deployUrl, "/err/forbidden");
+                  } else {
+                    alert("500: Server Error\n予期せぬエラーが発生しました。");
+                    location.href = "".concat(_this3.deployUrl, "/err/servererror");
+                  }
+
+                  window.liff.closeWindow(); //lineからのアクセス対策
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    getEventList: function getEventList() {
+      var _this4 = this;
 
       window.axios.get("/api/event/list/".concat(this.groupId)).then(function (_ref) {
         var data = _ref.data;
-        _this2.eventList = data;
-        _this2.archivedEvents = _this2.eventList.filter(function (event) {
+        _this4.eventList = data;
+        _this4.archivedEvents = _this4.eventList.filter(function (event) {
           return event.is_archived;
         });
-        _this2.unarchivedEvents = _this2.eventList.filter(function (event) {
+        _this4.unarchivedEvents = _this4.eventList.filter(function (event) {
           return !event.is_archived;
         });
-        _this2.visibleEventList = _this2.unarchivedEvents;
-        _this2.isApiLoading = false;
+        _this4.visibleEventList = _this4.unarchivedEvents;
+        _this4.isApiLoading = false;
       })["catch"](function (err) {
-        _this2.handleErr(err.response.status);
+        _this4.handleErr(err.response.status);
       });
     },
     hideLoading: function hideLoading() {
-      alert('this is running');
       this.isLoading = false;
       this.getEventList();
     },
@@ -3235,17 +3316,17 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this5 = this;
 
     window.liff.init({
       liffId: this.liff
     }).then(function () {
-      _this3.checkAccess();
+      _this5.checkAccess();
     })["catch"](function (err) {
       alert('データの取得に失敗しました');
     });
   },
-  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_3__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_5__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_6__["default"]]
 });
 
 /***/ }),
