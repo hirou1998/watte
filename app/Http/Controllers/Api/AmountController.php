@@ -12,8 +12,9 @@ class AmountController extends Controller
     public function lists(Event $event, Amount $amount, Request $request)
     {
         $userToken = $request->bearerToken();
+        $sessionToken = session()->get('line_id');
 
-        if($userToken && $userToken == session()->get('_token')){
+        if($userToken && $userToken == $sessionToken){
             $amount_lists = $event
                 ->amounts()
                 ->with('line_friend')
