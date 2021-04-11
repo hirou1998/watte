@@ -2544,7 +2544,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     getTransactions: function getTransactions() {
       var _this4 = this;
 
-      window.axios.get("/api/transactions/".concat(this.event.id)).then(function (_ref2) {
+      window.axios.get("/api/transactions/".concat(this.event.id), {
+        headers: {
+          Authorization: "Bearer ".concat(this.userInfo.userId)
+        }
+      }).then(function (_ref2) {
         var data = _ref2.data;
         _this4.transactions = data;
       });

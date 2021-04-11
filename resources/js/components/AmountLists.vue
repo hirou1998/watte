@@ -313,7 +313,11 @@ export default {
             })
         },
         getTransactions(){
-            window.axios.get(`/api/transactions/${this.event.id}`)
+            window.axios.get(`/api/transactions/${this.event.id}`, {
+                headers: {
+                    Authorization: `Bearer ${this.userInfo.userId}`
+                }
+            })
             .then(({data}) => {
                 this.transactions = data;
             })
