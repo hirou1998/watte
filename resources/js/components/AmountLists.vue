@@ -298,7 +298,11 @@ export default {
             }
         },
         getAmountsData(){
-            window.axios.get(`/api/amount/lists/${this.event.id}`)
+            window.axios.get(`/api/amount/lists/${this.event.id}`, {
+                headers: {
+                    Authorization: `Bearer ${this.userInfo.userId}`
+                }
+            })
             .then(({data}) => {
                 this.amounts = data.amount_lists;
                 this.each = data.each;

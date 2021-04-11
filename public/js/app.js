@@ -2528,7 +2528,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     getAmountsData: function getAmountsData() {
       var _this3 = this;
 
-      window.axios.get("/api/amount/lists/".concat(this.event.id)).then(function (_ref) {
+      window.axios.get("/api/amount/lists/".concat(this.event.id), {
+        headers: {
+          Authorization: "Bearer ".concat(this.userInfo.userId)
+        }
+      }).then(function (_ref) {
         var data = _ref.data;
         _this3.amounts = data.amount_lists;
         _this3.each = data.each;
@@ -3247,7 +3251,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   lineId: _this3.userInfo.userId,
                   groupId: _this3.groupId
                 }).then(function () {
-                  //document.querySelector('meta[name="line-id"]').setAttribute('content', this.userInfo.userId);
                   _this3.hideLoading();
                 })["catch"](function (err) {
                   if (String(err).indexOf('401') !== -1) {

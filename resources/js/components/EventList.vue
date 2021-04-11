@@ -134,7 +134,6 @@ export default {
                 groupId: this.groupId
             })
             .then(() => {
-                //document.querySelector('meta[name="line-id"]').setAttribute('content', this.userInfo.userId);
                 this.hideLoading();
             })
             .catch((err) => {
