@@ -11,17 +11,15 @@ class TransactonContorller extends Controller
 {
     public function getApprovedTransactionByEventId(Event $event, Transaction $transaction, Request $request)
     {
-        $transactions = $transaction::where('event_id', $event->id)->where('approved', true)->get();
-
-        return $transactions;
-
-
         $userToken = $request->bearerToken();
+        $sessionToken = session()->get('line_id');
 
-        if($userToken && $userToken == session()->get('line_id')){
+        if($userToken && $userToken == $sessionToken){
             $transactions = $transaction::where('event_id', $event->id)->where('approved', true)->get();
 
             return $transactions;
+        }else{
+            abort(401, 'Unauthorized');
         }
     }
 }

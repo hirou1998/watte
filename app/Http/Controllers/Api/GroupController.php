@@ -14,7 +14,7 @@ class GroupController extends Controller
         $userToken = $request->bearerToken();
         $sessionToken = session()->get('line_id');
 
-        if($userToken){
+        if($userToken && $userToken == $sessionToken){
             $group_id = $group->group_id;
             $events = Event::getEventListByGroupId($group_id);
             return $events;
