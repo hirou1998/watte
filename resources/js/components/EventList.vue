@@ -134,7 +134,7 @@ export default {
                 groupId: this.groupId
             })
             .then(() => {
-                document.querySelector('meta[name="line-id"]').setAttribute('content', this.userInfo.userId);
+                //document.querySelector('meta[name="line-id"]').setAttribute('content', this.userInfo.userId);
                 this.hideLoading();
             })
             .catch((err) => {
@@ -149,7 +149,11 @@ export default {
             })
         },
         getEventList(){
-            window.axios.get(`/api/event/list/${this.groupId}`)
+            window.axios.get(`/api/event/list/${this.groupId}`, {
+                headers: {
+                    Authorization: `Bearer ${this.userInfo.userId}`
+                }
+            })
             .then(({data}) => {
                 this.eventList = data;
                 this.archivedEvents = this.eventList.filter(event => event.is_archived);

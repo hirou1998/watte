@@ -3247,8 +3247,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   lineId: _this3.userInfo.userId,
                   groupId: _this3.groupId
                 }).then(function () {
-                  document.querySelector('meta[name="line-id"]').setAttribute('content', _this3.userInfo.userId);
-
+                  //document.querySelector('meta[name="line-id"]').setAttribute('content', this.userInfo.userId);
                   _this3.hideLoading();
                 })["catch"](function (err) {
                   if (String(err).indexOf('401') !== -1) {
@@ -3273,7 +3272,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getEventList: function getEventList() {
       var _this4 = this;
 
-      window.axios.get("/api/event/list/".concat(this.groupId)).then(function (_ref) {
+      window.axios.get("/api/event/list/".concat(this.groupId), {
+        headers: {
+          Authorization: "Bearer ".concat(this.userInfo.userId)
+        }
+      }).then(function (_ref) {
         var data = _ref.data;
         _this4.eventList = data;
         _this4.archivedEvents = _this4.eventList.filter(function (event) {
