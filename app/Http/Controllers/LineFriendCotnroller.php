@@ -19,11 +19,14 @@ class LineFriendCotnroller extends Controller
     {
         logger([$friend]);
 
-        $friend->update([
-            'display_name' => $request->display_name,
-            'picture_url' => $request->picture_url
-        ]);
-
-        return $friend;
+        if($friend){
+            $friend->update([
+                'display_name' => $request->display_name,
+                'picture_url' => $request->picture_url
+            ]);
+            return $friend;
+        }else{
+            abort(404, 'Not Found');
+        }
     }
 }
