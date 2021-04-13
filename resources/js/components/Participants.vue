@@ -101,6 +101,7 @@ export default {
         },
         refresh(){
             let accessUser = this.participants.find(p => p.line_id === this.userInfo.userId);
+            alert(accessUser.display_name);
             if(accessUser.display_name !== this.userInfo.displayName){
                 this.changeItem = {
                     ...this.changeItem,

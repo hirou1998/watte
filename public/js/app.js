@@ -3476,6 +3476,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var accessUser = this.participants.find(function (p) {
         return p.line_id === _this3.userInfo.userId;
       });
+      alert(accessUser.display_name);
 
       if (accessUser.display_name !== this.userInfo.displayName) {
         this.changeItem = _objectSpread(_objectSpread({}, this.changeItem), {}, {

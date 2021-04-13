@@ -37,10 +37,14 @@ class ParticipantController extends Controller
         $event_id = $request->event;
         $line_id = $friend->line_id;
 
+        logger([$friend]);
+
         //$targetUser = $friend->where('line_id', $line_id)->get()->first();
         $friend->update([
             'display_name' => $request->display_name,
             'picture_url' => $request->picture_url
         ]);
+
+        return $friend;
     }
 }
