@@ -50,8 +50,9 @@ class ReceiveTextService
                 $reply = new TextMessageBuilder(config('LINEBotMessage.user_reply'));
             }else if($message == '@watte list'){
                 $line_id = $event->getUserId();
-                $user_event_lists = new EventsListService($line_id);
-                $reply = new TextMessageBuilder($user_event_lists);
+                $user_event_obj = new EventsListService($line_id);
+                $event_lists = $user_event_obj->execute();
+                $reply = new TextMessageBuilder($event_lists);
             }
         }
 
