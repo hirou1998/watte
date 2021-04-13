@@ -3352,12 +3352,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/ApiLoading */ "./resources/js/components/modules/ApiLoading.vue");
 /* harmony import */ var _modules_Loading__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/Loading */ "./resources/js/components/modules/Loading.vue");
-/* harmony import */ var _modules_Participant__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/Participant */ "./resources/js/components/modules/Participant.vue");
-/* harmony import */ var _modules_RatioModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/RatioModal */ "./resources/js/components/modules/RatioModal.vue");
-/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
-/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
-/* harmony import */ var _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/allowAccessIfWithGroupIdMixin */ "./resources/js/mixins/allowAccessIfWithGroupIdMixin.js");
-/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
+/* harmony import */ var _modules_Notification__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/Notification */ "./resources/js/components/modules/Notification.vue");
+/* harmony import */ var _modules_Participant__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/Participant */ "./resources/js/components/modules/Participant.vue");
+/* harmony import */ var _modules_RatioModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/RatioModal */ "./resources/js/components/modules/RatioModal.vue");
+/* harmony import */ var _mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mixins/checkAccessMixin */ "./resources/js/mixins/checkAccessMixin.js");
+/* harmony import */ var _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/checkIsAccessingFromCorrectGroupMixin */ "./resources/js/mixins/checkIsAccessingFromCorrectGroupMixin.js");
+/* harmony import */ var _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mixins/allowAccessIfWithGroupIdMixin */ "./resources/js/mixins/allowAccessIfWithGroupIdMixin.js");
+/* harmony import */ var _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../mixins/handleErrMinxin */ "./resources/js/mixins/handleErrMinxin.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -3394,6 +3395,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -3407,8 +3416,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {
     ApiLoading: _modules_ApiLoading__WEBPACK_IMPORTED_MODULE_0__["default"],
     Loading: _modules_Loading__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Participant: _modules_Participant__WEBPACK_IMPORTED_MODULE_2__["default"],
-    RatioModal: _modules_RatioModal__WEBPACK_IMPORTED_MODULE_3__["default"]
+    Notification: _modules_Notification__WEBPACK_IMPORTED_MODULE_2__["default"],
+    Participant: _modules_Participant__WEBPACK_IMPORTED_MODULE_3__["default"],
+    RatioModal: _modules_RatioModal__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   data: function data() {
     return {
@@ -3416,6 +3426,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         display_name: '',
         picture_url: ''
       },
+      doneAction: [],
       modalVisibility: false,
       isLoading: true,
       isApiLoading: true,
@@ -3476,7 +3487,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var accessUser = this.participants.find(function (p) {
         return p.line_id === _this3.userInfo.userId;
       });
-      alert(accessUser.display_name);
 
       if (accessUser.display_name !== this.userInfo.displayName) {
         this.changeItem = _objectSpread(_objectSpread({}, this.changeItem), {}, {
@@ -3490,6 +3500,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       }
 
+      alert(accessUser.display_name + " " + this.userInfo.displayName + "\n" + accessUser.picture_url + " " + this.userInfo.pictureUrl);
+
       if (this.changeItem.display_name === '' && this.changeItem.picture_url === '') {
         alert("".concat(this.userInfo.displayName, "\u3055\u3093\u306E\u30E6\u30FC\u30B6\u30FC\u60C5\u5831\u306F\u6700\u65B0\u3067\u3059\u3002"));
       } else {
@@ -3501,6 +3513,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           event: this.event.id
         }).then(function (_ref3) {
           var data = _ref3.data;
+
+          _this3.doneAction.push({
+            text: "".concat(data.display_name, "\u3055\u3093\u306E\u30E6\u30FC\u30B6\u30FC\u60C5\u5831\u3092\u66F4\u65B0\u3057\u307E\u3057\u305F\u3002"),
+            notificationVisibility: true
+          });
+
+          setTimeout(function () {
+            _this3.$set(_this3.doneAction, doneActionNumber, {
+              notificationVisibility: false
+            });
+          }, 2000);
         })["catch"](function (err) {
           _this3.handleErr(err.response.status);
         });
@@ -3519,7 +3542,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       _this4.checkAccess();
     });
   },
-  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_7__["default"]]
+  mixins: [_mixins_checkAccessMixin__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_checkIsAccessingFromCorrectGroupMixin__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_allowAccessIfWithGroupIdMixin__WEBPACK_IMPORTED_MODULE_7__["default"], _mixins_handleErrMinxin__WEBPACK_IMPORTED_MODULE_8__["default"]]
 });
 
 /***/ }),
@@ -43313,6 +43336,21 @@ var render = function() {
         ? _c(
             "article",
             [
+              _vm._l(_vm.doneAction, function(action, index) {
+                return _c("notification", {
+                  key: index,
+                  attrs: {
+                    action: action.text,
+                    visibility: action.notificationVisibility
+                  },
+                  on: {
+                    close: function($event) {
+                      action.notificationVisibility = false
+                    }
+                  }
+                })
+              }),
+              _vm._v(" "),
               _c("div", { staticClass: "participants-head" }, [
                 _c("h1", { staticClass: "txt-big" }, [
                   _vm._v(
@@ -43366,7 +43404,7 @@ var render = function() {
                 }
               })
             ],
-            1
+            2
           )
         : _vm._e(),
       _vm._v(" "),

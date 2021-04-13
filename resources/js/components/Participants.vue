@@ -1,6 +1,13 @@
 <template>
     <section class="section-inner">
         <article v-if="!isLoading">
+            <notification
+                v-for="(action, index) in doneAction"
+                :key="index"
+                :action="action.text" 
+                :visibility="action.notificationVisibility"
+                @close="action.notificationVisibility = false"
+            ></notification>
             <div class="participants-head">
                 <h1 class="txt-big">{{event.event_name}}({{participants.length}}人)</h1>
                 <div class="refresh-button" role="button" @click="refresh">
@@ -31,6 +38,7 @@
 <script>
 import ApiLoading from './modules/ApiLoading'
 import Loading from './modules/Loading'
+import Notification from './modules/Notification'
 import Participant from './modules/Participant'
 import RatioModal from './modules/RatioModal'
 import checkAccessMixin from '../mixins/checkAccessMixin'
@@ -43,6 +51,7 @@ export default {
     components: {
         ApiLoading,
         Loading,
+        Notification,
         Participant,
         RatioModal,
     },
@@ -52,6 +61,7 @@ export default {
                 display_name: '',
                 picture_url: ''
             },
+            doneAction: [],
             modalVisibility: false,
             isLoading: true,
             isApiLoading: true,
@@ -101,7 +111,6 @@ export default {
         },
         refresh(){
             let accessUser = this.participants.find(p => p.line_id === this.userInfo.userId);
-            alert(accessUser.display_name);
             if(accessUser.display_name !== this.userInfo.displayName){
                 this.changeItem = {
                     ...this.changeItem,
@@ -114,6 +123,7 @@ export default {
                     picture_url: this.userInfo.pictureUrl
                 }
             }
+            alert(accessUser.display_name + " " + this.userInfo.displayName + "\n" + accessUser.picture_url + " " + this.userInfo.pictureUrl)
             if(this.changeItem.display_name === '' && this.changeItem.picture_url === ''){
                 alert(`${this.userInfo.displayName}さんのユーザー情報は最新です。`)
             }else{
@@ -129,7 +139,10 @@ export default {
                     event: this.event.id
                 })
                 .then(({data}) => {
-                    
+                    this.doneAction.push({text: `${data.display_name}さんのユーザー情報を更新しました。`, notificationVisibility: true});
+                    setTimeout(() => {
+                        this.$set(this.doneAction, doneActionNumber, {notificationVisibility: false})
+                    }, 2000)
                 })
                 .catch((err) => {
                     this.handleErr(err.response.status)
