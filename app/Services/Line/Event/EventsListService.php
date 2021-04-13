@@ -45,10 +45,11 @@ class EventsListService
         $columms = [];
 
         $events = LineFriendModel::where('line_id', $this->line_id)->get()->first()->events;
-
+        $text = '';
         foreach($events as $event){
-
+            $text = $text . $event->event_name;
         }
+        return $text;
     }
 
     public function generateColumn($title, $text, $url, $actions)
