@@ -37,7 +37,7 @@ Route::post('/amounts/add/{event}', 'AmountController@store');
 Route::get('/amounts/show/{event}', 'AmountController@show');
 Route::get('/participants/{event}', 'ParticipantController@index');
 Route::get('/setting/{event}', 'SettingController@index');
-Route::put('/participant/info/update/{line_friend}', 'ParticipantController@update');
+Route::put('/participant/info/update/{line_friend}', 'LineFriendCotnroller@update');
 Route::put('/ratio/update/{event}', 'RatioController@update');
 Route::delete('/amount/delete/{amount}', 'AmountController@delete');
 Route::get('/edit/{event}', 'EventController@editpage');

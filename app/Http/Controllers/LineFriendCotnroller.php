@@ -14,4 +14,16 @@ class LineFriendCotnroller extends Controller
         ]);
         return $friend;
     }
+
+    public function update(LineFriend $friend, Request $request)
+    {
+        logger([$friend]);
+
+        $friend->update([
+            'display_name' => $request->display_name,
+            'picture_url' => $request->picture_url
+        ]);
+
+        return $friend;
+    }
 }
