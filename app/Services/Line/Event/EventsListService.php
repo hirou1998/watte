@@ -44,7 +44,7 @@ class EventsListService
     {
         $columms = [];
 
-        $events = LineFriendModel::where('line_id', $this->line_id)->get()->first()->events;
+        $events = LineFriendModel::where('line_id', $this->line_id)->get()->first()->events->where('is_archived', false);
         $text = '';
         foreach($events as $event){
             $text = $text . $event->event_name;
