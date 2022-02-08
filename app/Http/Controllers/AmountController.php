@@ -74,7 +74,8 @@ class AmountController extends Controller
 
     public function delete(Amount $amount)
     {
-        $amount->deals->delete();
+        $amount->deals()->delete();
+        logger('deals deleted successfully');
         $amount->delete();
 
         return response()->json([]);
@@ -87,9 +88,10 @@ class AmountController extends Controller
             'note' => $request->note
         ]);
         if ($amount->private) {
-            $amount->deals->update([
+            $amount->deals()->update([
                 'amount' => $request->amount,
             ]);
+            logger('deals updated successfully');
         }
         return $amount;
     }
