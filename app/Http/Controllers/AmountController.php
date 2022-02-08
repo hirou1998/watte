@@ -86,6 +86,11 @@ class AmountController extends Controller
             'amount' => $request->amount,
             'note' => $request->note
         ]);
+        if ($amount->private) {
+            $amount->deals->update([
+                'amount' => $request->amount,
+            ]);
+        }
         return $amount;
     }
 
